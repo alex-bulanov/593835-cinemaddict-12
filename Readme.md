@@ -1,7 +1,7 @@
 # Личный проект «Киноман» [![Build status][travis-image]][travis-url]
 
 * Студент: [Александр Буланов](https://up.htmlacademy.ru/ecmascript/12/user/593835).
-* Наставник: `Неизвестно`.
+* Наставник: [Вадим Шевяков](https://htmlacademy.ru/profile/id574589).
 
 ---
 
