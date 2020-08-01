@@ -1,13 +1,13 @@
 const TASK_COUNT = 5;
-import { createTitleOfTheUser } from "./view/user-title.js";
-import { createMainNavigation } from "./view/main-nav.js";
-import { createSorting } from "./view/sorting.js";
-import { createFilms } from "./view/films.js";
-import { createFilmCard } from "./view/films-card.js";
-import { createShowMoreButton } from "./view/show-more-button.js";
-import { createFilmsListExtra } from "./view/films-extra.js";
-import { createStatistics } from "./view/statistics.js";
-import { createFilmDetails } from "./view/films-details.js";
+import {createTitleOfTheUser} from "./view/user-title.js";
+import {createMainNavigation} from "./view/main-nav.js";
+import {createSorting} from "./view/sorting.js";
+import {createFilms} from "./view/films.js";
+import {createFilmCard} from "./view/films-card.js";
+import {createShowMoreButton} from "./view/show-more-button.js";
+import {createFilmsListExtra} from "./view/films-extra.js";
+import {createStatistics} from "./view/statistics.js";
+import {createFilmDetails} from "./view/films-details.js";
 
 const render = (container, template, place) => {
   container.insertAdjacentHTML(place, template);
