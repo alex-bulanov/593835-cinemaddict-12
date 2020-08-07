@@ -20,45 +20,6 @@ const siteHeaderElement = document.querySelector(`.header`);
 const siteMainElement = document.querySelector(`.main`);
 const siteFooterElement = document.querySelector(`.footer`);
 
-// Ф-ции --->
-// обработчик навигации
-const onMainNavigationItems = (evt) => {
-  evt.preventDefault();
-  const mainNavigationItems = document.querySelectorAll(`.main-navigation__item`);
-  mainNavigationItems.forEach((item) => item.classList.remove(`main-navigation__item--active`));
-
-  const currentItem = evt.target;
-  const filteredBy = evt.target.getAttribute(`href`).slice(1);
-
-  currentItem.classList.add(`main-navigation__item--active`);
-
-  let currentFilterValue = null;
-
-  switch (filteredBy) {
-    case `watchlist`:
-      currentFilterValue = `isWatchlist`;
-      break;
-    case `history`:
-      currentFilterValue = `isWatched`;
-      break;
-    case `favorites`:
-      currentFilterValue = `isFavorite`;
-      break;
-
-    default:
-      break;
-  }
-
-  if (filmsData) {
-    if (!currentFilterValue) {
-      renderFilmsListContent(filmsData);
-    } else {
-      const filmsDataFilteredByCurrentFilter = filmsData.filter((film) => film[currentFilterValue] === true);
-      renderFilmsListContent(filmsDataFilteredByCurrentFilter);
-    }
-  }
-};
-
 const renderCards = (data) => {
   const filmsList = document.querySelector(`.films-list`);
   const filmsListContainer = document.querySelector(`.films-list__container`);
@@ -121,12 +82,6 @@ let filmsData = new Array(FILMS_AMOUN).fill().map(createFilmDataTemplate);
 
 render(siteHeaderElement, createTitleOfTheUser(), `beforeend`);
 render(siteMainElement, createMainNavigation(filmsData), `beforeend`);
-
-const mainNavigationItems = document.querySelectorAll(`.main-navigation__item`);
-
-for (let item of mainNavigationItems) {
-  item.addEventListener(`click`, onMainNavigationItems);
-}
 
 render(siteMainElement, createSorting(), `beforeend`);
 render(siteMainElement, createFilmsSection(), `beforeend`);
