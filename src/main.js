@@ -60,17 +60,17 @@ const onMainNavigationItems = (evt) => {
 };
 
 const renderCards = (data) => {
-  const FilmsList = document.querySelector(`.films-list`);
-  const FilmsListContainer = document.querySelector(`.films-list__container`);
+  const filmsList = document.querySelector(`.films-list`);
+  const filmsListContainer = document.querySelector(`.films-list__container`);
 
   // отрисовываем 5 карточек с фильмами
   for (let i = 0; i < Math.min(data.length, CARD_AMOUNT); i++) {
-    render(FilmsListContainer, createFilmCard(data[i]), `beforeend`);
+    render(filmsListContainer, createFilmCard(data[i]), `beforeend`);
   }
   // если картчек больше 5
   if (data.length > CARD_AMOUNT_PER_STEP) {
     let renderedCardCount = CARD_AMOUNT_PER_STEP;
-    render(FilmsList, createShowMoreButton(), `beforeend`);
+    render(filmsList, createShowMoreButton(), `beforeend`);
     const showMoreButton = document.querySelector(`.films-list__show-more`);
 
     showMoreButton.addEventListener(`click`, (evt) => {
@@ -78,7 +78,7 @@ const renderCards = (data) => {
 
       data
         .slice(renderedCardCount, renderedCardCount + CARD_AMOUNT_PER_STEP)
-        .forEach((dataItem) => render(FilmsListContainer, createFilmCard(dataItem), `beforeend`));
+        .forEach((dataItem) => render(filmsListContainer, createFilmCard(dataItem), `beforeend`));
 
       renderedCardCount += CARD_AMOUNT_PER_STEP;
 
@@ -91,19 +91,19 @@ const renderCards = (data) => {
 
 const renderFilmsListContent = (currentData) => {
   // const FilmsList = document.querySelector(`.films-list`);
-  const FilmsListContainer = document.querySelector(`.films-list__container`);
+  const filmsListContainer = document.querySelector(`.films-list__container`);
 
   // обнуляем содержимое контейнера карточек
   const button = document.querySelector(`.films-list__show-more`);
-  FilmsListContainer.innerHTML = ``;
+  filmsListContainer.innerHTML = ``;
   if (button) {
     button.remove();
   }
 
   // --- >>> ?
   if (!currentData) {
-    FilmsListContainer.innerHTML = `«There are no movies in our database»`;
-    FilmsListContainer.style = `justify-content: center`;
+    filmsListContainer.innerHTML = `«There are no movies in our database»`;
+    filmsListContainer.style = `justify-content: center`;
   } else {
     renderCards(currentData);
   }
