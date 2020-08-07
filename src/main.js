@@ -1,7 +1,6 @@
-const CARD_AMOUNT = 5;
 const FILMS_AMOUN = 15;
-
 const CARD_AMOUNT_PER_STEP = 5;
+
 
 import {createFilmDataTemplate} from "./mocks/film-mock.js";
 // import {createCommentDataTemplate} from "./mocks/comment-mock";
@@ -20,30 +19,28 @@ const siteHeaderElement = document.querySelector(`.header`);
 const siteMainElement = document.querySelector(`.main`);
 const siteFooterElement = document.querySelector(`.footer`);
 
-const renderCards = (data) => {
-  const filmsList = document.querySelector(`.films-list`);
-  const filmsListContainer = document.querySelector(`.films-list__container`);
+const drawCards = (containerElement, dataArray, startingIndex, count) => {
 
-  // отрисовываем 5 карточек с фильмами
-  for (let i = 0; i < Math.min(data.length, CARD_AMOUNT); i++) {
-    render(filmsListContainer, createFilmCard(data[i]), `beforeend`);
+  for (let i = 0; i < Math.min(dataArray.length, count); i++) {
+    render(containerElement, createFilmCard(dataArray[i]), `beforeend`);
   }
-  // если картчек больше 5
-  if (data.length > CARD_AMOUNT_PER_STEP) {
-    let renderedCardCount = CARD_AMOUNT_PER_STEP;
-    render(filmsList, createShowMoreButton(), `beforeend`);
+
+  if (dataArray.length > count && count >= CARD_AMOUNT_PER_STEP) {
+    startingIndex = count;
+
+    render(containerElement, createShowMoreButton(), `afterend`);
     const showMoreButton = document.querySelector(`.films-list__show-more`);
 
     showMoreButton.addEventListener(`click`, (evt) => {
       evt.preventDefault();
 
-      data
-        .slice(renderedCardCount, renderedCardCount + CARD_AMOUNT_PER_STEP)
-        .forEach((dataItem) => render(filmsListContainer, createFilmCard(dataItem), `beforeend`));
+      dataArray
+        .slice(startingIndex, startingIndex + count)
+        .forEach((dataItem) => render(containerElement, createFilmCard(dataItem), `beforeend`));
 
-      renderedCardCount += CARD_AMOUNT_PER_STEP;
+      startingIndex += count;
 
-      if (renderedCardCount >= data.length) {
+      if (startingIndex >= dataArray.length) {
         showMoreButton.remove();
       }
     });
@@ -51,31 +48,34 @@ const renderCards = (data) => {
 };
 
 const renderFilmsListContent = (currentData) => {
-  // const FilmsList = document.querySelector(`.films-list`);
   const filmsListContainer = document.querySelector(`.films-list__container`);
 
   // обнуляем содержимое контейнера карточек
-  const button = document.querySelector(`.films-list__show-more`);
   filmsListContainer.innerHTML = ``;
+
+  // удаляем, если она есть, кнопку
+  const button = document.querySelector(`.films-list__show-more`);
   if (button) {
     button.remove();
   }
 
-  // --- >>> ?
+  // если данных нет, выводим сообщение
   if (!currentData) {
     filmsListContainer.innerHTML = `«There are no movies in our database»`;
     filmsListContainer.style = `justify-content: center`;
   } else {
-    renderCards(currentData);
+    // выводим карточки
+    let startingIndexDrawCard = 0;
+    drawCards(filmsListContainer, currentData, startingIndexDrawCard, CARD_AMOUNT_PER_STEP);
   }
 };
-
 
 const render = (container, template, place) => {
   container.insertAdjacentHTML(place, template);
 };
 
-// <--- ф-ции
+
+//  --- start ---
 
 let filmsData = new Array(FILMS_AMOUN).fill().map(createFilmDataTemplate);
 // const commentsData = new Array(TASK_COUNT).fill().map(createCommentDataTemplate);
@@ -103,16 +103,15 @@ if (filmsData) {
   filmsListExtras.forEach((filmsListExtra) => {
     const extraFilmsListContainer = filmsListExtra.querySelector(`.films-list__container`);
     const typeOfExtra = filmsListExtra.querySelector(`.films-list__title`).textContent;
+    const extraCardAmount = 2;
     switch (typeOfExtra) {
       case `Top rated`:
         filmsData.sort((a, b) => a.rating < b.rating ? 1 : -1);
-        render(extraFilmsListContainer, createFilmCard(filmsData[0]), `beforeend`);
-        render(extraFilmsListContainer, createFilmCard(filmsData[1]), `beforeend`);
+        drawCards(extraFilmsListContainer, filmsData, 0, extraCardAmount);
         break;
       case `Most commented`:
         filmsData.sort((a, b) => a.commentsCount < b.commentsCount ? 1 : -1);
-        render(extraFilmsListContainer, createFilmCard(filmsData[0]), `beforeend`);
-        render(extraFilmsListContainer, createFilmCard(filmsData[1]), `beforeend`);
+        drawCards(extraFilmsListContainer, filmsData, 0, extraCardAmount);
         break;
 
       default:
