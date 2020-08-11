@@ -1,8 +1,8 @@
-// шаблон карочки фильма
+import {createElement} from "../utils.js";
 import {COMMENTS_COUNT} from "../const.js";
 import {GENRES_COUNT} from "../const.js";
 
-export const createFilmCard = (film = {}) => {
+const createFilmCardTemplate = (film = {}) => {
   const {
     title = ``,
     poster = ``,
@@ -47,3 +47,26 @@ export const createFilmCard = (film = {}) => {
     </article>`
   );
 };
+
+export default class FilmCard {
+  constructor(film) {
+    this.film = film;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createFilmCardTemplate(this.film);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
