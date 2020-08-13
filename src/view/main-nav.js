@@ -1,9 +1,9 @@
-export const createMainNavigation = (data) => {
+import {createElement} from "../utils.js";
 
-  const watchlistAmount = data !== null ? data.reduce((prev, item) => prev + +item.isWatchlist, 0) : 0;
-  const historyAmount = data !== null ? data.reduce((prev, item) => prev + +item.isWatched, 0) : 0;
-  const favoritesAmount = data !== null ? data.reduce((prev, item) => prev + +item.isFavorite, 0) : 0;
-
+const createMainNavigationTemplate = (data) => {
+  const watchlistAmount = (typeof data !== `undefined` && data !== null) ? data.reduce((prev, item) => prev + +item.isWatchlist, 0) : 0;
+  const historyAmount = (typeof data !== `undefined` && data !== null) ? data.reduce((prev, item) => prev + +item.isWatched, 0) : 0;
+  const favoritesAmount = (typeof data !== `undefined` && data !== null) ? data.reduce((prev, item) => prev + +item.isFavorite, 0) : 0;
 
   return (
     `<nav class="main-navigation">
@@ -18,3 +18,25 @@ export const createMainNavigation = (data) => {
   );
 };
 
+export default class MainNavigation {
+  constructor(data) {
+    this._data = data;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createMainNavigationTemplate(this._data);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}

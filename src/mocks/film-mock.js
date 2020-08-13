@@ -18,11 +18,13 @@ const generateRating = () => {
 };
 
 export const createFilmDataTemplate = () => {
+  let cuurentPoster = POSTERS[getRandomInteger(0, 6)];
+
   return {
     title: `Predator-${getRandomInteger(0, 5)}`,
-    poster: POSTERS[getRandomInteger(0, 6)],
+    poster: cuurentPoster,
 
-    posterFull: ``,
+    posterFull: cuurentPoster,
     originalTitle: `Best Film Ever`,
     director: `Tom`,
     writers: [`Tom`, `Johns`],
@@ -31,13 +33,12 @@ export const createFilmDataTemplate = () => {
     country: `USA`,
     ageRating: `${getRandomInteger(0, 18)}+`,
     genres: [`Film-Noir`, `Drama`, `Musical`],
-
     description: generateDescriptions(),
     rating: generateRating(),
     dateOfProduction: 1929,
     runtime: `1h 55m`,
     genre: `Musical`,
-    commentsCount: getRandomInteger(0, 100),
+    commentsCount: getRandomInteger(0, 10),
     isWatchlist: Boolean(getRandomInteger(0, 1)),
     isWatched: Boolean(getRandomInteger(0, 1)),
     isFavorite: Boolean(getRandomInteger(0, 1))

@@ -1,7 +1,6 @@
 import {EMOJI} from "../const.js";
 import {getRandomInteger} from "../utils.js";
 
-
 export const createCommentDataTemplate = () => {
   return {
     author: `Tim Macoveev`,

@@ -1,4 +1,5 @@
 import {createFilmDetailsComment} from "./film-details-comment";
+import {createElement} from "../utils.js";
 
 const createGenresTemplate = (genres) => {
   return genres.map((genre) => `<span class="film-details__genre">${genre}</span>`).join(``);
@@ -16,7 +17,7 @@ const createWritersList = (writers) => {
 };
 
 
-export const createFilmDetails = (film = {}, comments) => {
+const createFilmDetails = (film = {}, comments) => {
   const {
     posterFull = ``,
     title = ``,
@@ -40,7 +41,7 @@ export const createFilmDetails = (film = {}, comments) => {
   const actorsList = createActorsList(actors);
   const writersList = createWritersList(writers);
 
-  const filmDetailsComments = comments.map(createFilmDetailsComment).join(``);
+  const filmDetailsComments = comments.slice(0, commentsCount).map(createFilmDetailsComment).join(``);
 
   return (
     `<section class="film-details">
@@ -160,3 +161,27 @@ export const createFilmDetails = (film = {}, comments) => {
     </section>`
   );
 };
+
+export default class FilmCardDetails {
+  constructor(film, comments) {
+    this.comments = comments;
+    this.film = film;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createFilmDetails(this.film, this.comments);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
