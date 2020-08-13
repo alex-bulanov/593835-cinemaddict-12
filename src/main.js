@@ -1,4 +1,4 @@
-const FILMS_AMOUN = 15;
+const FILMS_AMOUNT = 15;
 const CARDS_AMOUNT_PER_STEP = 5;
 const CARDS_EXTRA_AMOUNT = 2;
 
@@ -21,11 +21,11 @@ import FilmDetailsView from "./view/films-details.js";
 import StatisticsView from "./view/statistics.js";
 
 // массив с фильмами
-let filmsData = new Array(FILMS_AMOUN).fill().map(createFilmDataTemplate);
+let filmsData = new Array(FILMS_AMOUNT).fill().map(createFilmDataTemplate);
 // filmsData = null;
 
 // массив с комментариями
-const commentsData = new Array(FILMS_AMOUN).fill().map(createCommentDataTemplate);
+const commentsData = new Array(FILMS_AMOUNT).fill().map(createCommentDataTemplate);
 
 const siteHeaderElement = document.querySelector(`.header`);
 const siteMainElement = document.querySelector(`.main`);
