@@ -22,7 +22,7 @@ import StatisticsView from "./view/statistics.js";
 
 // массив с фильмами
 let filmsData = new Array(FILMS_AMOUNT).fill().map(createFilmDataTemplate);
-// filmsData = null;
+filmsData = null;
 
 // массив с комментариями
 const commentsData = new Array(FILMS_AMOUNT).fill().map(createCommentDataTemplate);
