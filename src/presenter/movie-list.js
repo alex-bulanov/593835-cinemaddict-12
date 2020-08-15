@@ -80,15 +80,26 @@ export default class MovieList {
 
     filmCardComponent.setHandler(() => {
       // вешаю слушатель клика по постеру
-      const filmFilmDetailsComponent = new FilmFilmDetailsView(dataFilm, this._dataCommentsArray);
+      const filmDetailsComponent = new FilmFilmDetailsView(dataFilm, this._dataCommentsArray);
+      render(this._siteFooterComponent, filmDetailsComponent, RenderPosition.AFTEREEND);
 
-      render(this._siteFooterComponent, filmFilmDetailsComponent, RenderPosition.AFTEREND);
+      this.filmDetailsComponent = filmDetailsComponent;
+
+      document.addEventListener(`keydown`, onEscKeyDown);
+
+      this.filmDetailsComponent.setHandler(() => {
+        remove(this.filmDetailsComponent);
+      });
     });
-  }
 
-  // _showFilmFilmDetails() {
-  //   // render(this._siteFooterElement, filmFilmDetailsComponent, RenderPosition.AFTEREND);
-  // }
+    const onEscKeyDown = (evt) => {
+      if (evt.key === `Escape` || evt.key === `Esc`) {
+        evt.preventDefault();
+        remove(this.filmDetailsComponent);
+        document.removeEventListener(`keydown`, onEscKeyDown);
+      }
+    };
+  }
 
   _renderCards(from, to, currentFilmsArray, place) {
     currentFilmsArray

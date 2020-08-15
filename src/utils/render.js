@@ -23,7 +23,7 @@ export const render = (container, element, place) => {
       container.append(element);
       break;
     case RenderPosition.AFTEREEND:
-      container.append(element);
+      container.after(element);
       break;
   }
 };
