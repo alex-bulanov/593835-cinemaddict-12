@@ -113,27 +113,35 @@ export default class MovieList {
 
   _renderExtra() {
 
-    const extraSectionTopRatingComponent = new FilmsListExtraSectionView(`Top rated`);
-    render(this._filmsSectionComponent, extraSectionTopRatingComponent, RenderPosition.BEFOREEND);
-    const filmsListTopRatingContainerComponent = new FilmsListContainerView();
-    render(extraSectionTopRatingComponent, filmsListTopRatingContainerComponent, RenderPosition.BEFOREEND);
-
-    // сортируем по рейтингу
+    // фильтруем массив сортируем по рейтингу
     let dataArrayRating = this._currentFilmsArray.slice();
-    dataArrayRating = dataArrayRating.sort((a, b) => a.rating < b.rating ? 1 : -1);
+    dataArrayRating = dataArrayRating.filter((item) => item.rating > 0);
 
-    this._renderCards(0, Math.min(dataArrayRating.length, CARDS_EXTRA_AMOUNT), dataArrayRating, filmsListTopRatingContainerComponent);
+    if (dataArrayRating.length > 0) {
 
-    const extraSectionMostCommentedComponent = new FilmsListExtraSectionView(`Most commented`);
-    render(this._filmsSectionComponent, extraSectionMostCommentedComponent, RenderPosition.BEFOREEND);
-    const filmsListMostCommentedContainerComponent = new FilmsListContainerView();
-    render(extraSectionMostCommentedComponent, filmsListMostCommentedContainerComponent, RenderPosition.BEFOREEND);
+      const extraSectionTopRatingComponent = new FilmsListExtraSectionView(`Top rated`);
+      render(this._filmsSectionComponent, extraSectionTopRatingComponent, RenderPosition.BEFOREEND);
+      const filmsListTopRatingContainerComponent = new FilmsListContainerView();
+      render(extraSectionTopRatingComponent, filmsListTopRatingContainerComponent, RenderPosition.BEFOREEND);
 
-    // сортируем по комментариям
+      dataArrayRating = dataArrayRating.sort((a, b) => a.rating < b.rating ? 1 : -1);
+      this._renderCards(0, Math.min(dataArrayRating.length, CARDS_EXTRA_AMOUNT), dataArrayRating, filmsListTopRatingContainerComponent);
+    }
+
+    // фильтруем массив и сортируем по комментариям
     let dataArrayComment = this._currentFilmsArray.slice();
-    dataArrayComment = dataArrayComment.sort((a, b) => a.commentsCount < b.commentsCount ? 1 : -1);
 
-    this._renderCards(0, Math.min(dataArrayRating.length, CARDS_EXTRA_AMOUNT), dataArrayComment, filmsListMostCommentedContainerComponent);
+    dataArrayComment = dataArrayComment.filter((item) => item.commentsCount > 0);
+    if (dataArrayComment.length > 0) {
+
+      const extraSectionMostCommentedComponent = new FilmsListExtraSectionView(`Most commented`);
+      render(this._filmsSectionComponent, extraSectionMostCommentedComponent, RenderPosition.BEFOREEND);
+      const filmsListMostCommentedContainerComponent = new FilmsListContainerView();
+      render(extraSectionMostCommentedComponent, filmsListMostCommentedContainerComponent, RenderPosition.BEFOREEND);
+
+      dataArrayComment = dataArrayComment.sort((a, b) => a.commentsCount < b.commentsCount ? 1 : -1);
+      this._renderCards(0, Math.min(dataArrayRating.length, CARDS_EXTRA_AMOUNT), dataArrayComment, filmsListMostCommentedContainerComponent);
+    }
   }
 
   _renderMainContent() {
