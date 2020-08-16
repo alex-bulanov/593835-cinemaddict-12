@@ -30,7 +30,7 @@ export default class MovieList {
     this._showMoreButtonComponent = new ShowMoreButtonView();
     this._handleShowMoreButtonClick = this._handleShowMoreButtonClick.bind(this);
 
-
+    this.filmDetailsComponent = null;
   }
 
   init(dataFilmsArray, dataCommentsArray) {
@@ -79,11 +79,15 @@ export default class MovieList {
     render(listContainerComponent, filmCardComponent, RenderPosition.BEFOREEND);
 
     filmCardComponent.setHandler(() => {
-      // вешаю слушатель клика по постеру
-      const filmDetailsComponent = new FilmFilmDetailsView(dataFilm, this._dataCommentsArray);
-      render(this._siteFooterComponent, filmDetailsComponent, RenderPosition.AFTEREEND);
+      // проверка на случай уже открытого попапа
+      if (this.filmDetailsComponent) {
+        remove(this.filmDetailsComponent);
+      }
 
-      this.filmDetailsComponent = filmDetailsComponent;
+      // вешаю слушатель клика по постеру
+      this.filmDetailsComponent = new FilmFilmDetailsView(dataFilm, this._dataCommentsArray);
+
+      render(this._siteFooterComponent, this.filmDetailsComponent, RenderPosition.AFTEREEND);
 
       document.addEventListener(`keydown`, onEscKeyDown);
 
