@@ -1,5 +1,5 @@
 import {createFilmDetailsComment} from "./film-details-comment";
-import {createElement} from "../utils.js";
+import AbstractView from "./abstract.js";
 
 const createGenresTemplate = (genres) => {
   return genres.map((genre) => `<span class="film-details__genre">${genre}</span>`).join(``);
@@ -17,7 +17,7 @@ const createWritersList = (writers) => {
 };
 
 
-const createFilmDetails = (film = {}, comments) => {
+const createFilmDetailsTemplate = (film = {}, comments) => {
   const {
     posterFull = ``,
     title = ``,
@@ -162,26 +162,26 @@ const createFilmDetails = (film = {}, comments) => {
   );
 };
 
-export default class FilmCardDetails {
+export default class FilmCardDetails extends AbstractView {
   constructor(film, comments) {
+    super();
     this.comments = comments;
     this.film = film;
-    this._element = null;
+    this._clickHandler = this._clickHandler.bind(this);
   }
 
   getTemplate() {
-    return createFilmDetails(this.film, this.comments);
+    return createFilmDetailsTemplate(this.film, this.comments);
   }
 
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
+  _clickHandler(evt) {
+    evt.preventDefault();
+    this._callback.click();
   }
 
-  removeElement() {
-    this._element = null;
+  setHandler(callback) {
+    this._callback.click = callback;
+    this.getElement().querySelector(`.film-details__close-btn`).addEventListener(`click`, this._clickHandler);
+
   }
 }

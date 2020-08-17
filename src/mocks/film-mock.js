@@ -14,7 +14,8 @@ const generateDescriptions = () => {
 };
 
 const generateRating = () => {
-  return getRandomInteger(0, 90) / 10;
+  // return getRandomInteger(0, 90) / 10;
+  return 0;
 };
 
 export const createFilmDataTemplate = () => {
@@ -38,7 +39,8 @@ export const createFilmDataTemplate = () => {
     dateOfProduction: 1929,
     runtime: `1h 55m`,
     genre: `Musical`,
-    commentsCount: getRandomInteger(0, 10),
+    // commentsCount: getRandomInteger(0, 10),
+    commentsCount: 0,
     isWatchlist: Boolean(getRandomInteger(0, 1)),
     isWatched: Boolean(getRandomInteger(0, 1)),
     isFavorite: Boolean(getRandomInteger(0, 1))
