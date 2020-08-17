@@ -14,8 +14,14 @@ const generateDescriptions = () => {
 };
 
 const generateRating = () => {
-  // return getRandomInteger(0, 90) / 10;
-  return 0;
+  return getRandomInteger(0, 90) / 10;
+};
+
+const generateDate = () => {
+  const maxYearsGap = new Date().getFullYear();
+  const minYearsGap = 1900;
+
+  return getRandomInteger(minYearsGap, maxYearsGap);
 };
 
 export const createFilmDataTemplate = () => {
@@ -30,17 +36,16 @@ export const createFilmDataTemplate = () => {
     director: `Tom`,
     writers: [`Tom`, `Johns`],
     actors: [`Bob`, `Rob`, `Tod`, `John Wayne`],
-    dateOfRelease: 1930,
+    dateOfRelease: generateDate(),
     country: `USA`,
     ageRating: `${getRandomInteger(0, 18)}+`,
     genres: [`Film-Noir`, `Drama`, `Musical`],
     description: generateDescriptions(),
     rating: generateRating(),
-    dateOfProduction: 1929,
+    dateOfProduction: generateDate(),
     runtime: `1h 55m`,
     genre: `Musical`,
-    // commentsCount: getRandomInteger(0, 10),
-    commentsCount: 0,
+    commentsCount: getRandomInteger(0, 10),
     isWatchlist: Boolean(getRandomInteger(0, 1)),
     isWatched: Boolean(getRandomInteger(0, 1)),
     isFavorite: Boolean(getRandomInteger(0, 1))
