@@ -37,6 +37,18 @@ export default class MainNavigation extends AbstractView {
     }
 
     evt.preventDefault();
+
+    const navItems = document.querySelectorAll(`.main-navigation__item`);
+
+    for (let navItem of navItems) {
+      if (navItem.classList.contains(`main-navigation__item--active`)) {
+        navItem.classList.remove(`main-navigation__item--active`);
+      }
+    }
+
+    evt.target.classList.add(`main-navigation__item--active`);
+
+
     this._callback.navTypeChange(evt.target.dataset.navType);
   }
 

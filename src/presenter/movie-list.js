@@ -58,30 +58,36 @@ export default class MovieList {
   }
 
 
-  _configureArrayTheTypeOfNav(navType) {
+  _applyNavigation(navType) {
     switch (navType) {
       case NavType.WATCHLIST:
-        this._currentFilmsArray = this._dataFilmsArray.filter((item) => item.isWatchlist === true);
+        this._currentFilmsArray = this._dataFilmsArray.filter((item) => item.isWatchlist);
         break;
       case NavType.HISTORY:
-        this._currentFilmsArray = this._dataFilmsArray.filter((item) => item.isWatched === true);
+        this._currentFilmsArray = this._dataFilmsArray.filter((item) => item.isWatched);
         break;
       case NavType.FAVORITES:
-        this._currentFilmsArray = this._dataFilmsArray.filter((item) => item.isFavorite === true);
+        this._currentFilmsArray = this._dataFilmsArray.filter((item) => item.isFavorite);
         break;
       default:
         this._currentFilmsArray = this._dataFilmsArray;
     }
+
+    if (this._currentSortType !== SortType.DEFAULT) {
+      this._applySorting(this._currentSortType);
+    }
+
     this._currentNavType = navType;
   }
 
-  _configureArrayTheTypeOfSort(sortType) {
+  _applySorting(sortType) {
+
     switch (sortType) {
       case SortType.DATE:
-        this._currentFilmsArray = this._currentFilmsArray.sort(compareYear);
+        this._currentFilmsArray.sort(compareYear);
         break;
       case SortType.RATING:
-        this._currentFilmsArray = this._currentFilmsArray.sort(compareRating);
+        this._currentFilmsArray.sort(compareRating);
         break;
       default:
         this._currentFilmsArray = this._dataFilmsArray;
@@ -90,15 +96,16 @@ export default class MovieList {
     this._currentSortType = sortType;
   }
 
+
   _handleNavTypeChange(navType) {
     if (this._currentNavType === navType) {
       return;
     }
-    // очищаю контент и перезаписываю счетчик для кнопки more
+
     remove(this._filmsListComponent);
     this._renderCardsCount = CARDS_AMOUNT_PER_STEP;
-    // сортирую текущий карточки согласно выбранному пункты и отрисовываю контент
-    this._configureArrayTheTypeOfNav(navType);
+
+    this._applyNavigation(navType);
     this._renderMainContent();
   }
 
@@ -106,11 +113,11 @@ export default class MovieList {
     if (this._currentSortType === sortType) {
       return;
     }
-    // очищаю контент и перезаписываю счетчик для кнопки more
+
     remove(this._filmsListComponent);
     this._renderCardsCount = CARDS_AMOUNT_PER_STEP;
-    // сортирую текущий карточки согласно выбранному пункты и отрисовываю контент
-    this._configureArrayTheTypeOfSort(sortType);
+
+    this._applySorting(sortType);
     this._renderMainContent();
   }
 
