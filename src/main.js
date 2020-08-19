@@ -1,17 +1,9 @@
 const FILMS_AMOUNT = 15;
 
-
-// import {render, RenderPosition} from "./utils.js";
 import {createFilmDataTemplate} from "./mocks/film-mock.js";
 import {createCommentDataTemplate} from "./mocks/comment-mock";
-
 import TitleOfTheUserView from "./view/user-title.js";
-import MainNavigationView from "./view/main-nav.js";
-import SortingView from "./view/sorting.js";
 import StatisticsView from "./view/statistics.js";
-
-
-// -- новое
 import {render, RenderPosition} from "./utils/render.js";
 import MoviePresenter from "./presenter/movie-list.js";
 
@@ -26,16 +18,12 @@ const siteHeaderElement = document.querySelector(`.header`);
 const siteMainElement = document.querySelector(`.main`);
 const siteFooterElement = document.querySelector(`.footer`);
 
-
 // пользователь
 render(siteHeaderElement, new TitleOfTheUserView(), RenderPosition.BEFOREEND);
-// главная нвигация
-render(siteMainElement, new MainNavigationView(filmsData), RenderPosition.BEFOREEND);
-// сортировка
-render(siteMainElement, new SortingView(), RenderPosition.BEFOREEND);
+
+
 // статистика в футоре
 render(siteFooterElement, new StatisticsView(filmsData), RenderPosition.BEFOREEND);
-
 
 const movieListPresenter = new MoviePresenter(siteMainElement, siteFooterElement);
 
