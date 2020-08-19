@@ -1,6 +1,6 @@
 import {COMMENTS_COUNT} from "../const.js";
 import {GENRES_COUNT} from "../const.js";
-import AbstractView from "./abstract.js";
+import SmartView from "./smart.js";
 
 const createFilmCardTemplate = (film = {}) => {
   const {
@@ -48,7 +48,7 @@ const createFilmCardTemplate = (film = {}) => {
   );
 };
 
-export default class FilmCard extends AbstractView {
+export default class FilmCard extends SmartView {
   constructor(film) {
     super();
     this.film = film;
@@ -64,7 +64,7 @@ export default class FilmCard extends AbstractView {
     this._callback.click();
   }
 
-  setHandler(callback) {
+  setCardClickHandler(callback) {
     this._callback.click = callback;
     this.getElement().querySelector(`.film-card__poster`).addEventListener(`click`, this._clickHandler);
     this.getElement().querySelector(`.film-card__title`).addEventListener(`click`, this._clickHandler);

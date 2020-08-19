@@ -1,5 +1,5 @@
 import {createFilmDetailsComment} from "./film-details-comment";
-import AbstractView from "./abstract.js";
+import SmartView from "./smart.js";
 
 const createGenresTemplate = (genres) => {
   return genres.map((genre) => `<span class="film-details__genre">${genre}</span>`).join(``);
@@ -162,7 +162,7 @@ const createFilmDetailsTemplate = (film = {}, comments) => {
   );
 };
 
-export default class FilmCardDetails extends AbstractView {
+export default class FilmCardDetails extends SmartView {
   constructor(film, comments) {
     super();
     this.comments = comments;
@@ -179,7 +179,7 @@ export default class FilmCardDetails extends AbstractView {
     this._callback.click();
   }
 
-  setHandler(callback) {
+  setClickHandler(callback) {
     this._callback.click = callback;
     this.getElement().querySelector(`.film-details__close-btn`).addEventListener(`click`, this._clickHandler);
 
