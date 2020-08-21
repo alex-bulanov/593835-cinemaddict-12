@@ -1,6 +1,7 @@
 import {COMMENTS_COUNT} from "../const.js";
 import {GENRES_COUNT} from "../const.js";
-import SmartView from "./smart.js";
+
+import Abstract from "./abstract.js";
 
 const createFilmCardTemplate = (film = {}) => {
   const {
@@ -48,11 +49,12 @@ const createFilmCardTemplate = (film = {}) => {
   );
 };
 
-export default class FilmCard extends SmartView {
+export default class FilmCard extends Abstract {
   constructor(film) {
     super();
     this.film = film;
     this._clickHandler = this._clickHandler.bind(this);
+    this._favoriteClickHandler = this._favoriteClickHandler.bind(this);
   }
 
   getTemplate() {
@@ -62,6 +64,17 @@ export default class FilmCard extends SmartView {
   _clickHandler(evt) {
     evt.preventDefault();
     this._callback.click();
+  }
+
+  _favoriteClickHandler(evt) {
+    evt.preventDefault();
+    evt.target.classList.toggle(`film-card__controls-item--active`);
+    this._callback.favoriteClick();
+  }
+
+  setFavoriteCardClickHandler(callback) {
+    this._callback.favoriteClick = callback;
+    this.getElement().querySelector(`.film-card__controls-item--favorite`).addEventListener(`click`, this._favoriteClickHandler);
   }
 
   setCardClickHandler(callback) {

@@ -1,5 +1,6 @@
 import {createFilmDetailsComment} from "./film-details-comment";
-import SmartView from "./smart.js";
+
+import Abstract from "./abstract";
 
 const createGenresTemplate = (genres) => {
   return genres.map((genre) => `<span class="film-details__genre">${genre}</span>`).join(``);
@@ -162,7 +163,7 @@ const createFilmDetailsTemplate = (film = {}, comments) => {
   );
 };
 
-export default class FilmCardDetails extends SmartView {
+export default class FilmCardDetails extends Abstract {
   constructor(film, comments) {
     super();
     this.comments = comments;
