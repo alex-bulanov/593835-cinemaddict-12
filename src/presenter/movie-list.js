@@ -40,18 +40,13 @@ export default class MovieList {
   }
 
   init(dataFilmsArray, dataCommentsArray) {
-
     this._dataFilmsArray = dataFilmsArray.slice();
     this._dataCommentsArray = dataCommentsArray.slice();
     this._currentFilmsArray = dataFilmsArray.slice();
-
     this._renderNavigation(this._currentFilmsArray, RenderPosition.BEFOREEND);
-
-
     this._sortingComponent = new SortingView();
     render(this._siteMainElement, this._sortingComponent, RenderPosition.BEFOREEND);
     this._sortingComponent.setSortTypeChangeHandler(this._handleSortTypeChange);
-
     this._filmsSectionComponent = new FilmsSectionView();
     render(this._siteMainElement, this._filmsSectionComponent, RenderPosition.BEFOREEND);
 
@@ -78,16 +73,12 @@ export default class MovieList {
   }
 
   _handleCardChange(updatedFilm) {
-
-
     this._currentFilmsArray = updateItem(this._currentFilmsArray, updatedFilm);
     this._dataFilmsArray = updateItem(this._dataFilmsArray, updatedFilm);
 
-
     remove(this._siteMainNavComponent);
     this._renderNavigation(this._currentFilmsArray, RenderPosition.AFTERBEGIN);
-
-    // this._filmPresenter[updatedFilm.id].init(updatedFilm, this._currentFilmsArray);
+    this._filmPresenter[updatedFilm.id].init(updatedFilm, this._dataCommentsArray);
   }
 
 
