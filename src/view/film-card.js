@@ -1,5 +1,6 @@
 import {COMMENTS_COUNT} from "../const.js";
 import {GENRES_COUNT} from "../const.js";
+import {formatRunTime} from "../utils/film.js";
 
 import SmartView from "./smart.js";
 
@@ -28,13 +29,16 @@ const createFilmCardTemplate = (film = {}) => {
 
   let commentsCurrentValue = commentsCount > COMMENTS_COUNT ? COMMENTS_COUNT : commentsCount;
 
+  const filmRunTime = formatRunTime(runtime);
+
+
   return (
     `<article class="film-card">
       <h3 class="film-card__title">${title}</h3>
       <p class="film-card__rating">${rating}</p>
       <p class="film-card__info">
         <span class="film-card__year">${dateOfProduction}</span>
-        <span class="film-card__duration">${runtime}</span>
+        <span class="film-card__duration">${filmRunTime}</span>
         <span class="film-card__genre">${genresCurrentValue}</span>
       </p>
       <img src="./images/posters/${poster}" alt="${title}" class="film-card__poster">
