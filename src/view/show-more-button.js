@@ -1,4 +1,4 @@
-import AbstractView from "./abstract.js";
+import AbstractView from "./smart.js";
 
 const createShowMoreButtonTemplate = () => {
   return (
