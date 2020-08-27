@@ -25,6 +25,20 @@ const generateDate = () => {
   return getRandomInteger(minYearsGap, maxYearsGap);
 };
 
+const generateDateRelease = () => {
+  return new Date();
+};
+
+const generateRunTime = () => {
+  const maxRunTimeHour = 3;
+  const minRunTimeHour = 0;
+  const currentDate = new Date();
+
+  currentDate.setHours(getRandomInteger(minRunTimeHour, maxRunTimeHour));
+
+  return currentDate;
+};
+
 export const createFilmDataTemplate = () => {
   let cuurentPoster = POSTERS[getRandomInteger(0, 6)];
 
@@ -38,14 +52,14 @@ export const createFilmDataTemplate = () => {
     director: `Tom`,
     writers: [`Tom`, `Johns`],
     actors: [`Bob`, `Rob`, `Tod`, `John Wayne`],
-    dateOfRelease: generateDate(),
+    dateOfRelease: generateDateRelease(),
     country: `USA`,
     ageRating: `${getRandomInteger(0, 18)}+`,
     genres: [`Film-Noir`, `Drama`, `Musical`],
     description: generateDescriptions(),
     rating: generateRating(),
     dateOfProduction: generateDate(),
-    runtime: `1h 55m`,
+    runtime: generateRunTime(),
     genre: `Musical`,
     commentsCount: getRandomInteger(0, 10),
     isWatchlist: Boolean(getRandomInteger(0, 1)),

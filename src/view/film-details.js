@@ -1,5 +1,6 @@
 import {createFilmDetailsComment} from "./film-details-comment";
 import SmartView from "./smart";
+import {formatRunTime, formatDateOfRelease} from "../utils/film.js";
 
 const createGenresTemplate = (genres) => {
   return genres.map((genre) => `<span class="film-details__genre">${genre}</span>`).join(``);
@@ -43,7 +44,8 @@ const createFilmDetailsTemplate = (data = {}, comments) => {
   const writersList = createWritersList(writers);
 
   const filmDetailsComments = comments.slice(0, commentsCount).map(createFilmDetailsComment).join(``);
-
+  const filmRunTime = formatRunTime(runtime);
+  const fimDateOfRelease = formatDateOfRelease(dateOfRelease);
 
   return (
     `<section class="film-details">
@@ -86,11 +88,11 @@ const createFilmDetailsTemplate = (data = {}, comments) => {
                 </tr>
                 <tr class="film-details__row">
                   <td class="film-details__term">Release Date</td>
-                  <td class="film-details__cell">${dateOfRelease}</td>
+                  <td class="film-details__cell">${fimDateOfRelease}</td>
                 </tr>
                 <tr class="film-details__row">
                   <td class="film-details__term">Runtime</td>
-                  <td class="film-details__cell">${runtime}</td>
+                  <td class="film-details__cell">${filmRunTime}</td>
                 </tr>
                 <tr class="film-details__row">
                   <td class="film-details__term">Country</td>
