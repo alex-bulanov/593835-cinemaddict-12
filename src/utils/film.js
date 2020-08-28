@@ -8,6 +8,9 @@ export const compareRating = (filmA, filmB) => {
   return filmB.rating - filmA.rating;
 };
 
+export const compareComments = (filmA, filmB) => {
+  return filmB.commentsCount - filmA.commentsCount;
+};
 
 export const formatRunTime = (date) => {
   if (!(date instanceof Date)) {

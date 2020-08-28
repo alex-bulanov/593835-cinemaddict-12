@@ -112,6 +112,7 @@ export default class FilmCard extends SmartView {
 
 
   setCardClickHandler(callback) {
+
     this._callback.click = callback;
     this.getElement().querySelector(`.film-card__poster`).addEventListener(`click`, this._clickHandler);
     this.getElement().querySelector(`.film-card__title`).addEventListener(`click`, this._clickHandler);
@@ -123,7 +124,6 @@ export default class FilmCard extends SmartView {
     this.setFavoriteCardClickHandler(this._callback.favoriteClick);
     this.setWatchedCardClickHandler(this._callback.watchedClick);
     this.setWatchlistCardClickHandler(this._callback.watchlistClick);
-
 
     this.setCardClickHandler(this._callback.click);
   }

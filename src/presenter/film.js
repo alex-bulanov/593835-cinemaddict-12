@@ -1,4 +1,5 @@
 import {render, RenderPosition, remove, replace} from "../utils/render.js";
+import {UserAction, UpdateType} from "../const.js";
 import FilmCardView from "../view/film-card";
 import FilmFilmDetailsView from "../view/film-details";
 
@@ -68,19 +69,19 @@ export default class Film {
 
   destroy() {
     remove(this._filmCardComponent);
-    remove(this._filmDetailsComponent);
+    // remove(this._filmDetailsComponent);
   }
 
   _handleFavoriteClick() {
-    this._changeData(Object.assign({}, this._film, {isFavorite: !this._film.isFavorite}));
+    this._changeData(UserAction.UPDATE_FILM, UpdateType.PATCH, Object.assign({}, this._film, {isFavorite: !this._film.isFavorite}));
   }
 
   _handleWatchedClick() {
-    this._changeData(Object.assign({}, this._film, {isWatched: !this._film.isWatched}));
+    this._changeData(UserAction.UPDATE_FILM, UpdateType.PATCH, Object.assign({}, this._film, {isWatched: !this._film.isWatched}));
   }
 
   _handleWatchlistClick() {
-    this._changeData(Object.assign({}, this._film, {isWatchlist: !this._film.isWatchlist}));
+    this._changeData(UserAction.UPDATE_FILM, UpdateType.PATCH, Object.assign({}, this._film, {isWatchlist: !this._film.isWatchlist}));
   }
 
 
@@ -112,6 +113,7 @@ export default class Film {
   _showCardDetails() {
     this._filmDetailsComponent = new FilmFilmDetailsView(this._film, this._comments);
     this._filmDetailsComponent.setClickHandler(this._handleCrossClick);
+
     this._filmDetailsComponent.setEmojiClickHandler(this._handleEmojiClick);
 
 
