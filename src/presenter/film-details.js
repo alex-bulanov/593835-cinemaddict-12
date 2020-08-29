@@ -20,11 +20,8 @@ export default class FilmDetails {
   }
 
   init(film, comments) {
-
-
     this._film = film;
     this._comments = comments;
-
     this._filmDetailsComponent = new FilmDetailsView(this._film, this._comments);
 
     this._filmDetailsComponent.setFavoriteCardClickHandler(this._handleFavoriteClick);
@@ -35,7 +32,6 @@ export default class FilmDetails {
 
     render(this._siteFooterComponent, this._filmDetailsComponent, RenderPosition.BEFOREEND);
     document.addEventListener(`keydown`, this._escKeyDownHandler);
-
 
   }
 

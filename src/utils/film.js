@@ -17,7 +17,7 @@ export const formatRunTime = (date) => {
     return ``;
   }
 
-  return `${moment(date).format(`H`)}h ${moment(date).format(`mm`)}m`;
+  return `${moment(date).format(`HH:MM`)}`;
 };
 
 export const formatDateOfRelease = (date) => {
