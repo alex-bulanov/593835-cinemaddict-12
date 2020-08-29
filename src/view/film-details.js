@@ -34,7 +34,9 @@ const createFilmDetailsTemplate = (data = {}, comments) => {
     commentsCount = ``,
     description = ``,
     ageRating = ``,
-
+    isWatchlist = ``,
+    isWatched = ``,
+    isFavorite = ``
   } = data;
 
 
@@ -111,13 +113,13 @@ const createFilmDetailsTemplate = (data = {}, comments) => {
           </div>
 
           <section class="film-details__controls">
-            <input type="checkbox" class="film-details__control-input visually-hidden" id="watchlist" name="watchlist">
+            <input type="checkbox" class="film-details__control-input visually-hidden" id="watchlist" name="watchlist" ${isWatchlist === true ? `checked` : ``}>
             <label for="watchlist" class="film-details__control-label film-details__control-label--watchlist">Add to watchlist</label>
 
-            <input type="checkbox" class="film-details__control-input visually-hidden" id="watched" name="watched">
+            <input type="checkbox" class="film-details__control-input visually-hidden" id="watched" name="watched" ${isWatched === true ? `checked` : ``}>
             <label for="watched" class="film-details__control-label film-details__control-label--watched"">Already watched</label>
 
-            <input type="checkbox" class="film-details__control-input visually-hidden" id="favorite" name="favorite">
+            <input type="checkbox" class="film-details__control-input visually-hidden" id="favorite" name="favorite" ${isFavorite === true ? `checked` : ``}>
             <label for="favorite" class="film-details__control-label film-details__control-label--favorite">Add to favorites</label>
           </section>
         </div>
@@ -171,8 +173,11 @@ export default class FilmCardDetails extends SmartView {
     super();
     this._comments = comments;
     this._data = data;
+
     this._clickHandler = this._clickHandler.bind(this);
-    this._clickEmojiHandler = this._clickEmojiHandler.bind(this);
+    this._favoriteClickHandler = this._favoriteClickHandler.bind(this);
+    this._watchedClickHandler = this._watchedClickHandler.bind(this);
+    this._watchlistClickHandler = this._watchlistClickHandler.bind(this);
   }
 
   getTemplate() {
@@ -184,42 +189,38 @@ export default class FilmCardDetails extends SmartView {
     this._callback.click();
   }
 
-  _clickEmojiHandler(evt) {
-    evt.preventDefault();
-    this._callback.emojiClick();
-
-    const emojiItems = document.querySelectorAll(`.film-details__emoji-item`);
-
-    emojiItems.forEach((emojiItem) => {
-      if (evt.target.value !== emojiItem.value) {
-        emojiItem.removeAttribute(`checked`);
-      } else {
-        emojiItem.setAttribute(`checked`, ``);
-      }
-    });
-
-    const addEmojiLabel = document.querySelector(`.film-details__add-emoji-label`);
-    const addEmojiImage = `<img src="./images/emoji/${evt.target.value}.png" width="55" height="55" alt="emoji-${evt.target.value}"></img>`;
-    addEmojiLabel.innerHTML = addEmojiImage;
-  }
-
-
-  setClickHandler(callback) {
+  setCrossClickHandler(callback) {
     this._callback.click = callback;
     this.getElement().querySelector(`.film-details__close-btn`).addEventListener(`click`, this._clickHandler);
   }
 
-  setEmojiClickHandler(callback) {
-    this._callback.emojiClick = callback;
-    const emojis = this.getElement().querySelectorAll(`.film-details__emoji-item`);
-
-    emojis.forEach((emoji) => {
-      emoji.addEventListener(`click`, this._clickEmojiHandler);
-    });
+  _favoriteClickHandler() {
+    this._callback.favoriteClick();
+    this.updateData({isFavorite: !this._data.isFavorite}, true);
   }
 
-  restoreHandlers() {
-    this.setEmojiClickHandler(this._callback.emojiClick);
-    this.setClickHandler(this._callback.click);
+  _watchedClickHandler() {
+    this._callback.watchedClick();
+    this.updateData({isWatched: !this._data.isWatched}, true);
+  }
+
+  _watchlistClickHandler() {
+    this._callback.watchlistClick();
+    this.updateData({isWatchlist: !this._data.isWatchlist}, true);
+  }
+
+  setFavoriteCardClickHandler(callback) {
+    this._callback.favoriteClick = callback;
+    this.getElement().querySelector(`#favorite`).addEventListener(`click`, this._favoriteClickHandler);
+  }
+
+  setWatchedCardClickHandler(callback) {
+    this._callback.watchedClick = callback;
+    this.getElement().querySelector(`#watched`).addEventListener(`click`, this._watchedClickHandler);
+  }
+
+  setWatchlistCardClickHandler(callback) {
+    this._callback.watchlistClick = callback;
+    this.getElement().querySelector(`#watchlist`).addEventListener(`click`, this._watchlistClickHandler);
   }
 }

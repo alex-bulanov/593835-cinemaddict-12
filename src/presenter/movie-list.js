@@ -5,6 +5,8 @@ import FilmsSectionView from "../view/films-section.js";
 import NoFilmsDataView from "../view/no-films.js";
 import FilmsListView from "../view/films-list.js";
 import FilmPresenter from "./film.js";
+// сюда попап презентор
+
 import ShowMoreButtonView from "../view/show-more-button.js";
 
 import FilmsListExtraSectionView from "../view/film-extra.js";
@@ -31,14 +33,13 @@ export default class MovieList {
     this._sortingComponent = null;
     this._filmsListComponent = null;
     this.filmDetailsComponent = null;
+
     this._noFilmsComponent = new NoFilmsDataView();
+
     this._handleShowMoreButtonClick = this._handleShowMoreButtonClick.bind(this);
     this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
-
-
     this._handleViewAction = this._handleViewAction.bind(this);
     this._handleModelEvent = this._handleModelEvent.bind(this);
-
     this._handleModeChange = this._handleModeChange.bind(this);
   }
 
@@ -194,7 +195,6 @@ export default class MovieList {
       const filmsListMostCommentedContainerComponent = new FilmsListContainerView();
       render(extraSectionMostCommentedComponent, filmsListMostCommentedContainerComponent, RenderPosition.BEFOREEND);
 
-
     }
   }
 
@@ -224,7 +224,6 @@ export default class MovieList {
 
   _renderMainContent() {
     const films = this._getFilms();
-
     const cardCount = films.length;
 
     this._renderSorting();

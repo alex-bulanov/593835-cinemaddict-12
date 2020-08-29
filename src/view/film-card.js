@@ -3,6 +3,7 @@ import {GENRES_COUNT} from "../const.js";
 import {formatRunTime} from "../utils/film.js";
 
 import SmartView from "./smart.js";
+// import Abstract from "./abstract.js";
 
 const createFilmCardTemplate = (film = {}) => {
   const {
@@ -110,21 +111,10 @@ export default class FilmCard extends SmartView {
     this.getElement().querySelector(`.film-card__controls-item--add-to-watchlist`).addEventListener(`click`, this._watchlistClickHandler);
   }
 
-
   setCardClickHandler(callback) {
-
     this._callback.click = callback;
     this.getElement().querySelector(`.film-card__poster`).addEventListener(`click`, this._clickHandler);
     this.getElement().querySelector(`.film-card__title`).addEventListener(`click`, this._clickHandler);
     this.getElement().querySelector(`.film-card__comments`).addEventListener(`click`, this._clickHandler);
-  }
-
-
-  restoreHandlers() {
-    this.setFavoriteCardClickHandler(this._callback.favoriteClick);
-    this.setWatchedCardClickHandler(this._callback.watchedClick);
-    this.setWatchlistCardClickHandler(this._callback.watchlistClick);
-
-    this.setCardClickHandler(this._callback.click);
   }
 }
