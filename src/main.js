@@ -2,9 +2,9 @@ const FILMS_AMOUNT = 15;
 
 import {createFilmDataTemplate} from "./mocks/film-mock.js";
 import {createCommentDataTemplate} from "./mocks/comment-mock";
-import TitleOfTheUserView from "./view/user-title.js";
 import StatisticsView from "./view/statistics.js";
 import {render, RenderPosition} from "./utils/render.js";
+import UserPresenter from "./presenter/user.js";
 import MainNavPresenter from "./presenter/main-nav.js";
 import MoviePresenter from "./presenter/movie-list.js";
 import NavModel from "./model/nav.js";
@@ -30,11 +30,7 @@ commentsModel.setComments(commentsData);
 
 const navModel = new NavModel();
 
-
-// пользователь
-render(siteHeaderElement, new TitleOfTheUserView(), RenderPosition.BEFOREEND);
-
-// навигация
+const userPresenter = new UserPresenter(siteHeaderElement, filmsModel);
 const mainNavPresenter = new MainNavPresenter(siteMainElement, navModel, filmsModel);
 
 // статистика в футоре
@@ -42,6 +38,8 @@ render(siteFooterElement, new StatisticsView(filmsData), RenderPosition.BEFOREEN
 
 // основной контент
 const movieListPresenter = new MoviePresenter(siteMainElement, siteFooterElement, navModel, filmsModel, commentsModel);
+
+userPresenter.init();
 
 mainNavPresenter.init();
 movieListPresenter.init();

@@ -15,6 +15,7 @@ export default class FilmDetails {
     this._handleFavoriteClick = this._handleFavoriteClick.bind(this);
     this._handleWatchedClick = this._handleWatchedClick.bind(this);
     this._handleWatchlistClick = this._handleWatchlistClick.bind(this);
+    // this._handleDeleteClick = this._handleDeleteClick.bind(this);
     this._handleCrossClick = this._handleCrossClick.bind(this);
     this._escKeyDownHandler = this._escKeyDownHandler.bind(this);
   }
@@ -28,6 +29,9 @@ export default class FilmDetails {
     this._filmDetailsComponent.setWatchedCardClickHandler(this._handleWatchedClick);
     this._filmDetailsComponent.setWatchlistCardClickHandler(this._handleWatchlistClick);
     this._filmDetailsComponent.setCrossClickHandler(this._handleCrossClick);
+    // this._filmDetailsComponent.setDeleteClickHandler(this._handleDeleteClick);
+
+
     this._escKeyDownHandler = this._escKeyDownHandler.bind(this);
 
     render(this._siteFooterComponent, this._filmDetailsComponent, RenderPosition.BEFOREEND);
@@ -50,6 +54,11 @@ export default class FilmDetails {
   _handleWatchlistClick() {
     this._changeData(UserAction.UPDATE_FILM, UpdateType.PATCH, Object.assign({}, this._film, {isWatchlist: !this._film.isWatchlist}));
   }
+
+  // _handleDeleteClick() {
+  //   console.log(`13444`)
+  //   // this._changeData(UserAction.UPDATE_FILM, UpdateType.PATCH, Object.assign({}, this._film, {isWatchlist: !this._film.isWatchlist}));
+  // }
 
   _escKeyDownHandler(evt) {
     if (evt.key === `Escape` || evt.key === `Esc`) {

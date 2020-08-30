@@ -16,7 +16,6 @@ export const formatRunTime = (date) => {
   if (!(date instanceof Date)) {
     return ``;
   }
-
   return `${moment(date).format(`HH:MM`)}`;
 };
 
@@ -24,6 +23,5 @@ export const formatDateOfRelease = (date) => {
   if (!(date instanceof Date)) {
     return ``;
   }
-
   return moment(date).format(`D MMMM YYYY`);
 };

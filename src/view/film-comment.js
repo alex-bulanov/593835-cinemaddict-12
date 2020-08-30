@@ -1,6 +1,6 @@
 import {formatCommentDate} from "../utils/comment.js";
 
-export const createFilmDetailsComment = (comment = {}) => {
+export const createCommentTemplate = (comment = {}) => {
   const {
     author = ``,
     text = ``,

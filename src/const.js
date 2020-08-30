@@ -25,3 +25,9 @@ export const UpdateType = {
 export const UserAction = {
   UPDATE_FILM: `UPDATE_FILM`,
 };
+
+export const UserType = {
+  NOVICE: `Novice`,
+  FAN: `Fan`,
+  BUFF: `Movie Buff`,
+};

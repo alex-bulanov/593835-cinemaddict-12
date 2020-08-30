@@ -3,7 +3,6 @@ import {GENRES_COUNT} from "../const.js";
 import {formatRunTime} from "../utils/film.js";
 
 import SmartView from "./smart.js";
-// import Abstract from "./abstract.js";
 
 const createFilmCardTemplate = (film = {}) => {
   const {

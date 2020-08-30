@@ -1,6 +1,8 @@
-import {createFilmDetailsComment} from "./film-details-comment";
+import {createCommentTemplate} from "./film-comment";
+
 import SmartView from "./smart";
 import {formatRunTime, formatDateOfRelease} from "../utils/film.js";
+
 
 const createGenresTemplate = (genres) => {
   return genres.map((genre) => `<span class="film-details__genre">${genre}</span>`).join(``);
@@ -45,7 +47,8 @@ const createFilmDetailsTemplate = (data = {}, comments) => {
   const actorsList = createActorsList(actors);
   const writersList = createWritersList(writers);
 
-  const filmDetailsComments = comments.slice(0, commentsCount).map(createFilmDetailsComment).join(``);
+  const filmComments = comments.slice(0, commentsCount).map(createCommentTemplate).join(``);
+
   const filmRunTime = formatRunTime(runtime);
   const fimDateOfRelease = formatDateOfRelease(dateOfRelease);
 
@@ -103,7 +106,7 @@ const createFilmDetailsTemplate = (data = {}, comments) => {
               <tr class="film-details__row">
                 <td class="film-details__term">${genreTerm}</td>
                 <td class="film-details__cell">
-                  ${genresTemplate}
+                    ${genresTemplate}
                 </td>
               </tr>
               </table>
@@ -127,9 +130,11 @@ const createFilmDetailsTemplate = (data = {}, comments) => {
         <div class="form-details__bottom-container">
           <section class="film-details__comments-wrap">
             <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">${commentsCount}</span></h3>
+
             <ul class="film-details__comments-list">
-              ${filmDetailsComments}
+              ${filmComments}
             </ul>
+
             <div class="film-details__new-comment">
               <div for="add-emoji" class="film-details__add-emoji-label">
 
@@ -178,6 +183,7 @@ export default class FilmCardDetails extends SmartView {
     this._favoriteClickHandler = this._favoriteClickHandler.bind(this);
     this._watchedClickHandler = this._watchedClickHandler.bind(this);
     this._watchlistClickHandler = this._watchlistClickHandler.bind(this);
+    // this._deleteClickHandler = this._deleteClickHandler.bind(this);
   }
 
   getTemplate() {
@@ -187,11 +193,6 @@ export default class FilmCardDetails extends SmartView {
   _clickHandler(evt) {
     evt.preventDefault();
     this._callback.click();
-  }
-
-  setCrossClickHandler(callback) {
-    this._callback.click = callback;
-    this.getElement().querySelector(`.film-details__close-btn`).addEventListener(`click`, this._clickHandler);
   }
 
   _favoriteClickHandler() {
@@ -209,6 +210,19 @@ export default class FilmCardDetails extends SmartView {
     this.updateData({isWatchlist: !this._data.isWatchlist}, true);
   }
 
+  // _deleteClickHandler(evt) {
+  //   evt.preventDefault();
+  //   this._callback.deletedClick();
+
+  //   console.log('delete clcik')
+  //   // this.updateData({isWatched: !this._data.isWatched}, true);
+  // }
+
+  setCrossClickHandler(callback) {
+    this._callback.click = callback;
+    this.getElement().querySelector(`.film-details__close-btn`).addEventListener(`click`, this._clickHandler);
+  }
+
   setFavoriteCardClickHandler(callback) {
     this._callback.favoriteClick = callback;
     this.getElement().querySelector(`#favorite`).addEventListener(`click`, this._favoriteClickHandler);
@@ -223,4 +237,9 @@ export default class FilmCardDetails extends SmartView {
     this._callback.watchlistClick = callback;
     this.getElement().querySelector(`#watchlist`).addEventListener(`click`, this._watchlistClickHandler);
   }
+
+  // setDeleteClickHandler(callback) {
+  //   this._callback.deleteClick = callback;
+  //   this.getElement().querySelector(`.film-details__comment-delete`).addEventListener(`click`, this._deleteClickHandler);
+  // }
 }
