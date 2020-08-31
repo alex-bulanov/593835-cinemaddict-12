@@ -64,7 +64,7 @@ export default class Film {
   }
 
   _handleFavoriteClick() {
-    this._changeData(UserAction.UPDATE_FILM, UpdateType.PATCH, Object.assign({}, this._film, {isFavorite: !this._film.isFavorite}));
+    this._changeData(UserAction.UPDATE_FILM, UpdateType.PATCH, Object.assign({}, this._film, {isFavorite: !this._film.isFavorite}), this._comments);
   }
 
   _handleWatchedClick() {

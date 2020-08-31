@@ -1,3 +1,5 @@
+import {render, RenderPosition, remove} from "../utils/render.js";
+import {compareYear, compareRating, compareComments} from "../utils/film.js";
 import {UpdateType, SortType, UserAction} from "../const.js";
 import {nav} from "../utils/nav.js";
 import SortingView from "../view/sorting.js";
@@ -5,15 +7,11 @@ import FilmsSectionView from "../view/films-section.js";
 import NoFilmsDataView from "../view/no-films.js";
 import FilmsListView from "../view/films-list.js";
 import FilmPresenter from "./film.js";
-// сюда попап презентор
 
 import ShowMoreButtonView from "../view/show-more-button.js";
-
 import FilmsListExtraSectionView from "../view/film-extra.js";
-
 import FilmsListContainerView from "../view/films-list-container.js";
-import {render, RenderPosition, remove} from "../utils/render.js";
-import {compareYear, compareRating, compareComments} from "../utils/film.js";
+
 
 const CARDS_AMOUNT_PER_STEP = 5;
 // const CARDS_EXTRA_AMOUNT = 2;
@@ -24,6 +22,7 @@ export default class MovieList {
     this._navModel = navModel;
     this._filmsModel = filmsModel;
     this._commentsModel = commentsModel;
+
     this._renderCardsCount = CARDS_AMOUNT_PER_STEP;
     this._filmPresenter = {};
     this._currentSortType = SortType.DEFAULT;
@@ -44,10 +43,12 @@ export default class MovieList {
   }
 
   init() {
-    this._comments = this._getComments();
 
     this._filmsModel.addObserver(this._handleModelEvent);
     this._navModel.addObserver(this._handleModelEvent);
+    this._commentsModel.addObserver(this._handleModelEvent);
+
+
 
     this._filmsSectionComponent = new FilmsSectionView();
     render(this._siteMainElement, this._filmsSectionComponent, RenderPosition.BEFOREEND);
@@ -94,24 +95,25 @@ export default class MovieList {
       .forEach((presenter) => presenter.resetView());
   }
 
-  _handleViewAction(actionType, updateType, update) {
+  _handleViewAction(actionType, updateType, update, comments) {
+
+    console.log(comments);
+
     switch (actionType) {
       case UserAction.UPDATE_FILM:
         this._filmsModel.updateFilm(updateType, update);
         break;
-      // case UserAction.ADD_FILM:
-      //   this._filmModel.addFilm(updateType, update);
-      //   break;
-      // case UserAction.DELETE_FILM:
-      //   this._filmModel.deleteFilm(updateType, update);
-      //   break;
+      case UserAction.DELETE_COMMENT:
+        this._commentModel.deleteComment(updateType, update);
+        break;
     }
   }
 
-  _handleModelEvent(updateType, data) {
+  _handleModelEvent(updateType, film) {
+
     switch (updateType) {
       case UpdateType.PATCH:
-        this._filmPresenter[data.id].init(data);
+        this._filmPresenter[film.id].init(film, this._comments);
         break;
       case UpdateType.MINOR:
         this._clearMainContent();
@@ -133,8 +135,6 @@ export default class MovieList {
     this._clearMainContent({resetRenderedCardCount: true});
     this._renderMainContent();
   }
-
-  // ----> добавить в отрисовку карточек комментарии
 
   _handleShowMoreButtonClick() {
     const cardCount = this._getFilms().length;
@@ -169,7 +169,6 @@ export default class MovieList {
   _renderCards(films, comments, place) {
     films.forEach((film) => this._renderCard(film, comments, place));
   }
-
 
   _renderExtra() {
     // фильтруем массив сортируем по рейтингу
@@ -224,6 +223,7 @@ export default class MovieList {
 
   _renderMainContent() {
     const films = this._getFilms();
+    this._comments = this._getComments();
     const cardCount = films.length;
 
     this._renderSorting();

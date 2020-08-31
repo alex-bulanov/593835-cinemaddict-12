@@ -49,6 +49,10 @@ const createFilmDetailsTemplate = (data = {}, comments) => {
 
   const filmComments = comments.slice(0, commentsCount).map(createCommentTemplate).join(``);
 
+  const filmCommnetsAmount = comments.slice(0, commentsCount).length;
+
+  console.log(filmCommnetsAmount);
+
   const filmRunTime = formatRunTime(runtime);
   const fimDateOfRelease = formatDateOfRelease(dateOfRelease);
 
@@ -132,7 +136,17 @@ const createFilmDetailsTemplate = (data = {}, comments) => {
             <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">${commentsCount}</span></h3>
 
             <ul class="film-details__comments-list">
+
+
+
+
+
               ${filmComments}
+
+
+
+
+
             </ul>
 
             <div class="film-details__new-comment">
@@ -183,7 +197,7 @@ export default class FilmCardDetails extends SmartView {
     this._favoriteClickHandler = this._favoriteClickHandler.bind(this);
     this._watchedClickHandler = this._watchedClickHandler.bind(this);
     this._watchlistClickHandler = this._watchlistClickHandler.bind(this);
-    // this._deleteClickHandler = this._deleteClickHandler.bind(this);
+    this._deleteClickHandler = this._deleteClickHandler.bind(this);
   }
 
   getTemplate() {
@@ -210,13 +224,11 @@ export default class FilmCardDetails extends SmartView {
     this.updateData({isWatchlist: !this._data.isWatchlist}, true);
   }
 
-  // _deleteClickHandler(evt) {
-  //   evt.preventDefault();
-  //   this._callback.deletedClick();
+  _deleteClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.deleteClick();
 
-  //   console.log('delete clcik')
-  //   // this.updateData({isWatched: !this._data.isWatched}, true);
-  // }
+  }
 
   setCrossClickHandler(callback) {
     this._callback.click = callback;
@@ -238,8 +250,12 @@ export default class FilmCardDetails extends SmartView {
     this.getElement().querySelector(`#watchlist`).addEventListener(`click`, this._watchlistClickHandler);
   }
 
-  // setDeleteClickHandler(callback) {
-  //   this._callback.deleteClick = callback;
-  //   this.getElement().querySelector(`.film-details__comment-delete`).addEventListener(`click`, this._deleteClickHandler);
-  // }
+  setDeleteClickHandler(callback) {
+    this._callback.deleteClick = callback;
+    const deleteButtons = this.getElement().querySelectorAll(`.film-details__comment-delete`);
+
+    for (let i = 0; i < deleteButtons.length; i++) {
+      deleteButtons[i].addEventListener(`click`, this._deleteClickHandler);
+    }
+  }
 }
