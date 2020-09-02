@@ -2,6 +2,7 @@ import {formatCommentDate} from "../utils/comment.js";
 
 export const createCommentTemplate = (comment = {}) => {
   const {
+    id = ``,
     author = ``,
     text = ``,
     emoji = ``,
@@ -12,7 +13,7 @@ export const createCommentTemplate = (comment = {}) => {
 
   return (
     `
-    <li class="film-details__comment">
+    <li class="film-details__comment" data-id="${id}">
       <span class="film-details__comment-emoji">
         <img src="./images/emoji/${emoji}.png" width="55" height="55" alt="emoji-${emoji}">
       </span>

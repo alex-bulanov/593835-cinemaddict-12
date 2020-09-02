@@ -1,8 +1,6 @@
-import {createCommentTemplate} from "./film-comment";
-
-import SmartView from "./smart";
 import {formatRunTime, formatDateOfRelease} from "../utils/film.js";
-
+import {createCommentTemplate} from "./film-comment";
+import SmartView from "./smart";
 
 const createGenresTemplate = (genres) => {
   return genres.map((genre) => `<span class="film-details__genre">${genre}</span>`).join(``);
@@ -48,10 +46,6 @@ const createFilmDetailsTemplate = (data = {}, comments) => {
   const writersList = createWritersList(writers);
 
   const filmComments = comments.slice(0, commentsCount).map(createCommentTemplate).join(``);
-
-  const filmCommnetsAmount = comments.slice(0, commentsCount).length;
-
-  console.log(filmCommnetsAmount);
 
   const filmRunTime = formatRunTime(runtime);
   const fimDateOfRelease = formatDateOfRelease(dateOfRelease);
@@ -136,17 +130,7 @@ const createFilmDetailsTemplate = (data = {}, comments) => {
             <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">${commentsCount}</span></h3>
 
             <ul class="film-details__comments-list">
-
-
-
-
-
               ${filmComments}
-
-
-
-
-
             </ul>
 
             <div class="film-details__new-comment">
@@ -190,18 +174,19 @@ const createFilmDetailsTemplate = (data = {}, comments) => {
 export default class FilmCardDetails extends SmartView {
   constructor(data, comments) {
     super();
-    this._comments = comments;
     this._data = data;
+    this._data.comments = comments;
+    this._data.commentsCount = comments.length;
 
-    this._clickHandler = this._clickHandler.bind(this);
+    this._watchlistClickHandler = this._watchlistClickHandler.bind(this);
     this._favoriteClickHandler = this._favoriteClickHandler.bind(this);
     this._watchedClickHandler = this._watchedClickHandler.bind(this);
-    this._watchlistClickHandler = this._watchlistClickHandler.bind(this);
     this._deleteClickHandler = this._deleteClickHandler.bind(this);
+    this._clickHandler = this._clickHandler.bind(this);
   }
 
   getTemplate() {
-    return createFilmDetailsTemplate(this._data, this._comments);
+    return createFilmDetailsTemplate(this._data, this._data.comments);
   }
 
   _clickHandler(evt) {
@@ -226,8 +211,9 @@ export default class FilmCardDetails extends SmartView {
 
   _deleteClickHandler(evt) {
     evt.preventDefault();
-    this._callback.deleteClick();
-
+    const currentCommentId = evt.target.closest(`.film-details__comment`).dataset.id;
+    const currentComment = this._data.comments.find((comment) => comment.id === currentCommentId);
+    this._callback.deleteClick(currentComment);
   }
 
   setCrossClickHandler(callback) {
@@ -254,8 +240,18 @@ export default class FilmCardDetails extends SmartView {
     this._callback.deleteClick = callback;
     const deleteButtons = this.getElement().querySelectorAll(`.film-details__comment-delete`);
 
-    for (let i = 0; i < deleteButtons.length; i++) {
-      deleteButtons[i].addEventListener(`click`, this._deleteClickHandler);
+    if (deleteButtons) {
+      for (let i = 0; i < deleteButtons.length; i++) {
+        deleteButtons[i].addEventListener(`click`, this._deleteClickHandler);
+      }
     }
+  }
+
+  restoreHandlers() {
+    this.setWatchlistCardClickHandler(this._callback.watchlistClick);
+    this.setFavoriteCardClickHandler(this._callback.favoriteClick);
+    this.setWatchedCardClickHandler(this._callback.watchedClick);
+    this.setDeleteClickHandler(this._callback.deleteClick);
+    this.setCrossClickHandler(this._callback.click);
   }
 }

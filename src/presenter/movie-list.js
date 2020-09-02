@@ -18,10 +18,9 @@ const CARDS_AMOUNT_PER_STEP = 5;
 
 
 export default class MovieList {
-  constructor(siteMainElement, siteFooterElement, navModel, filmsModel, commentsModel) {
+  constructor(siteMainElement, siteFooterElement, navModel, filmsModel) {
     this._navModel = navModel;
     this._filmsModel = filmsModel;
-    this._commentsModel = commentsModel;
 
     this._renderCardsCount = CARDS_AMOUNT_PER_STEP;
     this._filmPresenter = {};
@@ -46,9 +45,6 @@ export default class MovieList {
 
     this._filmsModel.addObserver(this._handleModelEvent);
     this._navModel.addObserver(this._handleModelEvent);
-    this._commentsModel.addObserver(this._handleModelEvent);
-
-
 
     this._filmsSectionComponent = new FilmsSectionView();
     render(this._siteMainElement, this._filmsSectionComponent, RenderPosition.BEFOREEND);
@@ -85,26 +81,20 @@ export default class MovieList {
     return navFilms;
   }
 
-  _getComments() {
-    return this._commentsModel.getComments();
-  }
-
   _handleModeChange() {
     Object
       .values(this._filmPresenter)
       .forEach((presenter) => presenter.resetView());
   }
 
-  _handleViewAction(actionType, updateType, update, comments) {
-
-    console.log(comments);
+  _handleViewAction(actionType, updateType, update) {
 
     switch (actionType) {
       case UserAction.UPDATE_FILM:
         this._filmsModel.updateFilm(updateType, update);
         break;
       case UserAction.DELETE_COMMENT:
-        this._commentModel.deleteComment(updateType, update);
+        this._filmsModel.updateFilm(updateType, update);
         break;
     }
   }
@@ -113,7 +103,7 @@ export default class MovieList {
 
     switch (updateType) {
       case UpdateType.PATCH:
-        this._filmPresenter[film.id].init(film, this._comments);
+        this._filmPresenter[film.id].init(film);
         break;
       case UpdateType.MINOR:
         this._clearMainContent();
@@ -160,14 +150,14 @@ export default class MovieList {
     render(this._filmsListComponent, this._showMoreButtonComponent, RenderPosition.BEFOREEND);
   }
 
-  _renderCard(film, comments, place) {
+  _renderCard(film, place) {
     const filmPresenter = new FilmPresenter(this._siteFooterComponent, place, this._handleViewAction, this._handleModeChange);
-    filmPresenter.init(film, comments);
+    filmPresenter.init(film);
     this._filmPresenter[film.id] = filmPresenter;
   }
 
-  _renderCards(films, comments, place) {
-    films.forEach((film) => this._renderCard(film, comments, place));
+  _renderCards(films, place) {
+    films.forEach((film) => this._renderCard(film, place));
   }
 
   _renderExtra() {
@@ -223,7 +213,6 @@ export default class MovieList {
 
   _renderMainContent() {
     const films = this._getFilms();
-    this._comments = this._getComments();
     const cardCount = films.length;
 
     this._renderSorting();
@@ -242,7 +231,7 @@ export default class MovieList {
     render(this._filmsSectionComponent, this._filmsListComponent, RenderPosition.AFTERBEGIN);
     render(this._filmsListComponent, this._filmsListContainerComponent, RenderPosition.BEFOREEND);
 
-    this._renderCards(films.slice(0, Math.min(cardCount, this._renderCardsCount)), this._comments, this._filmsListContainerComponent);
+    this._renderCards(films.slice(0, Math.min(cardCount, this._renderCardsCount)), this._filmsListContainerComponent);
 
     if (cardCount > this._renderCardsCount) {
       this._renderShowMoreButton();
