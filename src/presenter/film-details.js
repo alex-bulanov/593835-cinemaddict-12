@@ -4,6 +4,7 @@ import FilmCardDetailsView from "../view/film-details.js";
 import {UserAction, UpdateType} from "../const.js";
 // import CommentModel from "../model/comments.js";
 
+
 export default class FilmDetails {
   constructor(siteFooterComponent, changeData, changeMode) {
     this._siteFooterComponent = siteFooterComponent;
@@ -31,6 +32,7 @@ export default class FilmDetails {
     // const commentsData = new Array(film.commentsCount).fill().map(createCommentDataTemplate);
     // this._commentsModel = new CommentModel();
 
+
     // this._commentsModel.setComments(commentsData);
 
     this._filmDetailsComponent = new FilmCardDetailsView(this._film, this._comments);
@@ -44,6 +46,7 @@ export default class FilmDetails {
 
     // this._filmDetailsComponent.setDeleteClickHandler(this._handleDeleteClick);
 
+
     this._filmDetailsComponent.setCrossClickHandler(this._handleCrossClick);
     this._escKeyDownHandler = this._escKeyDownHandler.bind(this);
 
@@ -55,16 +58,16 @@ export default class FilmDetails {
     remove(this._filmDetailsComponent);
   }
 
-  _handleFavoriteClick() {
-    this._changeData(UserAction.UPDATE_FILM, UpdateType.PATCH, Object.assign({}, this._film, {isFavorite: !this._film.isFavorite}));
+  _handleFavoriteClick(data) {
+    this._changeData(UserAction.UPDATE_FILM, UpdateType.PATCH, Object.assign({}, this._film, data));
   }
 
-  _handleWatchedClick() {
-    this._changeData(UserAction.UPDATE_FILM, UpdateType.PATCH, Object.assign({}, this._film, {isWatched: !this._film.isWatched}));
+  _handleWatchedClick(data) {
+    this._changeData(UserAction.UPDATE_FILM, UpdateType.PATCH, Object.assign({}, this._film, data));
   }
 
-  _handleWatchlistClick() {
-    this._changeData(UserAction.UPDATE_FILM, UpdateType.PATCH, Object.assign({}, this._film, {isWatchlist: !this._film.isWatchlist}));
+  _handleWatchlistClick(data) {
+    this._changeData(UserAction.UPDATE_FILM, UpdateType.PATCH, Object.assign({}, this._film, data));
   }
 
   // _handleDeleteClick(comment) {

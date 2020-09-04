@@ -227,18 +227,18 @@ export default class FilmCardDetails extends SmartView {
   }
 
   _favoriteClickHandler() {
-    this._callback.favoriteClick();
-    this.updateData({isFavorite: !this._data.isFavorite});
+    this.updateData({isFavorite: !this._data.isFavorite}, false);
+    this._callback.favoriteClick(this._data);
   }
 
   _watchedClickHandler() {
-    this._callback.watchedClick();
-    this.updateData({isWatched: !this._data.isWatched});
+    this.updateData({isWatched: !this._data.isWatched}, false);
+    this._callback.watchedClick(this._data);
   }
 
   _watchlistClickHandler() {
-    this._callback.watchlistClick();
-    this.updateData({isWatchlist: !this._data.isWatchlist});
+    this.updateData({isWatchlist: !this._data.isWatchlist}, false);
+    this._callback.watchlistClick(this._data);
   }
 
   _deleteClickHandler(evt) {
