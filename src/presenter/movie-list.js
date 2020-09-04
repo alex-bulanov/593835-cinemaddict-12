@@ -12,7 +12,6 @@ import ShowMoreButtonView from "../view/show-more-button.js";
 import FilmsListExtraSectionView from "../view/film-extra.js";
 import FilmsListContainerView from "../view/films-list-container.js";
 
-
 const CARDS_AMOUNT_PER_STEP = 5;
 // const CARDS_EXTRA_AMOUNT = 2;
 
@@ -88,12 +87,14 @@ export default class MovieList {
   }
 
   _handleViewAction(actionType, updateType, update) {
-
     switch (actionType) {
       case UserAction.UPDATE_FILM:
         this._filmsModel.updateFilm(updateType, update);
         break;
       case UserAction.DELETE_COMMENT:
+        this._filmsModel.updateFilm(updateType, update);
+        break;
+      case UserAction.ADD_COMMENT:
         this._filmsModel.updateFilm(updateType, update);
         break;
     }
@@ -131,7 +132,7 @@ export default class MovieList {
     const newRenderedCardCount = Math.min(cardCount, this._renderCardsCount + CARDS_AMOUNT_PER_STEP);
     const films = this._getFilms().slice(this._renderCardsCount, newRenderedCardCount);
 
-    this._renderCards(films, this._comments, this._filmsListContainerComponent);
+    this._renderCards(films, this._filmsListContainerComponent);
     this._renderCardsCount = newRenderedCardCount;
 
 

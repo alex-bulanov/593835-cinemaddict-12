@@ -22,6 +22,13 @@ export const UpdateType = {
   MAJOR: `MAJOR`
 };
 
+export const EmojiType = {
+  SMILE: `smile`,
+  SLEEPING: `sleeping`,
+  PUKE: `puke`,
+  ANGRY: `angry`
+};
+
 export const UserAction = {
   UPDATE_FILM: `UPDATE_FILM`,
   ADD_COMMENT: `ADD_COMMENT`,
@@ -32,4 +39,9 @@ export const UserType = {
   NOVICE: `Novice`,
   FAN: `Fan`,
   BUFF: `Movie Buff`,
+};
+
+export const Keys = {
+  ENTER: 13,
+  CONTROL: 17
 };

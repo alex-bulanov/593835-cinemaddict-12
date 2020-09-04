@@ -1,7 +1,10 @@
 import {render, RenderPosition, remove, replace} from "../utils/render.js";
+import {createCommentDataTemplate} from "../mocks/comment-mock";
 import {UserAction, UpdateType} from "../const.js";
 import DetailsPresenter from "./film-details.js";
 import FilmCardView from "../view/film-card.js";
+// ----
+import CommentModel from "../model/comments.js";
 
 const Mode = {
   DEFAULT: `DEFAULT`,
@@ -28,8 +31,15 @@ export default class Film {
 
   init(film) {
     this._film = film;
+    const commentsData = new Array(this._film.commentsCount).fill().map(createCommentDataTemplate);
+    this._commentsModel = new CommentModel();
+
+    this._commentsModel.setComments(commentsData);
+    this._commentsModel.addObserver(this._handleCommentsEvent);
+
+
     const prevCardComponent = this._filmCardComponent;
-    this._filmCardComponent = new FilmCardView(film);
+    this._filmCardComponent = new FilmCardView(this._film);
 
     this._filmCardComponent.setWatchlistCardClickHandler(this._handleWatchlistClick);
     this._filmCardComponent.setFavoriteCardClickHandler(this._handleFavoriteClick);
@@ -80,7 +90,7 @@ export default class Film {
 
   _showCardDetails() {
     const detailsPresenter = new DetailsPresenter(this._siteFooterComponent, this._changeData, this._changeMode);
-    detailsPresenter.init(this._film);
+    detailsPresenter.init(this._film, this._commentsModel.getComments());
     this._filmDetailsComponent = detailsPresenter;
   }
 }
