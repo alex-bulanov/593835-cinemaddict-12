@@ -21,9 +21,11 @@ export default class Film {
 
     this._filmDetailsComponent = null;
     this._filmCardComponent = null;
+
     this._mode = Mode.DEFAULT;
 
     this._handleWatchlistClick = this._handleWatchlistClick.bind(this);
+    this._handleCommentsEvent = this._handleCommentsEvent.bind(this);
     this._handleFavoriteClick = this._handleFavoriteClick.bind(this);
     this._handleWatchedClick = this._handleWatchedClick.bind(this);
     this._handleCardClick = this._handleCardClick.bind(this);
@@ -37,9 +39,10 @@ export default class Film {
     this._commentsModel.setComments(commentsData);
     this._commentsModel.addObserver(this._handleCommentsEvent);
 
-
     const prevCardComponent = this._filmCardComponent;
     this._filmCardComponent = new FilmCardView(this._film);
+
+    this._detailsPresenter = new DetailsPresenter(this._siteFooterComponent, this._changeData, this._changeMode);
 
     this._filmCardComponent.setWatchlistCardClickHandler(this._handleWatchlistClick);
     this._filmCardComponent.setFavoriteCardClickHandler(this._handleFavoriteClick);
@@ -62,6 +65,7 @@ export default class Film {
   resetView() {
     if (this._mode !== Mode.DEFAULT) {
       this._filmDetailsComponent.destroy();
+      this._mode = Mode.DEFAULT;
     }
   }
 
@@ -84,13 +88,16 @@ export default class Film {
   _handleCardClick() {
     this._changeMode();
     this._mode = Mode.SHOW;
-
     this._showCardDetails();
   }
 
+  _handleCommentsEvent() {
+    // console.log(`this is comments event`)
+    this._detailsPresenter.init(this._film, this._commentsModel);
+  }
+
   _showCardDetails() {
-    const detailsPresenter = new DetailsPresenter(this._siteFooterComponent, this._changeData, this._changeMode);
-    detailsPresenter.init(this._film, this._commentsModel.getComments());
-    this._filmDetailsComponent = detailsPresenter;
+    this._detailsPresenter.init(this._film, this._commentsModel);
+    this._filmDetailsComponent = this._detailsPresenter;
   }
 }

@@ -245,6 +245,7 @@ export default class FilmCardDetails extends SmartView {
     evt.preventDefault();
     const currentCommentId = evt.target.closest(`.film-details__comment`).dataset.id;
     const currentComment = this._comments.find((comment) => comment.id === currentCommentId);
+
     this._callback.deleteClick(currentComment);
   }
 
@@ -294,7 +295,6 @@ export default class FilmCardDetails extends SmartView {
 
       this._callback.commentSubmit(comment);
     }
-
   }
 
   _setInnerHandlers() {

@@ -87,6 +87,7 @@ export default class MovieList {
   }
 
   _handleViewAction(actionType, updateType, update) {
+
     switch (actionType) {
       case UserAction.UPDATE_FILM:
         this._filmsModel.updateFilm(updateType, update);
