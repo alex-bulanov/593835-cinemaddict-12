@@ -2,7 +2,6 @@ import {render, RenderPosition, remove, replace} from "../utils/render.js";
 import FilmCardDetailsView from "../view/film-details.js";
 import {UserAction, UpdateType} from "../const.js";
 
-
 export default class FilmDetails {
   constructor(siteFooterComponent, changeData, changeMode) {
     this._siteFooterComponent = siteFooterComponent;
@@ -19,13 +18,11 @@ export default class FilmDetails {
     this._escKeyDownHandler = this._escKeyDownHandler.bind(this);
     this._handleDeleteClick = this._handleDeleteClick.bind(this);
     this._handleCrossClick = this._handleCrossClick.bind(this);
-
   }
 
   init(film, model) {
     this._film = film;
     this._commentsModel = model;
-
     const prevDetailsComponent = this._filmDetailsComponent;
 
     this._filmDetailsComponent = new FilmCardDetailsView(this._film, this._commentsModel.getComments());
@@ -35,7 +32,6 @@ export default class FilmDetails {
     this._filmDetailsComponent.setWatchedCardClickHandler(this._handleWatchedClick);
     this._filmDetailsComponent.setHandleCommentSubmit(this._handleCommentSubmit);
     this._filmDetailsComponent.setDeleteClickHandler(this._handleDeleteClick);
-
     this._filmDetailsComponent.setCrossClickHandler(this._handleCrossClick);
     this._escKeyDownHandler = this._escKeyDownHandler.bind(this);
 
@@ -73,26 +69,21 @@ export default class FilmDetails {
 
   _handleDeleteClick(comment) {
     this._commentsModel.deleteComment(UpdateType.MINOR, comment);
-    this._changeData(UserAction.DELETE_COMMENT, UpdateType.PATCH, Object.assign({}, this._film, {commentsCount: --this._film.commentsCount}));
   }
 
   _handleCommentSubmit(comment) {
     this._commentsModel.addComment(UpdateType.MINOR, comment);
-    this._changeData(UserAction.DELETE_COMMENT, UpdateType.PATCH, Object.assign({}, this._film, {commentsCount: ++this._film.commentsCount}));
   }
 
   _escKeyDownHandler(evt) {
     if (evt.key === `Escape` || evt.key === `Esc`) {
       evt.preventDefault();
-      remove(this._filmDetailsComponent);
       document.removeEventListener(`keydown`, this._escKeyDownHandler);
       this._changeMode();
     }
   }
 
   _handleCrossClick() {
-    remove(this._filmDetailsComponent);
-
     document.removeEventListener(`keydown`, this._escKeyDownHandler);
     this._changeMode();
   }

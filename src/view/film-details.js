@@ -50,6 +50,7 @@ const createFilmDetailsTemplate = (data = {}, comments) => {
   const actorsList = createActorsList(actors);
   const writersList = createWritersList(writers);
 
+
   const filmComments = comments.slice(0, commentsCount).map(createCommentTemplate).join(``);
   const commnetAmount = comments.length;
   const filmRunTime = formatRunTime(runtime);

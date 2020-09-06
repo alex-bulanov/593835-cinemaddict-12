@@ -3,7 +3,6 @@ import {createCommentDataTemplate} from "../mocks/comment-mock";
 import {UserAction, UpdateType} from "../const.js";
 import DetailsPresenter from "./film-details.js";
 import FilmCardView from "../view/film-card.js";
-// ----
 import CommentModel from "../model/comments.js";
 
 const Mode = {
@@ -21,28 +20,32 @@ export default class Film {
 
     this._filmDetailsComponent = null;
     this._filmCardComponent = null;
-
     this._mode = Mode.DEFAULT;
+
+    this._commentsModel = new CommentModel();
 
     this._handleWatchlistClick = this._handleWatchlistClick.bind(this);
     this._handleCommentsEvent = this._handleCommentsEvent.bind(this);
     this._handleFavoriteClick = this._handleFavoriteClick.bind(this);
     this._handleWatchedClick = this._handleWatchedClick.bind(this);
     this._handleCardClick = this._handleCardClick.bind(this);
+
+    this._isFirstInit = true;
   }
 
   init(film) {
     this._film = film;
-    const commentsData = new Array(this._film.commentsCount).fill().map(createCommentDataTemplate);
-    this._commentsModel = new CommentModel();
 
-    this._commentsModel.setComments(commentsData);
+    if (this._isFirstInit) {
+      const commentsData = new Array(this._film.commentsCount).fill().map(createCommentDataTemplate);
+      this._commentsModel.setComments(commentsData);
+      this._isFirstInit = false;
+    }
+
     this._commentsModel.addObserver(this._handleCommentsEvent);
 
     const prevCardComponent = this._filmCardComponent;
     this._filmCardComponent = new FilmCardView(this._film);
-
-    this._detailsPresenter = new DetailsPresenter(this._siteFooterComponent, this._changeData, this._changeMode);
 
     this._filmCardComponent.setWatchlistCardClickHandler(this._handleWatchlistClick);
     this._filmCardComponent.setFavoriteCardClickHandler(this._handleFavoriteClick);
@@ -64,7 +67,8 @@ export default class Film {
 
   resetView() {
     if (this._mode !== Mode.DEFAULT) {
-      this._filmDetailsComponent.destroy();
+      this._detailsPresenter.destroy();
+
       this._mode = Mode.DEFAULT;
     }
   }
@@ -92,11 +96,13 @@ export default class Film {
   }
 
   _handleCommentsEvent() {
-    // console.log(`this is comments event`)
+    this._changeData(UserAction.UPDATE_FILM, UpdateType.PATCH, Object.assign({}, this._film, {commentsCount: this._commentsModel.getComments().length}));
     this._detailsPresenter.init(this._film, this._commentsModel);
   }
 
   _showCardDetails() {
+    this._detailsPresenter = new DetailsPresenter(this._siteFooterComponent, this._changeData, this._changeMode);
+
     this._detailsPresenter.init(this._film, this._commentsModel);
     this._filmDetailsComponent = this._detailsPresenter;
   }
