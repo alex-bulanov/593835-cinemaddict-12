@@ -8,19 +8,20 @@ export const compareRating = (filmA, filmB) => {
   return filmB.rating - filmA.rating;
 };
 
+export const compareComments = (filmA, filmB) => {
+  return filmB.commentsCount - filmA.commentsCount;
+};
 
 export const formatRunTime = (date) => {
   if (!(date instanceof Date)) {
     return ``;
   }
-
-  return `${moment(date).format(`H`)}h ${moment(date).format(`mm`)}m`;
+  return `${moment(date).format(`HH:MM`)}`;
 };
 
 export const formatDateOfRelease = (date) => {
   if (!(date instanceof Date)) {
     return ``;
   }
-
   return moment(date).format(`D MMMM YYYY`);
 };

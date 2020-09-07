@@ -62,7 +62,6 @@ export default class FilmCard extends SmartView {
     this._favoriteClickHandler = this._favoriteClickHandler.bind(this);
     this._watchedClickHandler = this._watchedClickHandler.bind(this);
     this._watchlistClickHandler = this._watchlistClickHandler.bind(this);
-
   }
 
   getTemplate() {
@@ -110,21 +109,10 @@ export default class FilmCard extends SmartView {
     this.getElement().querySelector(`.film-card__controls-item--add-to-watchlist`).addEventListener(`click`, this._watchlistClickHandler);
   }
 
-
   setCardClickHandler(callback) {
     this._callback.click = callback;
     this.getElement().querySelector(`.film-card__poster`).addEventListener(`click`, this._clickHandler);
     this.getElement().querySelector(`.film-card__title`).addEventListener(`click`, this._clickHandler);
     this.getElement().querySelector(`.film-card__comments`).addEventListener(`click`, this._clickHandler);
-  }
-
-
-  restoreHandlers() {
-    this.setFavoriteCardClickHandler(this._callback.favoriteClick);
-    this.setWatchedCardClickHandler(this._callback.watchedClick);
-    this.setWatchlistCardClickHandler(this._callback.watchlistClick);
-
-
-    this.setCardClickHandler(this._callback.click);
   }
 }

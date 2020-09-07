@@ -5,5 +5,5 @@ export const formatCommentDate = (date) => {
     return ``;
   }
 
-  return `${moment(date).format(`YYYY`)}/${moment(date).format(`MM`)}/${moment(date).format(`DD`)} ${moment(date).format(`HH:MM`)}`;
+  return `${moment(date).format(`YYYY/MM/DD HH:MM`)}`;
 };
