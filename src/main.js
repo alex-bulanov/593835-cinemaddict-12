@@ -1,10 +1,11 @@
 const FILMS_AMOUNT = 25;
 
+import FooterStatisticsView from "./view/footer-statistics.js";
 import {createFilmDataTemplate} from "./mocks/film-mock.js";
 import {render, RenderPosition} from "./utils/render.js";
 import MainNavPresenter from "./presenter/main-nav.js";
 import MoviePresenter from "./presenter/movie-list.js";
-import StatisticsView from "./view/statistics.js";
+
 import UserPresenter from "./presenter/user.js";
 import FilmsModel from "./model/movies.js";
 import NavModel from "./model/nav.js";
@@ -26,7 +27,7 @@ const userPresenter = new UserPresenter(siteHeaderElement, filmsModel);
 const mainNavPresenter = new MainNavPresenter(siteMainElement, navModel, filmsModel);
 
 // статистика в футоре
-render(siteFooterElement, new StatisticsView(filmsData), RenderPosition.BEFOREEND);
+render(siteFooterElement, new FooterStatisticsView(filmsData), RenderPosition.BEFOREEND);
 
 // основной контент
 const movieListPresenter = new MoviePresenter(siteMainElement, siteFooterElement, navModel, filmsModel);

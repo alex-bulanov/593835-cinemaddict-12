@@ -1,3 +1,4 @@
+export const GENRES = [`Film-Noir`, `Drama`, `Musical`, `Sci-Fi`, `Animation`, `Fantasy`, `Comedy`, `TV Series`];
 export const EMOJI = [`smile`, `sleeping`, `angry`, `puke`];
 export const COMMENTS_COUNT = 5;
 export const GENRES_COUNT = 1;
@@ -7,7 +8,16 @@ export const NavType = {
   ALL: `all`,
   WATCHLIST: `watchlist`,
   HISTORY: `history`,
-  FAVORITES: `favorites`
+  FAVORITES: `favorites`,
+  STATISTICS: `stats`,
+};
+
+export const FilterType = {
+  ALL: `all-time`,
+  TODAY: `today`,
+  WEEK: `week`,
+  MONTH: `month`,
+  YEAR: `year`,
 };
 
 export const SortType = {
@@ -19,20 +29,21 @@ export const SortType = {
 export const UpdateType = {
   PATCH: `PATCH`,
   MINOR: `MINOR`,
-  MAJOR: `MAJOR`
+  MAJOR: `MAJOR`,
+  STATS: `STATS`,
 };
 
 export const EmojiType = {
   SMILE: `smile`,
   SLEEPING: `sleeping`,
   PUKE: `puke`,
-  ANGRY: `angry`
+  ANGRY: `angry`,
 };
 
 export const UserAction = {
   UPDATE_FILM: `UPDATE_FILM`,
   ADD_COMMENT: `ADD_COMMENT`,
-  DELETE_COMMENT: `DELETE_COMMENT`
+  DELETE_COMMENT: `DELETE_COMMENT`,
 };
 
 export const UserType = {

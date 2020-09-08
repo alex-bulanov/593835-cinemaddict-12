@@ -16,7 +16,7 @@ export const createMainNavigationTemplate = (navItems, currentNavType) => {
     <div class="main-navigation__items">
       ${navItemsTemplate}
     </div>
-    <a href="#stats" class="main-navigation__additional">Stats</a>
+    <a href="#stats" class="main-navigation__additional ${currentNavType === `stats` ? `main-navigation__item--active` : ``}" data-nav-type="stats">Stats</a>
   </nav>`);
 };
 
@@ -38,7 +38,7 @@ export default class MainNavigation extends AbstractView {
     }
 
     evt.preventDefault();
-    const navItems = document.querySelectorAll(`.main-navigation__item`);
+    const navItems = document.querySelectorAll(`A`);
 
     for (let navItem of navItems) {
       if (navItem.classList.contains(`main-navigation__item--active`)) {
