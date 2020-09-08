@@ -1,5 +1,5 @@
 import ChartDataLabels from 'chartjs-plugin-datalabels';
-import {sortedGenres, topGenre} from '../utils/statistics.js';
+import {sortedGenres, topGenre, userRank, totalDuration} from '../utils/statistics.js';
 import SmartView from './smart.js';
 import Chart from 'chart.js';
 // import moment from "moment";
@@ -15,6 +15,10 @@ const Filters = {
   YEAR: `year`
 };
 
+const renderDurationTemplate = (watched) => {
+  const time = totalDuration(watched);
+  return (`<p class="statistic__item-text">${time} <span class="statistic__item-description">h</span> ${time} <span class="statistic__item-description">m</span></p>`);
+};
 
 const renderFilterTemplate = (currentFilter) => {
   return (
@@ -41,6 +45,7 @@ const renderFilterTemplate = (currentFilter) => {
 
 const renderChart = (statisticCtx, data) => {
   const watched = data.filter((item) => item.isWatched);
+
   const amountWatchedGenres = sortedGenres(watched);
 
   return new Chart(statisticCtx, {
@@ -104,16 +109,19 @@ const renderChart = (statisticCtx, data) => {
 const createStatisticsTemplate = (data = {}, currentFilter) => {
   const watched = data.filter((item) => item.isWatched);
 
+  const watchedAmount = watched.length;
 
   const filtersTemplate = renderFilterTemplate(currentFilter);
+  const rankTemplate = userRank(watched);
   const topGenreTemplate = topGenre(watched);
+  const durationTemplate = renderDurationTemplate(watched);
 
   return (
     `<section class="statistic">
       <p class="statistic__rank">
         Your rank
         <img class="statistic__img" src="images/bitmap@2x.png" alt="Avatar" width="35" height="35">
-        <span class="statistic__rank-label">${topGenreTemplate}-Fighter</span>
+        <span class="statistic__rank-label">${rankTemplate}</span>
       </p>
 
       ${filtersTemplate}
@@ -121,11 +129,11 @@ const createStatisticsTemplate = (data = {}, currentFilter) => {
       <ul class="statistic__text-list">
         <li class="statistic__text-item">
           <h4 class="statistic__item-title">You watched</h4>
-          <p class="statistic__item-text">${watched.length} <span class="statistic__item-description">movies</span></p>
+          <p class="statistic__item-text">${watchedAmount} <span class="statistic__item-description">movies</span></p>
         </li>
         <li class="statistic__text-item">
           <h4 class="statistic__item-title">Total duration</h4>
-          <p class="statistic__item-text">108 <span class="statistic__item-description">h</span> 22 <span class="statistic__item-description">m</span></p>
+          ${durationTemplate}
         </li>
         <li class="statistic__text-item">
           <h4 class="statistic__item-title">Top genre</h4>

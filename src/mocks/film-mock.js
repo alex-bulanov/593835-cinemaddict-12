@@ -72,7 +72,8 @@ export const createFilmDataTemplate = () => {
     genre: generateGenre(),
     commentsCount: getRandomInteger(0, 10),
     isWatchlist: Boolean(getRandomInteger(0, 1)),
-    isWatched: Boolean(getRandomInteger(0, 1)),
+    // isWatched: Boolean(getRandomInteger(0, 1)),
+    isWatched: false,
     isFavorite: Boolean(getRandomInteger(0, 1))
   };
 };
