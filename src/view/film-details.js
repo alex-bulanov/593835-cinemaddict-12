@@ -202,19 +202,14 @@ export default class FilmCardDetails extends SmartView {
     this._message = null;
 
     this._descriptionInputHandler = this._descriptionInputHandler.bind(this);
-
     this._watchlistClickHandler = this._watchlistClickHandler.bind(this);
     this._favoriteClickHandler = this._favoriteClickHandler.bind(this);
     this._commentSubmitHandler = this._commentSubmitHandler.bind(this);
-
-
     this._watchedClickHandler = this._watchedClickHandler.bind(this);
     this._deleteClickHandler = this._deleteClickHandler.bind(this);
     this._emojiInputHandler = this._emojiInputHandler.bind(this);
     this._clickHandler = this._clickHandler.bind(this);
     this._commentSend = this._commentSend.bind(this);
-
-
     this._setInnerHandlers();
   }
 
@@ -355,7 +350,6 @@ export default class FilmCardDetails extends SmartView {
     }
   }
 
-
   restoreHandlers() {
     this.setWatchlistCardClickHandler(this._callback.watchlistClick);
     this.setFavoriteCardClickHandler(this._callback.favoriteClick);
@@ -363,7 +357,6 @@ export default class FilmCardDetails extends SmartView {
     this.setHandleCommentSubmit(this._callback.commentSubmit);
     this.setDeleteClickHandler(this._callback.deleteClick);
     this.setCrossClickHandler(this._callback.click);
-
     this._setInnerHandlers();
   }
 }

@@ -29,7 +29,6 @@ export default class Film {
     this._handleFavoriteClick = this._handleFavoriteClick.bind(this);
     this._handleWatchedClick = this._handleWatchedClick.bind(this);
     this._handleCardClick = this._handleCardClick.bind(this);
-
     this._isFirstInit = true;
   }
 
@@ -67,8 +66,8 @@ export default class Film {
 
   resetView() {
     if (this._mode !== Mode.DEFAULT) {
-      this._detailsPresenter.destroy();
 
+      this._detailsPresenter.destroy();
       this._mode = Mode.DEFAULT;
     }
   }
@@ -90,19 +89,17 @@ export default class Film {
   }
 
   _handleCardClick() {
-    this._changeMode();
     this._mode = Mode.SHOW;
     this._showCardDetails();
   }
 
   _handleCommentsEvent() {
-    this._changeData(UserAction.UPDATE_FILM, UpdateType.PATCH, Object.assign({}, this._film, {commentsCount: this._commentsModel.getComments().length}));
+    this._changeData(UserAction.UPDATE_FILM, UpdateType.MINOR, Object.assign({}, this._film, {commentsCount: this._commentsModel.getComments().length}));
     this._detailsPresenter.init(this._film, this._commentsModel);
   }
 
   _showCardDetails() {
     this._detailsPresenter = new DetailsPresenter(this._siteFooterComponent, this._changeData, this._changeMode);
-
     this._detailsPresenter.init(this._film, this._commentsModel);
     this._filmDetailsComponent = this._detailsPresenter;
   }

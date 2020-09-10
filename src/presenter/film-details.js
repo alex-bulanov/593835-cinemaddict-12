@@ -18,6 +18,7 @@ export default class FilmDetails {
     this._escKeyDownHandler = this._escKeyDownHandler.bind(this);
     this._handleDeleteClick = this._handleDeleteClick.bind(this);
     this._handleCrossClick = this._handleCrossClick.bind(this);
+
   }
 
   init(film, model) {
@@ -34,7 +35,6 @@ export default class FilmDetails {
     this._filmDetailsComponent.setDeleteClickHandler(this._handleDeleteClick);
     this._filmDetailsComponent.setCrossClickHandler(this._handleCrossClick);
     this._escKeyDownHandler = this._escKeyDownHandler.bind(this);
-
 
     if (prevDetailsComponent === null) {
       render(this._siteFooterComponent, this._filmDetailsComponent, RenderPosition.BEFOREEND);
@@ -79,8 +79,8 @@ export default class FilmDetails {
     if (evt.key === `Escape` || evt.key === `Esc`) {
       evt.preventDefault();
       document.removeEventListener(`keydown`, this._escKeyDownHandler);
-      this._changeMode();
     }
+    this._changeMode();
   }
 
   _handleCrossClick() {
