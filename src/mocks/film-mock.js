@@ -1,5 +1,5 @@
 import {getRandomInteger} from "../utils.js";
-import {POSTERS} from "../const.js";
+import {POSTERS, GENRES} from "../const.js";
 const generateId = () => Date.now() + parseInt(Math.random() * 10000, 10);
 
 
@@ -29,6 +29,15 @@ const generateDateRelease = () => {
   return new Date();
 };
 
+const generateGenres = () => {
+  return GENRES.slice(0, getRandomInteger(0, GENRES.length));
+};
+
+const generateGenre = () => {
+  return GENRES[getRandomInteger(0, GENRES.length - 1)];
+};
+
+
 const generateRunTime = () => {
   const maxRunTimeHour = 3;
   const minRunTimeHour = 0;
@@ -55,15 +64,16 @@ export const createFilmDataTemplate = () => {
     dateOfRelease: generateDateRelease(),
     country: `USA`,
     ageRating: `${getRandomInteger(0, 18)}+`,
-    genres: [`Film-Noir`, `Drama`, `Musical`],
+    genres: generateGenres(),
     description: generateDescriptions(),
     rating: generateRating(),
     dateOfProduction: generateDate(),
     runtime: generateRunTime(),
-    genre: `Musical`,
+    genre: generateGenre(),
     commentsCount: getRandomInteger(0, 10),
     isWatchlist: Boolean(getRandomInteger(0, 1)),
     isWatched: Boolean(getRandomInteger(0, 1)),
+    // isWatched: false,
     isFavorite: Boolean(getRandomInteger(0, 1))
   };
 };

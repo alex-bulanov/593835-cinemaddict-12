@@ -42,6 +42,11 @@ export default class Nav {
       return;
     }
 
+    if (navType === `stats`) {
+      this._navModel.setNav(UpdateType.STATS, navType);
+      return;
+    }
+
     this._navModel.setNav(UpdateType.MAJOR, navType);
   }
 
