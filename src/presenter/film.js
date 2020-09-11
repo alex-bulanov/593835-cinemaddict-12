@@ -65,6 +65,7 @@ export default class Film {
   }
 
   resetView() {
+
     if (this._mode !== Mode.DEFAULT) {
 
       this._detailsPresenter.destroy();

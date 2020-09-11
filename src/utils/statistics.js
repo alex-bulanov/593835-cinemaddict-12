@@ -1,4 +1,5 @@
 import {UserType} from "../const.js";
+import moment from "moment";
 
 const FilmsAmount = {
   NOVICE: 10,
@@ -61,6 +62,16 @@ export const totalDuration = (data) => {
   if (data.length === 0) {
     return data.length;
   }
-  // пока так но надо доработать
-  return data;
+
+  let totalH = 0;
+  let totalM = 0;
+  data.forEach((item) => {
+    totalH += +moment(item.runtime).format(`HH`);
+    totalM += +moment(item.runtime).format(`MM`);
+  });
+
+  totalH += Math.floor(totalM / 60);
+  totalM = totalM % 60;
+
+  return [totalH, totalM];
 };

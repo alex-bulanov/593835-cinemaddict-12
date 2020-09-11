@@ -17,7 +17,7 @@ const Filters = {
 
 const renderDurationTemplate = (watched) => {
   const time = totalDuration(watched);
-  return (`<p class="statistic__item-text">${time} <span class="statistic__item-description">h</span> ${time} <span class="statistic__item-description">m</span></p>`);
+  return (`<p class="statistic__item-text">${time[0]} <span class="statistic__item-description">h</span> ${time[1]} <span class="statistic__item-description">m</span></p>`);
 };
 
 const renderFilterTemplate = (currentFilter) => {
@@ -45,7 +45,6 @@ const renderFilterTemplate = (currentFilter) => {
 
 const renderChart = (statisticCtx, data) => {
   const watched = data.filter((item) => item.isWatched);
-
   const amountWatchedGenres = sortedGenres(watched);
 
   return new Chart(statisticCtx, {
