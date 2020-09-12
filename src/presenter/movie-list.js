@@ -17,7 +17,7 @@ const CARDS_AMOUNT_PER_STEP = 5;
 const CARDS_EXTRA_AMOUNT = 2;
 
 export default class MovieList {
-  constructor(siteMainElement, siteFooterElement, navModel, filmsModel) {
+  constructor(siteMainElement, siteFooterElement, navModel, filmsModel, api) {
 
     this._navModel = navModel;
     this._filmsModel = filmsModel;
@@ -25,6 +25,7 @@ export default class MovieList {
     this._renderCardsCount = CARDS_AMOUNT_PER_STEP;
     this._filmPresenter = {};
 
+    this._api = api;
 
     this._currentSortType = SortType.DEFAULT;
     this._siteMainElement = siteMainElement;
@@ -94,7 +95,12 @@ export default class MovieList {
   _handleViewAction(actionType, updateType, update) {
     switch (actionType) {
       case UserAction.UPDATE_FILM:
-        this._filmsModel.updateFilm(updateType, update);
+
+        this._api.updateFilm(update).then((response) => {
+          this._filmsModel.updateFilm(updateType, response);
+        });
+
+        // this._filmsModel.updateFilm(updateType, update);
         break;
       case UserAction.DELETE_COMMENT:
         this._filmsModel.updateFilm(updateType, update);

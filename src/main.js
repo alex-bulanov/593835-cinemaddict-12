@@ -24,7 +24,7 @@ const mainNavPresenter = new MainNavPresenter(siteMainElement, navModel, filmsMo
 
 
 // основной контент
-const movieListPresenter = new MoviePresenter(siteMainElement, siteFooterElement, navModel, filmsModel);
+const movieListPresenter = new MoviePresenter(siteMainElement, siteFooterElement, navModel, filmsModel, api);
 
 api.getFilms().then((films) => {
   filmsModel.setFilms(films);

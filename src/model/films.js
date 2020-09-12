@@ -49,6 +49,7 @@ export default class Films extends Observer {
       rating: film.film_info.total_rating,
       writers: film.film_info.writers,
       commentsCount: film.comments.length,
+      comments: film.comments,
       isWatchlist: film.user_details.watchlist,
       isWatched: film.user_details.already_watched,
       isFavorite: film.user_details.favorite,
@@ -62,7 +63,32 @@ export default class Films extends Observer {
   }
 
   static adaptToServer(film) {
-    const adaptedFilm = Object.assign({}, film, {});
+    const adaptedFilm = Object.assign({id: film.id}, {
+      "film_info": {
+        "actors": film.actors,
+        "age_rating": film.ageRating,
+        "alternative_title": film.originalTitle,
+        "description": film.description,
+        "director": film.director,
+        "genre": film.genres,
+        "poster": film.poster,
+        "release": {
+          "date": film.dateOfRelease,
+          "release_country": film.country,
+        },
+        "runtime": film.runtime,
+        "title": film.title,
+        "total_rating": film.rating,
+        "writers": film.writers,
+      },
+      "comments": film.comments,
+      "user_details": {
+        "watchlist": film.isWatchlist,
+        "already_watched": film.isWatched,
+        "favorite": film.isFavorite,
+        "watching_date": film.watchingDate,
+      },
+    });
 
     return adaptedFilm;
   }

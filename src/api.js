@@ -22,7 +22,7 @@ export default class Api {
       .then((films) => films.map(FilmsModel.adaptToClient));
   }
 
-  updateFilms(film) {
+  updateFilm(film) {
     return this._load({
       url: `movies/${film.id}`,
       method: Method.PUT,
