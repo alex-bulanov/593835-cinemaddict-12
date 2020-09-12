@@ -13,15 +13,22 @@ export const compareComments = (filmA, filmB) => {
 };
 
 export const formatRunTime = (date) => {
-  if (!(date instanceof Date)) {
-    return ``;
-  }
-  return `${moment(date).format(`HH:MM`)}`;
+  const hours = Math.floor(date / 60);
+  const minutes = date % 60;
+
+  return `${hours}:${minutes}`;
 };
 
 export const formatDateOfRelease = (date) => {
   if (!(date instanceof Date)) {
-    return ``;
+    date = new Date(date);
   }
   return moment(date).format(`D MMMM YYYY`);
+};
+
+export const formatDateOfProduction = (date) => {
+  if (!(date instanceof Date)) {
+    date = new Date(date);
+  }
+  return moment(date).format(`YYYY`);
 };

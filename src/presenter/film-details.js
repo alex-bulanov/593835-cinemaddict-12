@@ -79,8 +79,8 @@ export default class FilmDetails {
     if (evt.key === `Escape` || evt.key === `Esc`) {
       evt.preventDefault();
       document.removeEventListener(`keydown`, this._escKeyDownHandler);
+      this._changeMode();
     }
-    this._changeMode();
   }
 
   _handleCrossClick() {

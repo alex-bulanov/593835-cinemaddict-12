@@ -14,7 +14,9 @@ export const sortedGenres = (data) => {
   const allGenres = [];
 
   data.forEach((film) => {
-    allGenres.push(film.genre);
+    if (film.genre) {
+      allGenres.push(film.genre);
+    }
   });
 
   let amountWatchedGenres = {};

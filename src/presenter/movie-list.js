@@ -13,13 +13,12 @@ import FilmsListView from "../view/films-list.js";
 import SortingView from "../view/sorting.js";
 import FilmPresenter from "./film.js";
 
-
 const CARDS_AMOUNT_PER_STEP = 5;
 const CARDS_EXTRA_AMOUNT = 2;
 
-
 export default class MovieList {
   constructor(siteMainElement, siteFooterElement, navModel, filmsModel) {
+
     this._navModel = navModel;
     this._filmsModel = filmsModel;
 
@@ -106,10 +105,10 @@ export default class MovieList {
     }
   }
 
-  _handleModelEvent(updateType, film) {
+  _handleModelEvent(updateType, item) {
     switch (updateType) {
       case UpdateType.PATCH:
-        this._filmPresenter[film.id].init(film);
+        this._filmPresenter[item.id].init(item);
         break;
       case UpdateType.MINOR:
         this._clearMainContent();
@@ -119,11 +118,12 @@ export default class MovieList {
         this._clearMainContent({resetRenderedCardCount: true, resetSortType: true});
         this._renderMainContent();
         break;
-
       case UpdateType.STATS:
         this._clearMainContent({resetRenderedCardCount: true, resetSortType: true});
-
         this._renderStatistics();
+        break;
+      case UpdateType.COMMENT:
+        this._filmPresenter[item.id].init(item);
         break;
     }
   }
@@ -191,10 +191,10 @@ export default class MovieList {
 
     if (filmsCommented.length > 0) {
       render(this._filmsSectionComponent, this._extraSectionMostCommentedComponent, RenderPosition.BEFOREEND);
-      const filmsListMostCommentedContainerComponent = new FilmsListContainerView();
-      render(this._extraSectionMostCommentedComponent, filmsListMostCommentedContainerComponent, RenderPosition.BEFOREEND);
+      this._filmsListMostCommentedContainerComponent = new FilmsListContainerView();
+      render(this._extraSectionMostCommentedComponent, this._filmsListMostCommentedContainerComponent, RenderPosition.BEFOREEND);
 
-      this._renderCards(filmsCommented, filmsListMostCommentedContainerComponent);
+      this._renderCards(filmsCommented, this._filmsListMostCommentedContainerComponent);
     }
   }
 

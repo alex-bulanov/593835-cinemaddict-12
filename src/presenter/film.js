@@ -1,9 +1,9 @@
 import {render, RenderPosition, remove, replace} from "../utils/render.js";
-import {createCommentDataTemplate} from "../mocks/comment-mock";
 import {UserAction, UpdateType} from "../const.js";
 import DetailsPresenter from "./film-details.js";
 import FilmCardView from "../view/film-card.js";
 import CommentModel from "../model/comments.js";
+import ApiComment from "../api-comment.js";
 
 const Mode = {
   DEFAULT: `DEFAULT`,
@@ -34,10 +34,19 @@ export default class Film {
 
   init(film) {
     this._film = film;
+    this._movieId = film.id;
 
     if (this._isFirstInit) {
-      const commentsData = new Array(this._film.commentsCount).fill().map(createCommentDataTemplate);
-      this._commentsModel.setComments(commentsData);
+
+      const AUTHORIZATION = `Basic hS2sd3dfSwcl1sa2j`;
+      const END_POINT = `https://12.ecmascript.pages.academy/cinemaddict`;
+
+      const api = new ApiComment(END_POINT, AUTHORIZATION, this._movieId);
+
+      api.getComments().then((comments) => {
+        this._commentsModel.setComments(comments);
+      });
+
       this._isFirstInit = false;
     }
 
@@ -82,7 +91,7 @@ export default class Film {
   }
 
   _handleWatchedClick() {
-    this._changeData(UserAction.UPDATE_FILM, UpdateType.PATCH, Object.assign({}, this._film, {isWatched: !this._film.isWatched}));
+    this._changeData(UserAction.UPDATE_FILM, UpdateType.PATCH, Object.assign({}, this._film, {isWatched: !this._film.isWatched, watchingDate: this._film.watchingDate}));
   }
 
   _handleWatchlistClick() {
@@ -95,7 +104,7 @@ export default class Film {
   }
 
   _handleCommentsEvent() {
-    this._changeData(UserAction.UPDATE_FILM, UpdateType.MINOR, Object.assign({}, this._film, {commentsCount: this._commentsModel.getComments().length}));
+    this._changeData(UserAction.UPDATE_FILM, UpdateType.COMMENT, Object.assign({}, this._film, {commentsCount: this._commentsModel.getComments().length}));
     this._detailsPresenter.init(this._film, this._commentsModel);
   }
 
