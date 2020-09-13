@@ -25,7 +25,7 @@ export default class ApiComment {
 
   updateComments(comment) {
     return this._load({
-      url: `movies/:${this._movieId}`,
+      url: `movies`,
       method: Method.PUT,
       body: JSON.stringify(CommentsModel.adaptToServer(comment)),
       headers: new Headers({"Content-Type": `application/json`})

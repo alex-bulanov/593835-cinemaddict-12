@@ -3,7 +3,7 @@ import {createCommentTemplate} from "./film-comment";
 import {EmojiType} from "../const.js";
 import {Keys} from "../const.js";
 import SmartView from "./smart";
-import {nanoid} from 'nanoid';
+// import {nanoid} from 'nanoid';
 // import moment from "moment";
 import he from "he";
 
@@ -284,11 +284,11 @@ export default class FilmCardDetails extends SmartView {
 
     if (message !== `` && commentEmoji !== ``) {
       const comment = {
-        id: nanoid(),
-        author: `Это сделал Я`,
+        id: ``,
+        author: ``,
         emoji: commentEmoji,
         text: message,
-        date: new Date(),
+        date: new Date().toISOString(),
       };
 
       document.querySelector(`.film-details__comment-input`).value = null;

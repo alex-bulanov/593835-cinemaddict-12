@@ -3,12 +3,14 @@ import FilmCardDetailsView from "../view/film-details.js";
 import {UserAction, UpdateType} from "../const.js";
 
 export default class FilmDetails {
-  constructor(siteFooterComponent, changeData, changeMode) {
+  constructor(siteFooterComponent, changeData, changeMode, api) {
     this._siteFooterComponent = siteFooterComponent;
     this._filmDetailsComponent = null;
 
     this._changeData = changeData;
     this._changeMode = changeMode;
+
+    this._api = api;
 
     this._handleWatchlistClick = this._handleWatchlistClick.bind(this);
     this._handleFavoriteClick = this._handleFavoriteClick.bind(this);

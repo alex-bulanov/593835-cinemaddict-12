@@ -100,7 +100,6 @@ export default class MovieList {
           this._filmsModel.updateFilm(updateType, response);
         });
 
-        // this._filmsModel.updateFilm(updateType, update);
         break;
       case UserAction.DELETE_COMMENT:
         this._filmsModel.updateFilm(updateType, update);
@@ -266,7 +265,7 @@ export default class MovieList {
 
 
   _renderStatistics() {
-    this._staticticsPresenter = new StatisticsPresenter(this._siteMainElement, this._filmsModel.getFilms());
+    this._staticticsPresenter = new StatisticsPresenter(this._siteMainElement, this._filmsModel);
     this._staticticsPresenter.init();
   }
 }

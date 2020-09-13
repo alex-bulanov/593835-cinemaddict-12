@@ -41,9 +41,9 @@ export default class Film {
       const AUTHORIZATION = `Basic hS2sd3dfSwcl1sa2j`;
       const END_POINT = `https://12.ecmascript.pages.academy/cinemaddict`;
 
-      const api = new ApiComment(END_POINT, AUTHORIZATION, this._movieId);
+      this._api = new ApiComment(END_POINT, AUTHORIZATION, this._movieId);
 
-      api.getComments().then((comments) => {
+      this._api.getComments().then((comments) => {
         this._commentsModel.setComments(comments);
       });
 
@@ -109,7 +109,7 @@ export default class Film {
   }
 
   _showCardDetails() {
-    this._detailsPresenter = new DetailsPresenter(this._siteFooterComponent, this._changeData, this._changeMode);
+    this._detailsPresenter = new DetailsPresenter(this._siteFooterComponent, this._changeData, this._changeMode, this._api);
     this._detailsPresenter.init(this._film, this._commentsModel);
     this._filmDetailsComponent = this._detailsPresenter;
   }

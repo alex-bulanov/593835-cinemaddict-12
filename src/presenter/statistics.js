@@ -1,11 +1,12 @@
 import {render, RenderPosition, remove} from "../utils/render.js";
 import StatisticsView from "../view/statistics.js";
 import FilterModel from "../model/filter.js";
-import {UpdateType} from "../const.js";
+import {UpdateType, FilterType} from "../const.js";
+import {filter} from "../utils/filters.js";
 
 export default class Statistics {
-  constructor(siteMainElement, data) {
-    this._data = data;
+  constructor(siteMainElement, filmsModel) {
+    this._filmsModel = filmsModel;
     this._currentFilter = null;
     this._siteMainElement = siteMainElement;
     this._filterModel = new FilterModel();
@@ -17,7 +18,9 @@ export default class Statistics {
 
   init() {
     this._currentFilter = this._filterModel.getFilter();
-    this._staticticsComponent = new StatisticsView(this._data, this._currentFilter);
+    const filters = this._getFilters();
+
+    this._staticticsComponent = new StatisticsView(filters, this._currentFilter);
     this._staticticsComponent.setFilterTypeChangeHandler(this._handleFilterTypeChange);
 
     render(this._siteMainElement, this._staticticsComponent, RenderPosition.BEFOREEND);
@@ -43,6 +46,37 @@ export default class Statistics {
     }
 
     this._filterModel.setFilter(UpdateType.MAJOR, filterType);
+  }
+
+  _getFilters() {
+    const films = this._filmsModel.getFilms().filter((item) => item.isWatched);
+    return [
+      {
+        type: FilterType.ALL,
+        name: `All-time`,
+        movie: filter[FilterType.ALL](films)
+      },
+      {
+        type: FilterType.TODAY,
+        name: `Today`,
+        movie: filter[FilterType.TODAY](films)
+      },
+      {
+        type: FilterType.WEEK,
+        name: `Week`,
+        movie: filter[FilterType.WEEK](films)
+      },
+      {
+        type: FilterType.MONTH,
+        name: `Month`,
+        movie: filter[FilterType.MONTH](films)
+      },
+      {
+        type: FilterType.YEAR,
+        name: `Year`,
+        movie: filter[FilterType.YEAR](films)
+      }
+    ];
   }
 }
 
