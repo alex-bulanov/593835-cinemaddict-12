@@ -31,6 +31,7 @@ export const UpdateType = {
   MAJOR: `MAJOR`,
   STATS: `STATS`,
   COMMENT: `COMMENT`,
+  INIT: `INIT`,
 };
 
 export const EmojiType = {

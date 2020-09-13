@@ -4,6 +4,7 @@ import MainNavPresenter from "./presenter/main-nav.js";
 import MoviePresenter from "./presenter/movie-list.js";
 import UserPresenter from "./presenter/user.js";
 import FilmsModel from "./model/movies.js";
+import {UpdateType} from "./const.js";
 import NavModel from "./model/nav.js";
 import Api from "./api.js";
 
@@ -26,13 +27,12 @@ const mainNavPresenter = new MainNavPresenter(siteMainElement, navModel, filmsMo
 // основной контент
 const movieListPresenter = new MoviePresenter(siteMainElement, siteFooterElement, navModel, filmsModel, api);
 
+userPresenter.init();
+mainNavPresenter.init();
+movieListPresenter.init();
+
+render(siteFooterElement, new FooterStatisticsView(filmsModel.getFilms()), RenderPosition.BEFOREEND);
+
 api.getFilms().then((films) => {
-  filmsModel.setFilms(films);
-
-  userPresenter.init();
-  mainNavPresenter.init();
-  movieListPresenter.init();
-
-  // статистика в футоре
-  render(siteFooterElement, new FooterStatisticsView(filmsModel.getFilms()), RenderPosition.BEFOREEND);
+  filmsModel.setFilms(UpdateType.INIT, films);
 });

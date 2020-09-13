@@ -8,6 +8,7 @@ import FilmsListExtraSectionView from "../view/film-extra.js";
 import ShowMoreButtonView from "../view/show-more-button.js";
 import FilmsSectionView from "../view/films-section.js";
 import NoFilmsDataView from "../view/no-films.js";
+import LoadingView from "../view/loading.js";
 import StatisticsPresenter from "./statistics.js";
 import FilmsListView from "../view/films-list.js";
 import SortingView from "../view/sorting.js";
@@ -25,6 +26,8 @@ export default class MovieList {
     this._renderCardsCount = CARDS_AMOUNT_PER_STEP;
     this._filmPresenter = {};
 
+    this._isLoading = true;
+
     this._api = api;
 
     this._currentSortType = SortType.DEFAULT;
@@ -37,6 +40,8 @@ export default class MovieList {
     this._staticticsComponent = null;
 
     this._noFilmsComponent = new NoFilmsDataView();
+    this._loadingComponent = new LoadingView();
+
     this._extraSectionTopRatingComponent = new FilmsListExtraSectionView(`Top rated`);
     this._extraSectionMostCommentedComponent = new FilmsListExtraSectionView(`Most commented`);
 
@@ -52,8 +57,8 @@ export default class MovieList {
     this._navModel.addObserver(this._handleModelEvent);
 
     this._renderMainContent();
-    this._renderExtraRating();
-    this._renderExtraCommented();
+    // this._renderExtraRating();
+    // this._renderExtraCommented();
   }
 
 
@@ -130,6 +135,11 @@ export default class MovieList {
       case UpdateType.COMMENT:
         this._filmPresenter[item.id].init(item);
         break;
+      case UpdateType.INIT:
+        this._isLoading = false;
+        remove(this._loadingComponent);
+        this._renderMainContent();
+        break;
     }
   }
 
@@ -204,6 +214,11 @@ export default class MovieList {
   }
 
 
+  _renderLoading() {
+    render(this._filmsSectionComponent, this._loadingComponent, RenderPosition.BEFOREEND);
+  }
+
+
   _clearMainContent({resetRenderedCardCount = false, resetSortType = false} = {}) {
     const cardCount = this._getFilms().length;
 
@@ -234,8 +249,15 @@ export default class MovieList {
   }
 
   _renderMainContent() {
+
     this._filmsSectionComponent = new FilmsSectionView();
     render(this._siteMainElement, this._filmsSectionComponent, RenderPosition.BEFOREEND);
+
+
+    if (this._isLoading) {
+      this._renderLoading();
+      return;
+    }
 
     const films = this._getFilms();
     const cardCount = films.length;
