@@ -19,7 +19,6 @@ const CARDS_EXTRA_AMOUNT = 2;
 
 export default class MovieList {
   constructor(siteMainElement, siteFooterElement, navModel, filmsModel, api) {
-
     this._navModel = navModel;
     this._filmsModel = filmsModel;
 
@@ -33,11 +32,15 @@ export default class MovieList {
     this._currentSortType = SortType.DEFAULT;
     this._siteMainElement = siteMainElement;
     this._siteFooterComponent = siteFooterElement;
-    this._showMoreButtonComponent = null;
+
     this._sortingComponent = null;
     this._filmsListComponent = null;
     this.filmDetailsComponent = null;
     this._staticticsComponent = null;
+    this._filmsSectionComponent = null;
+    this._showMoreButtonComponent = null;
+    this._filmsListTopRatingContainerComponent = null;
+    this._filmsListMostCommentedContainerComponent = null;
 
     this._noFilmsComponent = new NoFilmsDataView();
     this._loadingComponent = new LoadingView();
@@ -193,10 +196,10 @@ export default class MovieList {
 
     if (filmsRating.length > 0) {
       render(this._filmsSectionComponent, this._extraSectionTopRatingComponent, RenderPosition.BEFOREEND);
-      const filmsListTopRatingContainerComponent = new FilmsListContainerView();
-      render(this._extraSectionTopRatingComponent, filmsListTopRatingContainerComponent, RenderPosition.BEFOREEND);
+      this._filmsListTopRatingContainerComponent = new FilmsListContainerView();
+      render(this._extraSectionTopRatingComponent, this._filmsListTopRatingContainerComponent, RenderPosition.BEFOREEND);
 
-      this._renderCards(filmsRating, filmsListTopRatingContainerComponent);
+      this._renderCards(filmsRating, this._filmsListTopRatingContainerComponent);
     }
   }
 
@@ -218,7 +221,6 @@ export default class MovieList {
     render(this._filmsSectionComponent, this._loadingComponent, RenderPosition.BEFOREEND);
   }
 
-
   _clearMainContent({resetRenderedCardCount = false, resetSortType = false} = {}) {
     const cardCount = this._getFilms().length;
 
@@ -229,8 +231,11 @@ export default class MovieList {
 
     remove(this._sortingComponent);
     remove(this._noFilmsComponent);
-    remove(this._showMoreButtonComponent);
     remove(this._filmsSectionComponent);
+    remove(this._showMoreButtonComponent);
+    remove(this._filmsListTopRatingContainerComponent);
+    remove(this._filmsListMostCommentedContainerComponent);
+
 
     if (this._staticticsPresenter) {
       this._staticticsPresenter.destroy();
@@ -249,6 +254,9 @@ export default class MovieList {
   }
 
   _renderMainContent() {
+    if (this._filmsSectionComponent) {
+      remove(this._filmsSectionComponent);
+    }
 
     this._filmsSectionComponent = new FilmsSectionView();
     render(this._siteMainElement, this._filmsSectionComponent, RenderPosition.BEFOREEND);
@@ -283,6 +291,9 @@ export default class MovieList {
     if (cardCount > this._renderCardsCount) {
       this._renderShowMoreButton();
     }
+
+    this._renderExtraRating();
+    this._renderExtraCommented();
   }
 
 
