@@ -1,7 +1,5 @@
+import {formatRunTime, formatDateOfProduction} from "../utils/film.js";
 import {COMMENTS_COUNT} from "../const.js";
-import {GENRES_COUNT} from "../const.js";
-import {formatRunTime} from "../utils/film.js";
-
 import SmartView from "./smart.js";
 
 const createFilmCardTemplate = (film = {}) => {
@@ -12,20 +10,19 @@ const createFilmCardTemplate = (film = {}) => {
     rating = ``,
     dateOfProduction = ``,
     runtime = ``,
-    genres = ``,
+    genre = ``,
     commentsCount = ``,
     isWatchlist = ``,
     isWatched = ``,
     isFavorite = ``
   } = film;
 
+  const dateOfProductionTemplate = formatDateOfProduction(dateOfProduction);
+
   const watchlistClassName = isWatchlist ? `film-card__controls-item--add-to-watchlist film-card__controls-item--active` : `film-card__controls-item--add-to-watchlist`;
   const watchedClassName = isWatched ? `film-card__controls-item--mark-as-watched film-card__controls-item--active` : `film-card__controls-item--mark-as-watched`;
   const favoriteClassName = isFavorite ? `film-card__controls-item--favorite film-card__controls-item--active` : `film-card__controls-item--favorite`;
-  // ограничиваем длинну описания
   const filmCardDescription = description.length < 140 ? description : description.slice(0, 139) + `...`;
-  // если в списке жанром не один элемент, то просто беру первый
-  const genresCurrentValue = genres > GENRES_COUNT ? GENRES_COUNT : genres;
 
   let commentsCurrentValue = commentsCount > COMMENTS_COUNT ? COMMENTS_COUNT : commentsCount;
 
@@ -37,11 +34,11 @@ const createFilmCardTemplate = (film = {}) => {
       <h3 class="film-card__title">${title}</h3>
       <p class="film-card__rating">${rating}</p>
       <p class="film-card__info">
-        <span class="film-card__year">${dateOfProduction}</span>
+        <span class="film-card__year">${dateOfProductionTemplate}</span>
         <span class="film-card__duration">${filmRunTime}</span>
-        <span class="film-card__genre">${genresCurrentValue}</span>
+        <span class="film-card__genre">${genre}</span>
       </p>
-      <img src="./images/posters/${poster}" alt="${title}" class="film-card__poster">
+      <img src="${poster}" alt="${title}" class="film-card__poster">
       <p class="film-card__description">${filmCardDescription}</p>
       <a class="film-card__comments">${commentsCurrentValue} comments</a>
       <form class="film-card__controls">
@@ -83,8 +80,15 @@ export default class FilmCard extends SmartView {
   _watchedClickHandler(evt) {
     evt.preventDefault();
     evt.target.classList.toggle(`film-card__controls-item--active`);
+
+    if (this._data.watchingDate) {
+      this._data.watchingDate = null;
+    } else {
+      this._data.watchingDate = new Date();
+    }
+
     this._callback.watchedClick();
-    this.updateData({isWatched: !this._data.isWatched}, true);
+    this.updateData({isWatched: !this._data.isWatched, watchingDate: this._data.watchingDate}, true);
   }
 
   _watchlistClickHandler(evt) {

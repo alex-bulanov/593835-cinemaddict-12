@@ -2,7 +2,6 @@ export const GENRES = [`Film-Noir`, `Drama`, `Musical`, `Sci-Fi`, `Animation`, `
 export const EMOJI = [`smile`, `sleeping`, `angry`, `puke`];
 export const COMMENTS_COUNT = 5;
 export const GENRES_COUNT = 1;
-export const POSTERS = [`made-for-each-other.png`, `popeye-meets-sinbad.png`, `sagebrush-trail.jpg`, `santa-claus-conquers-the-martians.jpg`, `the-dance-of-life.jpg`, `the-great-flamarion.jpg`, `the-man-with-the-golden-arm.jpg`];
 
 export const NavType = {
   ALL: `all`,
@@ -31,6 +30,8 @@ export const UpdateType = {
   MINOR: `MINOR`,
   MAJOR: `MAJOR`,
   STATS: `STATS`,
+  COMMENT: `COMMENT`,
+  INIT: `INIT`,
 };
 
 export const EmojiType = {
@@ -53,6 +54,6 @@ export const UserType = {
 };
 
 export const Keys = {
-  ENTER: 13,
-  CONTROL: 17
+  ENTER: `Enter`,
+  CONTROL: `ControlLeft`
 };

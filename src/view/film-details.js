@@ -3,7 +3,7 @@ import {createCommentTemplate} from "./film-comment";
 import {EmojiType} from "../const.js";
 import {Keys} from "../const.js";
 import SmartView from "./smart";
-import {nanoid} from 'nanoid';
+// import {nanoid} from 'nanoid';
 // import moment from "moment";
 import he from "he";
 
@@ -106,7 +106,7 @@ const createFilmDetailsTemplate = (data = {}, comments) => {
           </div>
           <div class="film-details__info-wrap">
             <div class="film-details__poster">
-              <img class="film-details__poster-img" src="./images/posters/${posterFull}" alt="${title}">
+              <img class="film-details__poster-img" src="./${posterFull}" alt="${title}">
 
               <p class="film-details__age">${ageRating}</p>
             </div>
@@ -228,7 +228,13 @@ export default class FilmCardDetails extends SmartView {
   }
 
   _watchedClickHandler() {
-    this.updateData({isWatched: !this._data.isWatched}, false);
+    if (this._data.watchingDate) {
+      this._data.watchingDate = null;
+    } else {
+      this._data.watchingDate = new Date();
+    }
+
+    this.updateData({isWatched: !this._data.isWatched, watchingDate: this._data.watchingDate}, false);
     this._callback.watchedClick(this._data);
   }
 
@@ -251,7 +257,7 @@ export default class FilmCardDetails extends SmartView {
       let pressed = new Set();
 
       document.addEventListener(`keydown`, function (event) {
-        pressed.add(event.keyCode);
+        pressed.add(event.code);
 
         for (let code of codes) {
           if (!pressed.has(code)) {
@@ -264,7 +270,7 @@ export default class FilmCardDetails extends SmartView {
       });
 
       document.addEventListener(`keyup`, function (event) {
-        pressed.delete(event.keyCode);
+        pressed.delete(event.code);
       });
 
     }
@@ -278,11 +284,11 @@ export default class FilmCardDetails extends SmartView {
 
     if (message !== `` && commentEmoji !== ``) {
       const comment = {
-        id: nanoid(),
-        author: `Это сделал Я`,
+        id: ``,
+        author: ``,
         emoji: commentEmoji,
         text: message,
-        date: new Date()
+        date: new Date().toISOString(),
       };
 
       document.querySelector(`.film-details__comment-input`).value = null;

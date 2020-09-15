@@ -14,7 +14,9 @@ export const sortedGenres = (data) => {
   const allGenres = [];
 
   data.forEach((film) => {
-    allGenres.push(film.genre);
+    if (film.genre) {
+      allGenres.push(film.genre);
+    }
   });
 
   let amountWatchedGenres = {};
@@ -59,19 +61,22 @@ export const userRank = (data) => {
 };
 
 export const totalDuration = (data) => {
-  if (data.length === 0) {
-    return data.length;
-  }
-
   let totalH = 0;
   let totalM = 0;
-  data.forEach((item) => {
-    totalH += +moment(item.runtime).format(`HH`);
-    totalM += +moment(item.runtime).format(`MM`);
-  });
 
-  totalH += Math.floor(totalM / 60);
-  totalM = totalM % 60;
+  if (data.length === 0) {
+    totalH = 0;
+    totalM = 0;
+  } else {
+
+    data.forEach((item) => {
+      totalH += +moment(item.runtime).format(`HH`);
+      totalM += +moment(item.runtime).format(`MM`);
+    });
+
+    totalH += Math.floor(totalM / 60);
+    totalM = totalM % 60;
+  }
 
   return [totalH, totalM];
 };
