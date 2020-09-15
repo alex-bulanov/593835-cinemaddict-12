@@ -131,7 +131,10 @@ export default class MovieList {
         this._clearMainContent({resetRenderedCardCount: true, resetSortType: true});
         this._renderStatistics();
         break;
-      case UpdateType.COMMENT:
+      case UpdateType.DELETE_COMMENT:
+        this._filmPresenter[item.id].init(item);
+        break;
+      case UpdateType.ADD_COMMENT:
         this._filmPresenter[item.id].init(item);
         break;
       case UpdateType.INIT:

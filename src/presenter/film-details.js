@@ -2,6 +2,12 @@ import {render, RenderPosition, remove, replace} from "../utils/render.js";
 import FilmCardDetailsView from "../view/film-details.js";
 import {UserAction, UpdateType} from "../const.js";
 
+export const State = {
+  SAVING: `SAVING`,
+  DELETING: `DELETING`,
+};
+
+
 export default class FilmDetails {
   constructor(siteFooterComponent, changeData, changeMode, api) {
     this._siteFooterComponent = siteFooterComponent;
@@ -38,6 +44,7 @@ export default class FilmDetails {
     this._filmDetailsComponent.setCrossClickHandler(this._handleCrossClick);
     this._escKeyDownHandler = this._escKeyDownHandler.bind(this);
 
+
     if (prevDetailsComponent === null) {
       render(this._siteFooterComponent, this._filmDetailsComponent, RenderPosition.BEFOREEND);
       document.addEventListener(`keydown`, this._escKeyDownHandler);
@@ -70,19 +77,26 @@ export default class FilmDetails {
   }
 
   _handleDeleteClick(comment) {
-
-    // this._commentsModel.deleteComment(UpdateType.DELETE_COMMENT, comment);
-    // this._commentsModel.deleteComment(UserAction.DELETE_COMMENT, UpdateType.DELETE_COMMENT, comment);
-
     this._api.deleteComment(comment)
       .then(() => {
         this._commentsModel.deleteComment(UpdateType.DELETE_COMMENT, comment);
       });
+
+    // .catch(() => {
+    //   this._taskPresenter[update.id].setViewState(TaskPresenterViewState.ABORTING);
+    // });
   }
 
   _handleCommentSubmit(comment) {
-    this._commentsModel.addComment(UpdateType.MINOR, comment);
-    // this._commentsModel.addComment(UpdateType.ADD_COMMENT, comment);1
+    // this._commentsModel.addComment(UpdateType.MINOR, comment);
+    // this._commentsModel.addComment(UpdateType.ADD_COMMENT, comment);
+
+    this._api.addComment(comment)
+      .then(() => {
+        // .then((response) => {
+        // console.log(response)
+        this._commentsModel.addComment(UpdateType.ADD_COMMENT, comment);
+      });
   }
 
   _escKeyDownHandler(evt) {

@@ -2,7 +2,6 @@ import CommentsModel from "./model/comments.js";
 
 const Method = {
   GET: `GET`,
-  PUT: `PUT`,
   POST: `POST`,
   DELETE: `DELETE`
 };
@@ -17,6 +16,7 @@ export default class ApiComment {
     this._endPoint = endPoint;
     this._authorization = authorization;
     this._movieId = movieId;
+    this._isDel = false;
   }
 
   getComments() {
@@ -39,19 +39,23 @@ export default class ApiComment {
   // ------------------
 
   addComment(comment) {
+    this._isDel = false;
+
     return this._load({
       url: `comments`,
       method: Method.POST,
       body: JSON.stringify(CommentsModel.adaptToServer(comment)),
-      headers: new Headers({"Content-Type": `application/json`})
     })
       .then(ApiComment.toJSON)
       .then(CommentsModel.adaptToClient);
   }
 
   deleteComment(comment) {
+    this._isDel = true;
+    this._commentId = comment.id;
+
     return this._load({
-      url: `comments/${comment.id}`,
+      url: `comments`,
       method: Method.DELETE,
     });
   }
@@ -66,7 +70,7 @@ export default class ApiComment {
   }) {
     headers.append(`Authorization`, this._authorization);
 
-    return fetch(`${this._endPoint}/${url}/${this._movieId}`, {method, body, headers})
+    return fetch(`${this._endPoint}/${url}/${this._isDel ? this._commentId : this._movieId}`, {method, body, headers})
       .then(ApiComment.checkStatus)
       .catch(ApiComment.catchError);
   }

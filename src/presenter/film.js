@@ -103,10 +103,12 @@ export default class Film {
     this._showCardDetails();
   }
 
-  _handleCommentsEvent() {
+  _handleCommentsEvent(updateType) {
 
-    // this._changeData(UserAction.UPDATE_FILM, UpdateType.COMMENT, Object.assign({}, this._film, {commentsCount: this._commentsModel.getComments().length}));
-    // this._detailsPresenter.init(this._film, this._commentsModel);
+    // console.log(`event:`, updateType)
+
+    this._changeData(UserAction.UPDATE_FILM, updateType, Object.assign({}, this._film, {commentsCount: this._commentsModel.getComments().length}));
+    this._detailsPresenter.init(this._film, this._commentsModel);
   }
 
   _showCardDetails() {

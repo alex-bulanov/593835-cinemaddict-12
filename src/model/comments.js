@@ -39,7 +39,6 @@ export default class Comments extends Observer {
     this._notify(updateType, update);
   }
 
-
   deleteComment(updateType, update) {
     const index = this._comments.findIndex((comment) => comment.id === update.id);
 
@@ -55,7 +54,6 @@ export default class Comments extends Observer {
     this._notify(updateType, update);
   }
 
-
   static adaptToClient(comment) {
     const adaptedComment = Object.assign({}, comment, {
       emoji: comment.emotion,
@@ -64,7 +62,6 @@ export default class Comments extends Observer {
 
     delete adaptedComment.emotion;
     delete adaptedComment.comment;
-
 
     return adaptedComment;
   }
@@ -76,8 +73,10 @@ export default class Comments extends Observer {
     }
     );
 
+    delete adaptedComment.id;
     delete adaptedComment.text;
     delete adaptedComment.emoji;
+    delete adaptedComment.author;
 
     return adaptedComment;
   }

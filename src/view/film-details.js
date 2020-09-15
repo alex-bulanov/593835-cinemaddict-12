@@ -245,6 +245,10 @@ export default class FilmCardDetails extends SmartView {
 
   _deleteClickHandler(evt) {
     evt.preventDefault();
+
+    evt.target.setAttribute(`disabled`, `disabled`);
+    evt.target.textContent = `Deleting…`;
+
     const currentCommentId = evt.target.closest(`.film-details__comment`).dataset.id;
     const currentComment = this._comments.find((comment) => comment.id === currentCommentId);
 
@@ -313,7 +317,6 @@ export default class FilmCardDetails extends SmartView {
     evt.preventDefault();
     this.updateData({emoji: evt.target.value}, false);
   }
-
 
   _descriptionInputHandler(evt) {
     evt.preventDefault();
