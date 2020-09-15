@@ -2,7 +2,9 @@ import CommentsModel from "./model/comments.js";
 
 const Method = {
   GET: `GET`,
-  PUT: `PUT`
+  PUT: `PUT`,
+  POST: `POST`,
+  DELETE: `DELETE`
 };
 
 const SuccessHTTPStatusRange = {
@@ -25,7 +27,7 @@ export default class ApiComment {
 
   updateComments(comment) {
     return this._load({
-      url: `movies`,
+      url: `comments`,
       method: Method.PUT,
       body: JSON.stringify(CommentsModel.adaptToServer(comment)),
       headers: new Headers({"Content-Type": `application/json`})
@@ -33,6 +35,28 @@ export default class ApiComment {
       .then(ApiComment.toJSON)
       .then(CommentsModel.adaptToClient);
   }
+
+  // ------------------
+
+  addComment(comment) {
+    return this._load({
+      url: `comments`,
+      method: Method.POST,
+      body: JSON.stringify(CommentsModel.adaptToServer(comment)),
+      headers: new Headers({"Content-Type": `application/json`})
+    })
+      .then(ApiComment.toJSON)
+      .then(CommentsModel.adaptToClient);
+  }
+
+  deleteComment(comment) {
+    return this._load({
+      url: `comments/${comment.id}`,
+      method: Method.DELETE,
+    });
+  }
+
+  // ------------------
 
   _load({
     url,

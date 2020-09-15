@@ -70,11 +70,19 @@ export default class FilmDetails {
   }
 
   _handleDeleteClick(comment) {
-    this._commentsModel.deleteComment(UpdateType.MINOR, comment);
+
+    // this._commentsModel.deleteComment(UpdateType.DELETE_COMMENT, comment);
+    // this._commentsModel.deleteComment(UserAction.DELETE_COMMENT, UpdateType.DELETE_COMMENT, comment);
+
+    this._api.deleteComment(comment)
+      .then(() => {
+        this._commentsModel.deleteComment(UpdateType.DELETE_COMMENT, comment);
+      });
   }
 
   _handleCommentSubmit(comment) {
     this._commentsModel.addComment(UpdateType.MINOR, comment);
+    // this._commentsModel.addComment(UpdateType.ADD_COMMENT, comment);1
   }
 
   _escKeyDownHandler(evt) {

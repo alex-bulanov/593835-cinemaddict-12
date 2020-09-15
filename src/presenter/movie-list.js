@@ -60,8 +60,6 @@ export default class MovieList {
     this._navModel.addObserver(this._handleModelEvent);
 
     this._renderMainContent();
-    // this._renderExtraRating();
-    // this._renderExtraCommented();
   }
 
 
@@ -103,11 +101,9 @@ export default class MovieList {
   _handleViewAction(actionType, updateType, update) {
     switch (actionType) {
       case UserAction.UPDATE_FILM:
-
         this._api.updateFilm(update).then((response) => {
           this._filmsModel.updateFilm(updateType, response);
         });
-
         break;
       case UserAction.DELETE_COMMENT:
         this._filmsModel.updateFilm(updateType, update);
