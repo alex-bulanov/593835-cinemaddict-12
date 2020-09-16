@@ -8,10 +8,10 @@ import FilmsListExtraSectionView from "../view/film-extra.js";
 import ShowMoreButtonView from "../view/show-more-button.js";
 import FilmsSectionView from "../view/films-section.js";
 import NoFilmsDataView from "../view/no-films.js";
-import LoadingView from "../view/loading.js";
 import StatisticsPresenter from "./statistics.js";
 import FilmsListView from "../view/films-list.js";
 import SortingView from "../view/sorting.js";
+import LoadingView from "../view/loading.js";
 import FilmPresenter from "./film.js";
 
 const CARDS_AMOUNT_PER_STEP = 5;
@@ -214,7 +214,6 @@ export default class MovieList {
       this._renderCards(filmsCommented, this._filmsListMostCommentedContainerComponent);
     }
   }
-
 
   _renderLoading() {
     render(this._filmsSectionComponent, this._loadingComponent, RenderPosition.BEFOREEND);

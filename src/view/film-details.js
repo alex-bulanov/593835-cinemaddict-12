@@ -3,8 +3,6 @@ import {createCommentTemplate} from "./film-comment";
 import {EmojiType} from "../const.js";
 import {Keys} from "../const.js";
 import SmartView from "./smart";
-// import {nanoid} from 'nanoid';
-// import moment from "moment";
 import he from "he";
 
 const createGenresTemplate = (genres) => {
@@ -50,7 +48,6 @@ const createFilmDetailsTemplate = (data = {}, comments) => {
   const actorsList = createActorsList(actors);
   const writersList = createWritersList(writers);
 
-
   const filmComments = comments.slice(0, commentsCount).map(createCommentTemplate).join(``);
   const commnetAmount = comments.length;
   const filmRunTime = formatRunTime(runtime);
@@ -58,7 +55,8 @@ const createFilmDetailsTemplate = (data = {}, comments) => {
 
   const commentDescription = ``;
   let currentEmoji = emoji ? emoji : EmojiType.SMILE;
-  let currentCommentEmoji = emoji;
+  let currentCommentEmoji = emoji ? emoji : ``;
+
 
   const createEmojiTemplate = () => {
     return (
@@ -95,7 +93,6 @@ const createFilmDetailsTemplate = (data = {}, comments) => {
       </div>`
     );
   };
-
 
   return (
     `<section class="film-details">
@@ -215,6 +212,10 @@ export default class FilmCardDetails extends SmartView {
 
   getTemplate() {
     return createFilmDetailsTemplate(this._data, this._comments);
+  }
+
+  setBlockState() {
+    this.getElement().querySelector(`.film-details__inner`).setAttribute(`disabled`, `disabled`);
   }
 
   _clickHandler(evt) {

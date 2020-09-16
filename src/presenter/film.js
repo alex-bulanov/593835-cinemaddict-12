@@ -104,9 +104,6 @@ export default class Film {
   }
 
   _handleCommentsEvent(updateType) {
-
-    // console.log(`event:`, updateType)
-
     this._changeData(UserAction.UPDATE_FILM, updateType, Object.assign({}, this._film, {commentsCount: this._commentsModel.getComments().length}));
     this._detailsPresenter.init(this._film, this._commentsModel);
   }

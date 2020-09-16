@@ -2,11 +2,10 @@ import {render, RenderPosition, remove, replace} from "../utils/render.js";
 import FilmCardDetailsView from "../view/film-details.js";
 import {UserAction, UpdateType} from "../const.js";
 
-export const State = {
-  SAVING: `SAVING`,
-  DELETING: `DELETING`,
-};
-
+// export const State = {
+//   SAVING: `SAVING`,
+//   DELETING: `DELETING`,
+// };
 
 export default class FilmDetails {
   constructor(siteFooterComponent, changeData, changeMode, api) {
@@ -80,22 +79,28 @@ export default class FilmDetails {
     this._api.deleteComment(comment)
       .then(() => {
         this._commentsModel.deleteComment(UpdateType.DELETE_COMMENT, comment);
-      });
+      })
 
-    // .catch(() => {
-    //   this._taskPresenter[update.id].setViewState(TaskPresenterViewState.ABORTING);
-    // });
+      .catch(() => {
+        this._filmDetailsComponent.updateData({}, false);
+      });
   }
 
   _handleCommentSubmit(comment) {
-    // this._commentsModel.addComment(UpdateType.MINOR, comment);
-    // this._commentsModel.addComment(UpdateType.ADD_COMMENT, comment);
+    this._filmDetailsComponent.setBlockState();
 
     this._api.addComment(comment)
+      // .then((response) => {
       .then(() => {
-        // .then((response) => {
+
         // console.log(response)
-        this._commentsModel.addComment(UpdateType.ADD_COMMENT, comment);
+
+        // this._commentsModel.addComment(UpdateType.ADD_COMMENT, comment);
+      })
+      .catch(() => {
+        this._filmDetailsComponent.shake(() => {
+          this._filmDetailsComponent.updateData({emoji: false}, false);
+        });
       });
   }
 

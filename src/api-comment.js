@@ -36,8 +36,6 @@ export default class ApiComment {
       .then(CommentsModel.adaptToClient);
   }
 
-  // ------------------
-
   addComment(comment) {
     this._isDel = false;
 
@@ -59,8 +57,6 @@ export default class ApiComment {
       method: Method.DELETE,
     });
   }
-
-  // ------------------
 
   _load({
     url,
