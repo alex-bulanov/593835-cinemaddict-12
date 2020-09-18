@@ -42,10 +42,13 @@ export default class ApiComment {
     return this._load({
       url: `comments`,
       method: Method.POST,
+      headers: new Headers({"Content-Type": `application/json`}),
       body: JSON.stringify(CommentsModel.adaptToServer(comment)),
     })
       .then(ApiComment.toJSON)
-      .then(CommentsModel.adaptToClient);
+      .then((response) => {
+        return response.comments.map(CommentsModel.adaptToClient);
+      });
   }
 
   deleteComment(comment) {

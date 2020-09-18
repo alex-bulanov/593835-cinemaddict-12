@@ -34,7 +34,7 @@ const createFilmDetailsTemplate = (data = {}, comments) => {
     runtime = ``,
     country = ``,
     genres = ``,
-    commentsCount = ``,
+
     description = ``,
     ageRating = ``,
     isWatchlist = ``,
@@ -48,7 +48,7 @@ const createFilmDetailsTemplate = (data = {}, comments) => {
   const actorsList = createActorsList(actors);
   const writersList = createWritersList(writers);
 
-  const filmComments = comments.slice(0, commentsCount).map(createCommentTemplate).join(``);
+  const filmComments = comments.slice(0, comments.length).map(createCommentTemplate).join(``);
   const commnetAmount = comments.length;
   const filmRunTime = formatRunTime(runtime);
   const fimDateOfRelease = formatDateOfRelease(dateOfRelease);
@@ -197,6 +197,7 @@ export default class FilmCardDetails extends SmartView {
     this._data = data;
     this._comments = comments;
     this._message = null;
+    this._pressed = null;
 
     this._descriptionInputHandler = this._descriptionInputHandler.bind(this);
     this._watchlistClickHandler = this._watchlistClickHandler.bind(this);
@@ -208,10 +209,22 @@ export default class FilmCardDetails extends SmartView {
     this._clickHandler = this._clickHandler.bind(this);
     this._commentSend = this._commentSend.bind(this);
     this._setInnerHandlers();
+
+
+    this._runOnKeys = this._runOnKeys.bind(this);
+    this._keyDownHandler = this._keyDownHandler.bind(this);
+    this._keyUpHandler = this._keyUpHandler.bind(this);
+
   }
 
   getTemplate() {
     return createFilmDetailsTemplate(this._data, this._comments);
+  }
+
+  removeElement() {
+    document.removeEventListener(`keydown`, this._keyDownHandler);
+    document.removeEventListener(`keyup`, this._keyUpHandler);
+    super.removeElement();
   }
 
   setBlockState() {
@@ -256,31 +269,34 @@ export default class FilmCardDetails extends SmartView {
     this._callback.deleteClick(currentComment);
   }
 
-  _commentSubmitHandler() {
 
-    function runOnKeys(func, ...codes) {
-      let pressed = new Set();
+  _keyDownHandler(event) {
+    this._pressed.add(event.code);
+    const codes = [Keys.CONTROL, Keys.ENTER];
 
-      document.addEventListener(`keydown`, function (event) {
-        pressed.add(event.code);
-
-        for (let code of codes) {
-          if (!pressed.has(code)) {
-            return;
-          }
-        }
-        pressed.clear();
-
-        func();
-      });
-
-      document.addEventListener(`keyup`, function (event) {
-        pressed.delete(event.code);
-      });
-
+    for (let code of codes) {
+      if (!this._pressed.has(code)) {
+        return;
+      }
     }
+    this._pressed.clear();
 
-    runOnKeys(this._commentSend, Keys.CONTROL, Keys.ENTER);
+    this._commentSend();
+  }
+
+  _keyUpHandler(event) {
+    this._pressed.delete(event.code);
+  }
+
+  _runOnKeys() {
+    this._pressed = new Set();
+
+    document.addEventListener(`keydown`, this._keyDownHandler);
+    document.addEventListener(`keyup`, this._keyUpHandler);
+  }
+
+  _commentSubmitHandler() {
+    this._runOnKeys();
   }
 
   _commentSend() {

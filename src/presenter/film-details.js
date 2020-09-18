@@ -2,11 +2,6 @@ import {render, RenderPosition, remove, replace} from "../utils/render.js";
 import FilmCardDetailsView from "../view/film-details.js";
 import {UserAction, UpdateType} from "../const.js";
 
-// export const State = {
-//   SAVING: `SAVING`,
-//   DELETING: `DELETING`,
-// };
-
 export default class FilmDetails {
   constructor(siteFooterComponent, changeData, changeMode, api) {
     this._siteFooterComponent = siteFooterComponent;
@@ -25,14 +20,13 @@ export default class FilmDetails {
     this._escKeyDownHandler = this._escKeyDownHandler.bind(this);
     this._handleDeleteClick = this._handleDeleteClick.bind(this);
     this._handleCrossClick = this._handleCrossClick.bind(this);
-
   }
 
   init(film, model) {
     this._film = film;
     this._commentsModel = model;
-    const prevDetailsComponent = this._filmDetailsComponent;
 
+    const prevDetailsComponent = this._filmDetailsComponent;
     this._filmDetailsComponent = new FilmCardDetailsView(this._film, this._commentsModel.getComments());
 
     this._filmDetailsComponent.setWatchlistCardClickHandler(this._handleWatchlistClick);
@@ -42,7 +36,6 @@ export default class FilmDetails {
     this._filmDetailsComponent.setDeleteClickHandler(this._handleDeleteClick);
     this._filmDetailsComponent.setCrossClickHandler(this._handleCrossClick);
     this._escKeyDownHandler = this._escKeyDownHandler.bind(this);
-
 
     if (prevDetailsComponent === null) {
       render(this._siteFooterComponent, this._filmDetailsComponent, RenderPosition.BEFOREEND);
@@ -60,6 +53,7 @@ export default class FilmDetails {
   }
 
   destroy() {
+    document.removeEventListener(`keydown`, this._escKeyDownHandler);
     remove(this._filmDetailsComponent);
   }
 
@@ -86,16 +80,32 @@ export default class FilmDetails {
       });
   }
 
+  _findNewComment(array) {
+    let newCommnet = null;
+    let currentCommentsId = [];
+    const currentComments = this._commentsModel.getComments();
+    if (currentComments.length === 0) {
+      newCommnet = array[0];
+    } else {
+      this._commentsModel.getComments().forEach((element) => {
+        currentCommentsId.push(element.id);
+      });
+
+      array.forEach((element) => {
+        if (!currentCommentsId.includes(element.id)) {
+          newCommnet = element;
+        }
+      });
+    }
+    return newCommnet;
+  }
+
   _handleCommentSubmit(comment) {
     this._filmDetailsComponent.setBlockState();
-
     this._api.addComment(comment)
-      // .then((response) => {
-      .then(() => {
-
-        // console.log(response)
-
-        // this._commentsModel.addComment(UpdateType.ADD_COMMENT, comment);
+      .then((response) => {
+        const newCommnet = this._findNewComment(response);
+        this._commentsModel.addComment(UpdateType.ADD_COMMENT, newCommnet);
       })
       .catch(() => {
         this._filmDetailsComponent.shake(() => {

@@ -19,6 +19,7 @@ export default class Film {
     this._changeMode = changeMode;
 
     this._filmDetailsComponent = null;
+
     this._filmCardComponent = null;
     this._mode = Mode.DEFAULT;
 
@@ -30,6 +31,7 @@ export default class Film {
     this._handleWatchedClick = this._handleWatchedClick.bind(this);
     this._handleCardClick = this._handleCardClick.bind(this);
     this._isFirstInit = true;
+
   }
 
   init(film) {
@@ -74,9 +76,7 @@ export default class Film {
   }
 
   resetView() {
-
     if (this._mode !== Mode.DEFAULT) {
-
       this._detailsPresenter.destroy();
       this._mode = Mode.DEFAULT;
     }

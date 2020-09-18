@@ -25,6 +25,11 @@ export default class MovieList {
     this._renderCardsCount = CARDS_AMOUNT_PER_STEP;
     this._filmPresenter = {};
 
+    // -----
+    this._filmExtraCommentPresenter = {};
+    this._filmExtraRatingPresenter = {};
+    // -----
+
     this._isLoading = true;
 
     this._api = api;
@@ -62,7 +67,6 @@ export default class MovieList {
     this._renderMainContent();
   }
 
-
   _renderSorting() {
     if (this._sortingComponent !== null) {
       this._sortingComponent = null;
@@ -93,6 +97,16 @@ export default class MovieList {
   }
 
   _handleModeChange() {
+    // ------
+    Object
+      .values(this._filmExtraCommentPresenter)
+      .forEach((presenter) => presenter.resetView());
+
+    Object
+      .values(this._filmExtraRatingPresenter)
+      .forEach((presenter) => presenter.resetView());
+    // ------
+
     Object
       .values(this._filmPresenter)
       .forEach((presenter) => presenter.resetView());
@@ -198,7 +212,11 @@ export default class MovieList {
       this._filmsListTopRatingContainerComponent = new FilmsListContainerView();
       render(this._extraSectionTopRatingComponent, this._filmsListTopRatingContainerComponent, RenderPosition.BEFOREEND);
 
-      this._renderCards(filmsRating, this._filmsListTopRatingContainerComponent);
+      filmsRating.forEach((film) => {
+        const filmPresenter = new FilmPresenter(this._siteFooterComponent, this._filmsListTopRatingContainerComponent, this._handleViewAction, this._handleModeChange);
+        filmPresenter.init(film);
+        this._filmExtraRatingPresenter[film.id] = filmPresenter;
+      });
     }
   }
 
@@ -211,7 +229,11 @@ export default class MovieList {
       this._filmsListMostCommentedContainerComponent = new FilmsListContainerView();
       render(this._extraSectionMostCommentedComponent, this._filmsListMostCommentedContainerComponent, RenderPosition.BEFOREEND);
 
-      this._renderCards(filmsCommented, this._filmsListMostCommentedContainerComponent);
+      filmsCommented.forEach((film) => {
+        const filmPresenter = new FilmPresenter(this._siteFooterComponent, this._filmsListMostCommentedContainerComponent, this._handleViewAction, this._handleModeChange);
+        filmPresenter.init(film);
+        this._filmExtraCommentPresenter[film.id] = filmPresenter;
+      });
     }
   }
 

@@ -31,6 +31,7 @@ export default class Comments extends Observer {
   }
 
   addComment(updateType, update) {
+
     this._comments = [
       update,
       ...this._comments
@@ -55,6 +56,7 @@ export default class Comments extends Observer {
   }
 
   static adaptToClient(comment) {
+
     const adaptedComment = Object.assign({}, comment, {
       emoji: comment.emotion,
       text: comment.comment,
@@ -69,7 +71,7 @@ export default class Comments extends Observer {
   static adaptToServer(comment) {
     const adaptedComment = Object.assign({}, comment, {
       "comment": comment.text,
-      "emotion": comment.emoji
+      "emotion": comment.emoji,
     }
     );
 
