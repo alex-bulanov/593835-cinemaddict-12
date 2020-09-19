@@ -221,7 +221,7 @@ export default class MovieList {
   }
 
   _renderExtraRating() {
-    let filmsRating = this._filmsModel.getFilms();
+    let filmsRating = this._filmsModel.getFilms().slice();
     filmsRating = filmsRating.sort(compareRating).slice(0, CARDS_EXTRA_AMOUNT);
 
     if (filmsRating.length > 0) {
@@ -240,7 +240,7 @@ export default class MovieList {
   }
 
   _renderExtraCommented() {
-    let filmsCommented = this._filmsModel.getFilms();
+    let filmsCommented = this._filmsModel.getFilms().slice();
     filmsCommented = filmsCommented.sort(compareComments).slice(0, CARDS_EXTRA_AMOUNT);
 
     if (filmsCommented.length > 0) {
