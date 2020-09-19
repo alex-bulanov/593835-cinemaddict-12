@@ -97,7 +97,6 @@ export default class MovieList {
   }
 
   _handleModeChange() {
-    // ------
     Object
       .values(this._filmExtraCommentPresenter)
       .forEach((presenter) => presenter.resetView());
@@ -105,7 +104,6 @@ export default class MovieList {
     Object
       .values(this._filmExtraRatingPresenter)
       .forEach((presenter) => presenter.resetView());
-    // ------
 
     Object
       .values(this._filmPresenter)

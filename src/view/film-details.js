@@ -199,6 +199,7 @@ export default class FilmCardDetails extends SmartView {
     this._message = null;
     this._pressed = null;
 
+    this._resetСommentSubmitHandler = this._resetСommentSubmitHandler.bind(this);
     this._descriptionInputHandler = this._descriptionInputHandler.bind(this);
     this._watchlistClickHandler = this._watchlistClickHandler.bind(this);
     this._favoriteClickHandler = this._favoriteClickHandler.bind(this);
@@ -206,25 +207,16 @@ export default class FilmCardDetails extends SmartView {
     this._watchedClickHandler = this._watchedClickHandler.bind(this);
     this._deleteClickHandler = this._deleteClickHandler.bind(this);
     this._emojiInputHandler = this._emojiInputHandler.bind(this);
+    this._keyDownHandler = this._keyDownHandler.bind(this);
+    this._keyUpHandler = this._keyUpHandler.bind(this);
     this._clickHandler = this._clickHandler.bind(this);
     this._commentSend = this._commentSend.bind(this);
     this._setInnerHandlers();
-
-
-    this._runOnKeys = this._runOnKeys.bind(this);
-    this._keyDownHandler = this._keyDownHandler.bind(this);
-    this._keyUpHandler = this._keyUpHandler.bind(this);
 
   }
 
   getTemplate() {
     return createFilmDetailsTemplate(this._data, this._comments);
-  }
-
-  removeElement() {
-    document.removeEventListener(`keydown`, this._keyDownHandler);
-    document.removeEventListener(`keyup`, this._keyUpHandler);
-    super.removeElement();
   }
 
   setBlockState() {
@@ -269,7 +261,6 @@ export default class FilmCardDetails extends SmartView {
     this._callback.deleteClick(currentComment);
   }
 
-
   _keyDownHandler(event) {
     this._pressed.add(event.code);
     const codes = [Keys.CONTROL, Keys.ENTER];
@@ -288,15 +279,16 @@ export default class FilmCardDetails extends SmartView {
     this._pressed.delete(event.code);
   }
 
-  _runOnKeys() {
+  _commentSubmitHandler() {
     this._pressed = new Set();
 
     document.addEventListener(`keydown`, this._keyDownHandler);
     document.addEventListener(`keyup`, this._keyUpHandler);
   }
 
-  _commentSubmitHandler() {
-    this._runOnKeys();
+  _resetСommentSubmitHandler() {
+    document.removeEventListener(`keydown`, this._keyDownHandler);
+    document.removeEventListener(`keyup`, this._keyUpHandler);
   }
 
   _commentSend() {
@@ -317,6 +309,7 @@ export default class FilmCardDetails extends SmartView {
       document.querySelector(`.film-details__add-emoji-label`).innerHTML = ``;
 
       this._callback.commentSubmit(comment);
+
     }
   }
 
@@ -343,6 +336,7 @@ export default class FilmCardDetails extends SmartView {
   setHandleCommentSubmit(callback) {
     this._callback.commentSubmit = callback;
     this.getElement().querySelector(`.film-details__comment-input`).addEventListener(`focus`, this._commentSubmitHandler);
+    this.getElement().querySelector(`.film-details__comment-input`).addEventListener(`blur`, this._resetСommentSubmitHandler);
   }
 
   setCrossClickHandler(callback) {

@@ -37,6 +37,7 @@ export default class FilmDetails {
     this._filmDetailsComponent.setCrossClickHandler(this._handleCrossClick);
     this._escKeyDownHandler = this._escKeyDownHandler.bind(this);
 
+
     if (prevDetailsComponent === null) {
       render(this._siteFooterComponent, this._filmDetailsComponent, RenderPosition.BEFOREEND);
       document.addEventListener(`keydown`, this._escKeyDownHandler);
