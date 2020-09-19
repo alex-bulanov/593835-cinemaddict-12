@@ -50,6 +50,9 @@ export default class MovieList {
     this._noFilmsComponent = new NoFilmsDataView();
     this._loadingComponent = new LoadingView();
 
+    this._commenExtraId = [];
+    this._ratingExtraId = [];
+
     this._extraSectionTopRatingComponent = new FilmsListExtraSectionView(`Top rated`);
     this._extraSectionMostCommentedComponent = new FilmsListExtraSectionView(`Most commented`);
 
@@ -144,10 +147,26 @@ export default class MovieList {
         this._renderStatistics();
         break;
       case UpdateType.DELETE_COMMENT:
-        this._filmPresenter[item.id].init(item);
+        if (this._commenExtraId.includes(item.id)) {
+          this._filmExtraCommentPresenter[item.id].init(item);
+        }
+        if (this._ratingExtraId.includes(item.id)) {
+          this._filmExtraRatingPresenter[item.id].init(item);
+        }
+        if (this._filmPresenter[item.id]) {
+          this._filmPresenter[item.id].init(item);
+        }
         break;
       case UpdateType.ADD_COMMENT:
-        this._filmPresenter[item.id].init(item);
+        if (this._commenExtraId.includes(item.id)) {
+          this._filmExtraCommentPresenter[item.id].init(item);
+        }
+        if (this._ratingExtraId.includes(item.id)) {
+          this._filmExtraRatingPresenter[item.id].init(item);
+        }
+        if (this._filmPresenter[item.id]) {
+          this._filmPresenter[item.id].init(item);
+        }
         break;
       case UpdateType.INIT:
         this._isLoading = false;
@@ -211,6 +230,8 @@ export default class MovieList {
       render(this._extraSectionTopRatingComponent, this._filmsListTopRatingContainerComponent, RenderPosition.BEFOREEND);
 
       filmsRating.forEach((film) => {
+        this._ratingExtraId.push(film.id);
+
         const filmPresenter = new FilmPresenter(this._siteFooterComponent, this._filmsListTopRatingContainerComponent, this._handleViewAction, this._handleModeChange);
         filmPresenter.init(film);
         this._filmExtraRatingPresenter[film.id] = filmPresenter;
@@ -228,6 +249,8 @@ export default class MovieList {
       render(this._extraSectionMostCommentedComponent, this._filmsListMostCommentedContainerComponent, RenderPosition.BEFOREEND);
 
       filmsCommented.forEach((film) => {
+        this._commenExtraId.push(film.id);
+
         const filmPresenter = new FilmPresenter(this._siteFooterComponent, this._filmsListMostCommentedContainerComponent, this._handleViewAction, this._handleModeChange);
         filmPresenter.init(film);
         this._filmExtraCommentPresenter[film.id] = filmPresenter;
@@ -245,6 +268,7 @@ export default class MovieList {
     Object
       .values(this._filmPresenter)
       .forEach((filmPresenter) => filmPresenter.destroy());
+
     this._filmPresenter = {};
 
     remove(this._sortingComponent);
@@ -313,7 +337,6 @@ export default class MovieList {
     this._renderExtraRating();
     this._renderExtraCommented();
   }
-
 
   _renderStatistics() {
     this._staticticsPresenter = new StatisticsPresenter(this._siteMainElement, this._filmsModel);

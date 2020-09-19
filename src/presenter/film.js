@@ -38,19 +38,19 @@ export default class Film {
     this._film = film;
     this._movieId = film.id;
 
-    if (this._isFirstInit) {
+    // if (this._isFirstInit) {
 
-      const AUTHORIZATION = `Basic hS2sd3dfSwcl1sa2j`;
-      const END_POINT = `https://12.ecmascript.pages.academy/cinemaddict`;
+    const AUTHORIZATION = `Basic hS2sd3dfSwcl1sa2j`;
+    const END_POINT = `https://12.ecmascript.pages.academy/cinemaddict`;
 
-      this._api = new ApiComment(END_POINT, AUTHORIZATION, this._movieId);
+    this._api = new ApiComment(END_POINT, AUTHORIZATION, this._movieId);
 
-      this._api.getComments().then((comments) => {
-        this._commentsModel.setComments(comments);
-      });
+    this._api.getComments().then((comments) => {
+      this._commentsModel.setComments(comments);
+    });
 
-      this._isFirstInit = false;
-    }
+    //   this._isFirstInit = false;
+    // }
 
     this._commentsModel.addObserver(this._handleCommentsEvent);
 
