@@ -19,6 +19,7 @@ export default class Film {
     this._changeMode = changeMode;
 
     this._filmDetailsComponent = null;
+
     this._filmCardComponent = null;
     this._mode = Mode.DEFAULT;
 
@@ -30,25 +31,26 @@ export default class Film {
     this._handleWatchedClick = this._handleWatchedClick.bind(this);
     this._handleCardClick = this._handleCardClick.bind(this);
     this._isFirstInit = true;
+
   }
 
   init(film) {
     this._film = film;
     this._movieId = film.id;
 
-    if (this._isFirstInit) {
+    // if (this._isFirstInit) {
 
-      const AUTHORIZATION = `Basic hS2sd3dfSwcl1sa2j`;
-      const END_POINT = `https://12.ecmascript.pages.academy/cinemaddict`;
+    const AUTHORIZATION = `Basic hS2sd3dfSwcl1sa2j`;
+    const END_POINT = `https://12.ecmascript.pages.academy/cinemaddict`;
 
-      this._api = new ApiComment(END_POINT, AUTHORIZATION, this._movieId);
+    this._api = new ApiComment(END_POINT, AUTHORIZATION, this._movieId);
 
-      this._api.getComments().then((comments) => {
-        this._commentsModel.setComments(comments);
-      });
+    this._api.getComments().then((comments) => {
+      this._commentsModel.setComments(comments);
+    });
 
-      this._isFirstInit = false;
-    }
+    //   this._isFirstInit = false;
+    // }
 
     this._commentsModel.addObserver(this._handleCommentsEvent);
 
@@ -74,7 +76,6 @@ export default class Film {
   }
 
   resetView() {
-
     if (this._mode !== Mode.DEFAULT) {
 
       this._detailsPresenter.destroy();
@@ -103,8 +104,8 @@ export default class Film {
     this._showCardDetails();
   }
 
-  _handleCommentsEvent() {
-    this._changeData(UserAction.UPDATE_FILM, UpdateType.COMMENT, Object.assign({}, this._film, {commentsCount: this._commentsModel.getComments().length}));
+  _handleCommentsEvent(updateType) {
+    this._changeData(UserAction.UPDATE_FILM, updateType, Object.assign({}, this._film, {commentsCount: this._commentsModel.getComments().length}));
     this._detailsPresenter.init(this._film, this._commentsModel);
   }
 

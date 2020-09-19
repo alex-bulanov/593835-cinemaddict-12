@@ -2,7 +2,8 @@ import CommentsModel from "./model/comments.js";
 
 const Method = {
   GET: `GET`,
-  PUT: `PUT`
+  POST: `POST`,
+  DELETE: `DELETE`
 };
 
 const SuccessHTTPStatusRange = {
@@ -15,6 +16,7 @@ export default class ApiComment {
     this._endPoint = endPoint;
     this._authorization = authorization;
     this._movieId = movieId;
+    this._isDel = false;
   }
 
   getComments() {
@@ -25,13 +27,38 @@ export default class ApiComment {
 
   updateComments(comment) {
     return this._load({
-      url: `movies`,
+      url: `comments`,
       method: Method.PUT,
       body: JSON.stringify(CommentsModel.adaptToServer(comment)),
       headers: new Headers({"Content-Type": `application/json`})
     })
       .then(ApiComment.toJSON)
       .then(CommentsModel.adaptToClient);
+  }
+
+  addComment(comment) {
+    this._isDel = false;
+
+    return this._load({
+      url: `comments`,
+      method: Method.POST,
+      headers: new Headers({"Content-Type": `application/json`}),
+      body: JSON.stringify(CommentsModel.adaptToServer(comment)),
+    })
+      .then(ApiComment.toJSON)
+      .then((response) => {
+        return response.comments.map(CommentsModel.adaptToClient);
+      });
+  }
+
+  deleteComment(comment) {
+    this._isDel = true;
+    this._commentId = comment.id;
+
+    return this._load({
+      url: `comments`,
+      method: Method.DELETE,
+    });
   }
 
   _load({
@@ -42,7 +69,7 @@ export default class ApiComment {
   }) {
     headers.append(`Authorization`, this._authorization);
 
-    return fetch(`${this._endPoint}/${url}/${this._movieId}`, {method, body, headers})
+    return fetch(`${this._endPoint}/${url}/${this._isDel ? this._commentId : this._movieId}`, {method, body, headers})
       .then(ApiComment.checkStatus)
       .catch(ApiComment.catchError);
   }

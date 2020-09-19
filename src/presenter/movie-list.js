@@ -8,10 +8,10 @@ import FilmsListExtraSectionView from "../view/film-extra.js";
 import ShowMoreButtonView from "../view/show-more-button.js";
 import FilmsSectionView from "../view/films-section.js";
 import NoFilmsDataView from "../view/no-films.js";
-import LoadingView from "../view/loading.js";
 import StatisticsPresenter from "./statistics.js";
 import FilmsListView from "../view/films-list.js";
 import SortingView from "../view/sorting.js";
+import LoadingView from "../view/loading.js";
 import FilmPresenter from "./film.js";
 
 const CARDS_AMOUNT_PER_STEP = 5;
@@ -24,6 +24,11 @@ export default class MovieList {
 
     this._renderCardsCount = CARDS_AMOUNT_PER_STEP;
     this._filmPresenter = {};
+
+    // -----
+    this._filmExtraCommentPresenter = {};
+    this._filmExtraRatingPresenter = {};
+    // -----
 
     this._isLoading = true;
 
@@ -45,6 +50,9 @@ export default class MovieList {
     this._noFilmsComponent = new NoFilmsDataView();
     this._loadingComponent = new LoadingView();
 
+    this._commenExtraId = [];
+    this._ratingExtraId = [];
+
     this._extraSectionTopRatingComponent = new FilmsListExtraSectionView(`Top rated`);
     this._extraSectionMostCommentedComponent = new FilmsListExtraSectionView(`Most commented`);
 
@@ -60,10 +68,7 @@ export default class MovieList {
     this._navModel.addObserver(this._handleModelEvent);
 
     this._renderMainContent();
-    // this._renderExtraRating();
-    // this._renderExtraCommented();
   }
-
 
   _renderSorting() {
     if (this._sortingComponent !== null) {
@@ -96,6 +101,14 @@ export default class MovieList {
 
   _handleModeChange() {
     Object
+      .values(this._filmExtraCommentPresenter)
+      .forEach((presenter) => presenter.resetView());
+
+    Object
+      .values(this._filmExtraRatingPresenter)
+      .forEach((presenter) => presenter.resetView());
+
+    Object
       .values(this._filmPresenter)
       .forEach((presenter) => presenter.resetView());
   }
@@ -103,11 +116,9 @@ export default class MovieList {
   _handleViewAction(actionType, updateType, update) {
     switch (actionType) {
       case UserAction.UPDATE_FILM:
-
         this._api.updateFilm(update).then((response) => {
           this._filmsModel.updateFilm(updateType, response);
         });
-
         break;
       case UserAction.DELETE_COMMENT:
         this._filmsModel.updateFilm(updateType, update);
@@ -135,8 +146,27 @@ export default class MovieList {
         this._clearMainContent({resetRenderedCardCount: true, resetSortType: true});
         this._renderStatistics();
         break;
-      case UpdateType.COMMENT:
-        this._filmPresenter[item.id].init(item);
+      case UpdateType.DELETE_COMMENT:
+        if (this._commenExtraId.includes(item.id)) {
+          this._filmExtraCommentPresenter[item.id].init(item);
+        }
+        if (this._ratingExtraId.includes(item.id)) {
+          this._filmExtraRatingPresenter[item.id].init(item);
+        }
+        if (this._filmPresenter[item.id]) {
+          this._filmPresenter[item.id].init(item);
+        }
+        break;
+      case UpdateType.ADD_COMMENT:
+        if (this._commenExtraId.includes(item.id)) {
+          this._filmExtraCommentPresenter[item.id].init(item);
+        }
+        if (this._ratingExtraId.includes(item.id)) {
+          this._filmExtraRatingPresenter[item.id].init(item);
+        }
+        if (this._filmPresenter[item.id]) {
+          this._filmPresenter[item.id].init(item);
+        }
         break;
       case UpdateType.INIT:
         this._isLoading = false;
@@ -191,7 +221,7 @@ export default class MovieList {
   }
 
   _renderExtraRating() {
-    let filmsRating = this._filmsModel.getFilms();
+    let filmsRating = this._filmsModel.getFilms().slice();
     filmsRating = filmsRating.sort(compareRating).slice(0, CARDS_EXTRA_AMOUNT);
 
     if (filmsRating.length > 0) {
@@ -199,12 +229,18 @@ export default class MovieList {
       this._filmsListTopRatingContainerComponent = new FilmsListContainerView();
       render(this._extraSectionTopRatingComponent, this._filmsListTopRatingContainerComponent, RenderPosition.BEFOREEND);
 
-      this._renderCards(filmsRating, this._filmsListTopRatingContainerComponent);
+      filmsRating.forEach((film) => {
+        this._ratingExtraId.push(film.id);
+
+        const filmPresenter = new FilmPresenter(this._siteFooterComponent, this._filmsListTopRatingContainerComponent, this._handleViewAction, this._handleModeChange);
+        filmPresenter.init(film);
+        this._filmExtraRatingPresenter[film.id] = filmPresenter;
+      });
     }
   }
 
   _renderExtraCommented() {
-    let filmsCommented = this._filmsModel.getFilms();
+    let filmsCommented = this._filmsModel.getFilms().slice();
     filmsCommented = filmsCommented.sort(compareComments).slice(0, CARDS_EXTRA_AMOUNT);
 
     if (filmsCommented.length > 0) {
@@ -212,10 +248,15 @@ export default class MovieList {
       this._filmsListMostCommentedContainerComponent = new FilmsListContainerView();
       render(this._extraSectionMostCommentedComponent, this._filmsListMostCommentedContainerComponent, RenderPosition.BEFOREEND);
 
-      this._renderCards(filmsCommented, this._filmsListMostCommentedContainerComponent);
+      filmsCommented.forEach((film) => {
+        this._commenExtraId.push(film.id);
+
+        const filmPresenter = new FilmPresenter(this._siteFooterComponent, this._filmsListMostCommentedContainerComponent, this._handleViewAction, this._handleModeChange);
+        filmPresenter.init(film);
+        this._filmExtraCommentPresenter[film.id] = filmPresenter;
+      });
     }
   }
-
 
   _renderLoading() {
     render(this._filmsSectionComponent, this._loadingComponent, RenderPosition.BEFOREEND);
@@ -227,6 +268,7 @@ export default class MovieList {
     Object
       .values(this._filmPresenter)
       .forEach((filmPresenter) => filmPresenter.destroy());
+
     this._filmPresenter = {};
 
     remove(this._sortingComponent);
@@ -295,7 +337,6 @@ export default class MovieList {
     this._renderExtraRating();
     this._renderExtraCommented();
   }
-
 
   _renderStatistics() {
     this._staticticsPresenter = new StatisticsPresenter(this._siteMainElement, this._filmsModel);

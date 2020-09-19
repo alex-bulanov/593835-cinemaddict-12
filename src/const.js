@@ -32,6 +32,8 @@ export const UpdateType = {
   STATS: `STATS`,
   COMMENT: `COMMENT`,
   INIT: `INIT`,
+  ADD_COMMENT: `ADD_COMMENT`,
+  DELETE_COMMENT: `DELETE_COMMENT`,
 };
 
 export const EmojiType = {

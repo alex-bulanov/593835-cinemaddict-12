@@ -20,14 +20,13 @@ export default class FilmDetails {
     this._escKeyDownHandler = this._escKeyDownHandler.bind(this);
     this._handleDeleteClick = this._handleDeleteClick.bind(this);
     this._handleCrossClick = this._handleCrossClick.bind(this);
-
   }
 
   init(film, model) {
     this._film = film;
     this._commentsModel = model;
-    const prevDetailsComponent = this._filmDetailsComponent;
 
+    const prevDetailsComponent = this._filmDetailsComponent;
     this._filmDetailsComponent = new FilmCardDetailsView(this._film, this._commentsModel.getComments());
 
     this._filmDetailsComponent.setWatchlistCardClickHandler(this._handleWatchlistClick);
@@ -54,6 +53,7 @@ export default class FilmDetails {
   }
 
   destroy() {
+    document.removeEventListener(`keydown`, this._escKeyDownHandler);
     remove(this._filmDetailsComponent);
   }
 
@@ -70,11 +70,48 @@ export default class FilmDetails {
   }
 
   _handleDeleteClick(comment) {
-    this._commentsModel.deleteComment(UpdateType.MINOR, comment);
+    this._api.deleteComment(comment)
+      .then(() => {
+        this._commentsModel.deleteComment(UpdateType.DELETE_COMMENT, comment);
+      })
+
+      .catch(() => {
+        this._filmDetailsComponent.updateData({}, false);
+      });
+  }
+
+  _findNewComment(array) {
+    let newCommnet = null;
+    let currentCommentsId = [];
+    const currentComments = this._commentsModel.getComments();
+    if (currentComments.length === 0) {
+      newCommnet = array[0];
+    } else {
+      this._commentsModel.getComments().forEach((element) => {
+        currentCommentsId.push(element.id);
+      });
+
+      array.forEach((element) => {
+        if (!currentCommentsId.includes(element.id)) {
+          newCommnet = element;
+        }
+      });
+    }
+    return newCommnet;
   }
 
   _handleCommentSubmit(comment) {
-    this._commentsModel.addComment(UpdateType.MINOR, comment);
+    this._filmDetailsComponent.setBlockState();
+    this._api.addComment(comment)
+      .then((response) => {
+        const newCommnet = this._findNewComment(response);
+        this._commentsModel.addComment(UpdateType.ADD_COMMENT, newCommnet);
+      })
+      .catch(() => {
+        this._filmDetailsComponent.shake(() => {
+          this._filmDetailsComponent.updateData({emoji: false}, false);
+        });
+      });
   }
 
   _escKeyDownHandler(evt) {
