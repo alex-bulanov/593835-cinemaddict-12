@@ -24,11 +24,8 @@ export default class MovieList {
 
     this._renderCardsCount = CARDS_AMOUNT_PER_STEP;
     this._filmPresenter = {};
-
-    // -----
     this._filmExtraCommentPresenter = {};
     this._filmExtraRatingPresenter = {};
-    // -----
 
     this._isLoading = true;
 

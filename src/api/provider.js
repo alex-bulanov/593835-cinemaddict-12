@@ -37,7 +37,7 @@ export default class Provider {
 
   updateFilm(film) {
     if (Provider.isOnline()) {
-      return this._api.updateTask(film)
+      return this._api.updateFilm(film)
         .then((updatedFilm) => {
           this._store.setItem(updatedFilm.id, FilmsModel.adaptToServer(updatedFilm));
           return updatedFilm;
