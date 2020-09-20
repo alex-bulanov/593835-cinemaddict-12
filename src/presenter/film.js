@@ -3,7 +3,7 @@ import {UserAction, UpdateType} from "../const.js";
 import DetailsPresenter from "./film-details.js";
 import FilmCardView from "../view/film-card.js";
 import CommentModel from "../model/comments.js";
-import ApiComment from "../api-comment.js";
+import ApiComment from "../api/api-comment.js";
 
 const Mode = {
   DEFAULT: `DEFAULT`,
@@ -38,8 +38,6 @@ export default class Film {
     this._film = film;
     this._movieId = film.id;
 
-    // if (this._isFirstInit) {
-
     const AUTHORIZATION = `Basic hS2sd3dfSwcl1sa2j`;
     const END_POINT = `https://12.ecmascript.pages.academy/cinemaddict`;
 
@@ -48,9 +46,6 @@ export default class Film {
     this._api.getComments().then((comments) => {
       this._commentsModel.setComments(comments);
     });
-
-    //   this._isFirstInit = false;
-    // }
 
     this._commentsModel.addObserver(this._handleCommentsEvent);
 
