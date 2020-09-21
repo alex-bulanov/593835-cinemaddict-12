@@ -2,6 +2,7 @@ import {nanoid} from "nanoid";
 import FilmsModel from "../model/films.js";
 
 const getSyncedFilms = (films) => {
+
   return films.filter(({success}) => success)
     .map(({payload}) => payload.film);
 };
@@ -79,14 +80,12 @@ export default class Provider {
 
   sync() {
     if (Provider.isOnline()) {
-      const storeFilms = Object.values(this._store.getFilms());
+      const storeFilms = Object.values(this._store.getItems());
 
       return this._api.sync(storeFilms)
         .then((response) => {
-          const createdFilms = getSyncedFilms(response.created);
           const updatedFilms = getSyncedFilms(response.updated);
-
-          const items = createStoreStructure([...createdFilms, ...updatedFilms]);
+          const items = createStoreStructure([...updatedFilms]);
 
           this._store.setItems(items);
         });

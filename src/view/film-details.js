@@ -40,7 +40,9 @@ const createFilmDetailsTemplate = (data = {}, comments) => {
     isWatchlist = ``,
     isWatched = ``,
     isFavorite = ``,
-    emoji = ``
+    emoji = ``,
+
+    isOffline = false,
   } = data;
 
   const genresTemplate = createGenresTemplate(genres);
@@ -48,7 +50,12 @@ const createFilmDetailsTemplate = (data = {}, comments) => {
   const actorsList = createActorsList(actors);
   const writersList = createWritersList(writers);
 
-  const filmComments = comments.slice(0, comments.length).map(createCommentTemplate).join(``);
+  let filmComments = `работа с комментариями недоступна, нет соединения с сервером`;
+
+  if (!isOffline) {
+    filmComments = comments.slice(0, comments.length).map(createCommentTemplate).join(``);
+  }
+
   const commnetAmount = comments.length;
   const filmRunTime = formatRunTime(runtime);
   const fimDateOfRelease = formatDateOfRelease(dateOfRelease);
@@ -62,22 +69,22 @@ const createFilmDetailsTemplate = (data = {}, comments) => {
     return (
 
       `<div class="film-details__emoji-list">
-          <input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-smile" value="smile" ${currentEmoji === EmojiType.SMILE ? `checked` : ``}>
+          <input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-smile" value="smile" ${currentEmoji === EmojiType.SMILE ? `checked ` : ``} ${isOffline === true ? `disabled` : ``}>
           <label class="film-details__emoji-label" for="emoji-smile">
             <img src="./images/emoji/smile.png" width="30" height="30" alt="emoji">
           </label>
 
-          <input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-sleeping" value="sleeping" ${currentEmoji === EmojiType.SLEEPING ? `checked` : ``}>
+          <input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-sleeping" value="sleeping" ${currentEmoji === EmojiType.SLEEPING ? `checked` : ``} ${isOffline === true ? `disabled` : ``}>
           <label class="film-details__emoji-label" for="emoji-sleeping">
             <img src="./images/emoji/sleeping.png" width="30" height="30" alt="emoji">
           </label>
 
-          <input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-puke" value="puke" ${currentEmoji === EmojiType.PUKE ? `checked` : ``}>
+          <input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-puke" value="puke" ${currentEmoji === EmojiType.PUKE ? `checked` : ``} ${isOffline === true ? `disabled` : ``}>
           <label class="film-details__emoji-label" for="emoji-puke">
             <img src="./images/emoji/puke.png" width="30" height="30" alt="emoji">
           </label>
 
-          <input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-angry" value="angry" ${currentEmoji === EmojiType.ANGRY ? `checked` : ``}>
+          <input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-angry" value="angry" ${currentEmoji === EmojiType.ANGRY ? `checked` : ``} ${isOffline === true ? `disabled` : ``}>
           <label class="film-details__emoji-label" for="emoji-angry">
             <img src="./images/emoji/angry.png" width="30" height="30" alt="emoji">
           </label>
@@ -180,7 +187,7 @@ const createFilmDetailsTemplate = (data = {}, comments) => {
             <div class="film-details__new-comment">
               ${createCommentEmojiTemplate()}
               <label class="film-details__comment-label">
-                <textarea class="film-details__comment-input" placeholder="Select reaction below and write comment here" name="comment">${he.encode(commentDescription)}</textarea>
+                <textarea class="film-details__comment-input" placeholder="Select reaction below and write comment here" name="comment" ${isOffline === true ? `disabled` : ``}>${he.encode(commentDescription)}</textarea>
               </label>
               ${createEmojiTemplate()}
             </div>
@@ -212,7 +219,17 @@ export default class FilmCardDetails extends SmartView {
     this._clickHandler = this._clickHandler.bind(this);
     this._commentSend = this._commentSend.bind(this);
     this._setInnerHandlers();
+    this._setNetHandler();
+  }
 
+  _setNetHandler() {
+    window.addEventListener(`offline`, () => {
+      this.updateData({isOffline: true}, false);
+    });
+
+    window.addEventListener(`online`, () => {
+      this.updateData({isOffline: false}, false);
+    });
   }
 
   getTemplate() {

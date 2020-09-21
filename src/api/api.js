@@ -2,7 +2,8 @@ import FilmsModel from "../model/films.js";
 
 const Method = {
   GET: `GET`,
-  PUT: `PUT`
+  PUT: `PUT`,
+  POST: `POST`,
 };
 
 const SuccessHTTPStatusRange = {
@@ -33,20 +34,15 @@ export default class Api {
       .then(FilmsModel.adaptToClient);
   }
 
-  // _____
-
-
   sync(data) {
     return this._load({
-      url: `films/sync`,
+      url: `movies/sync`,
       method: Method.POST,
       body: JSON.stringify(data),
       headers: new Headers({"Content-Type": `application/json`})
     })
       .then(Api.toJSON);
   }
-
-  // _____
 
   _load({
     url,

@@ -117,19 +117,21 @@ export default class MovieList {
           this._filmsModel.updateFilm(updateType, response);
         });
         break;
-      case UserAction.DELETE_COMMENT:
-        this._filmsModel.updateFilm(updateType, update);
-        break;
-      case UserAction.ADD_COMMENT:
-        this._filmsModel.updateFilm(updateType, update);
-        break;
     }
   }
 
   _handleModelEvent(updateType, item) {
     switch (updateType) {
       case UpdateType.PATCH:
-        this._filmPresenter[item.id].init(item);
+        if (this._commenExtraId.includes(item.id)) {
+          this._filmExtraCommentPresenter[item.id].init(item);
+        }
+        if (this._ratingExtraId.includes(item.id)) {
+          this._filmExtraRatingPresenter[item.id].init(item);
+        }
+        if (this._filmPresenter[item.id]) {
+          this._filmPresenter[item.id].init(item);
+        }
         break;
       case UpdateType.MINOR:
         this._clearMainContent();
@@ -221,7 +223,7 @@ export default class MovieList {
     let filmsRating = this._filmsModel.getFilms().slice();
     filmsRating = filmsRating.sort(compareRating).slice(0, CARDS_EXTRA_AMOUNT);
 
-    if (filmsRating.length > 0) {
+    if (filmsRating[0].rating > 0) {
       render(this._filmsSectionComponent, this._extraSectionTopRatingComponent, RenderPosition.BEFOREEND);
       this._filmsListTopRatingContainerComponent = new FilmsListContainerView();
       render(this._extraSectionTopRatingComponent, this._filmsListTopRatingContainerComponent, RenderPosition.BEFOREEND);
@@ -240,7 +242,7 @@ export default class MovieList {
     let filmsCommented = this._filmsModel.getFilms().slice();
     filmsCommented = filmsCommented.sort(compareComments).slice(0, CARDS_EXTRA_AMOUNT);
 
-    if (filmsCommented.length > 0) {
+    if (filmsCommented[0].comments.length > 0) {
       render(this._filmsSectionComponent, this._extraSectionMostCommentedComponent, RenderPosition.BEFOREEND);
       this._filmsListMostCommentedContainerComponent = new FilmsListContainerView();
       render(this._extraSectionMostCommentedComponent, this._filmsListMostCommentedContainerComponent, RenderPosition.BEFOREEND);
