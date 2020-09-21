@@ -1,9 +1,12 @@
 import {render, RenderPosition, remove, replace} from "../utils/render.js";
+import CommentsProvider from "../api/comments-provider.js";
+import CommentsStore from "../api/comments-store.js";
 import {UserAction, UpdateType} from "../const.js";
 import DetailsPresenter from "./film-details.js";
 import FilmCardView from "../view/film-card.js";
 import CommentModel from "../model/comments.js";
 import ApiComment from "../api/api-comment.js";
+
 
 const Mode = {
   DEFAULT: `DEFAULT`,
@@ -38,12 +41,19 @@ export default class Film {
     this._film = film;
     this._movieId = film.id;
 
+    const STORE_PREFIX = `cinemaddict-comments-localstorage`;
+    const STORE_VER = `v12`;
+    const STORE_NAME = `${STORE_PREFIX}-${STORE_VER}`;
+
     const AUTHORIZATION = `Basic hS2sd3dfSwcl1sa2j`;
     const END_POINT = `https://12.ecmascript.pages.academy/cinemaddict`;
 
     this._api = new ApiComment(END_POINT, AUTHORIZATION, this._movieId);
 
-    this._api.getComments().then((comments) => {
+    const commentsStore = new CommentsStore(STORE_NAME, window.localStorage);
+    this._apiWithProvider = new CommentsProvider(this._api, commentsStore);
+
+    this._apiWithProvider.getComments().then((comments) => {
       this._commentsModel.setComments(comments);
     });
 
@@ -68,6 +78,10 @@ export default class Film {
     }
 
     remove(prevCardComponent);
+
+    window.addEventListener(`online`, () => {
+      this._apiWithProvider.sync();
+    });
   }
 
   resetView() {
@@ -105,7 +119,7 @@ export default class Film {
   }
 
   _showCardDetails() {
-    this._detailsPresenter = new DetailsPresenter(this._siteFooterComponent, this._changeData, this._changeMode, this._api);
+    this._detailsPresenter = new DetailsPresenter(this._siteFooterComponent, this._changeData, this._changeMode, this._apiWithProvider);
     this._detailsPresenter.init(this._film, this._commentsModel);
     this._filmDetailsComponent = this._detailsPresenter;
   }

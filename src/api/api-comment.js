@@ -61,6 +61,16 @@ export default class ApiComment {
     });
   }
 
+  sync(data) {
+    return this._load({
+      url: `comments/sync`,
+      method: Method.POST,
+      body: JSON.stringify(data),
+      headers: new Headers({"Content-Type": `application/json`})
+    })
+      .then(ApiComment.toJSON);
+  }
+
   _load({
     url,
     method = Method.GET,
