@@ -16,10 +16,10 @@ const createGenreTerm = (genres) => {
 const createActorsList = (actors) => {
   return actors.map((actor) => `${actor}`).join(`, `);
 };
+
 const createWritersList = (writers) => {
   return writers.map((writer) => `${writer}`).join(`, `);
 };
-
 
 const createFilmDetailsTemplate = (data = {}, comments) => {
   const {
@@ -218,18 +218,24 @@ export default class FilmCardDetails extends SmartView {
     this._keyUpHandler = this._keyUpHandler.bind(this);
     this._clickHandler = this._clickHandler.bind(this);
     this._commentSend = this._commentSend.bind(this);
+
+    this._offlineSet = this._offlineSet.bind(this);
+    this._onlineSet = this._onlineSet.bind(this);
+
     this._setInnerHandlers();
-    this._setNetHandler();
   }
 
-  _setNetHandler() {
-    window.addEventListener(`offline`, () => {
-      this.updateData({isOffline: true}, false);
-    });
+  _offlineSet() {
+    this.updateData({isOffline: true}, false);
+  }
 
-    window.addEventListener(`online`, () => {
-      this.updateData({isOffline: false}, false);
-    });
+  _onlineSet() {
+    this.updateData({isOffline: false}, false);
+  }
+
+  removeListener() {
+    window.removeEventListener(`offline`, this._offlineSet);
+    window.removeEventListener(`online`, this._onlineSet);
   }
 
   getTemplate() {
@@ -326,7 +332,6 @@ export default class FilmCardDetails extends SmartView {
       document.querySelector(`.film-details__add-emoji-label`).innerHTML = ``;
 
       this._callback.commentSubmit(comment);
-
     }
   }
 
@@ -338,6 +343,9 @@ export default class FilmCardDetails extends SmartView {
     for (let emojiItem of emojiItems) {
       emojiItem.addEventListener(`click`, this._emojiInputHandler);
     }
+
+    window.addEventListener(`offline`, this._offlineSet);
+    window.addEventListener(`online`, this._onlineSet);
   }
 
   _emojiInputHandler(evt) {
