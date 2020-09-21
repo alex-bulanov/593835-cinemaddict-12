@@ -52,7 +52,7 @@ const createFilmDetailsTemplate = (data = {}, comments) => {
 
   let filmComments = `работа с комментариями недоступна, нет соединения с сервером`;
 
-  if (!isOffline) {
+  if (!isOffline && window.navigator.onLine) {
     filmComments = comments.slice(0, comments.length).map(createCommentTemplate).join(``);
   }
 
