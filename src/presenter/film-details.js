@@ -53,8 +53,6 @@ export default class FilmDetails {
   }
 
   destroy() {
-    window.removeEventListener(`offline`, this._offlineSet);
-    window.removeEventListener(`online`, this._onlineSet);
     document.removeEventListener(`keydown`, this._escKeyDownHandler);
     remove(this._filmDetailsComponent);
   }
@@ -129,13 +127,5 @@ export default class FilmDetails {
     this._filmDetailsComponent.removeListener();
     document.removeEventListener(`keydown`, this._escKeyDownHandler);
     this._changeMode();
-  }
-
-  _offlineSet() {
-    this._filmDetailsComponent.updateData({isOffline: true}, false);
-  }
-
-  _onlineSet() {
-    this._filmDetailsComponent.updateData({isOffline: false}, false);
   }
 }
