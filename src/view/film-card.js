@@ -28,7 +28,6 @@ const createFilmCardTemplate = (film = {}) => {
 
   const filmRunTime = formatRunTime(runtime);
 
-
   return (
     `<article class="film-card">
       <h3 class="film-card__title">${title}</h3>

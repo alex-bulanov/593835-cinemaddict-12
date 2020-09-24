@@ -117,12 +117,14 @@ export default class FilmDetails {
   _escKeyDownHandler(evt) {
     if (evt.key === `Escape` || evt.key === `Esc`) {
       evt.preventDefault();
+      this._filmDetailsComponent.removeListener();
       document.removeEventListener(`keydown`, this._escKeyDownHandler);
       this._changeMode();
     }
   }
 
   _handleCrossClick() {
+    this._filmDetailsComponent.removeListener();
     document.removeEventListener(`keydown`, this._escKeyDownHandler);
     this._changeMode();
   }

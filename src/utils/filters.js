@@ -8,7 +8,6 @@ export const filter = {
   [FilterType.YEAR]: (films) => films.filter((film) => compareYear(film)),
 };
 
-
 const compareToday = (film) => {
   const currentDate = new Date();
   let isFlag = false;
@@ -26,7 +25,6 @@ const compareWeek = (film) => {
   }
   return isFlag;
 };
-
 
 const compareMonth = (film) => {
   const currentDate = new Date();
