@@ -5,13 +5,13 @@ export const formatCommentDate = (date) => {
     date = new Date(date);
   }
 
-  let diff = new Date() - date;
+  let difference = new Date() - date;
 
-  if (diff < 1000) {
+  if (difference < 1000) {
     return `прямо сейчас`;
   }
 
-  let min = Math.floor(diff / 60000);
+  let min = Math.floor(difference / 60000);
 
   if (min < 60) {
     return `${min} minutes ago`;

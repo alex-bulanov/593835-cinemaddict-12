@@ -61,22 +61,22 @@ export const userRank = (data) => {
 };
 
 export const totalDuration = (data) => {
-  let totalH = 0;
-  let totalM = 0;
+  let totalHours = 0;
+  let totalMinutes = 0;
 
   if (data.length === 0) {
-    totalH = 0;
-    totalM = 0;
+    totalHours = 0;
+    totalMinutes = 0;
   } else {
 
     data.forEach((item) => {
-      totalH += +moment(item.runtime).format(`HH`);
-      totalM += +moment(item.runtime).format(`MM`);
+      totalHours += +moment(item.runtime).format(`HH`);
+      totalMinutes += +moment(item.runtime).format(`MM`);
     });
 
-    totalH += Math.floor(totalM / 60);
-    totalM = totalM % 60;
+    totalHours += Math.floor(totalMinutes / 60);
+    totalMinutes = totalMinutes % 60;
   }
 
-  return [totalH, totalM];
+  return [totalHours, totalMinutes];
 };
