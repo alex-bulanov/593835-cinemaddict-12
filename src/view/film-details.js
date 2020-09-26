@@ -56,7 +56,7 @@ const createFilmDetailsTemplate = (data = {}, comments) => {
     filmComments = comments.slice(0, comments.length).map(createCommentTemplate).join(``);
   }
 
-  const commnetAmount = comments.length;
+  const commentAmount = comments.length;
   const filmRunTime = formatRunTime(runtime);
   const fimDateOfRelease = formatDateOfRelease(dateOfRelease);
 
@@ -178,7 +178,7 @@ const createFilmDetailsTemplate = (data = {}, comments) => {
 
         <div class="form-details__bottom-container">
           <section class="film-details__comments-wrap">
-            <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">${commnetAmount}</span></h3>
+            <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">${commentAmount}</span></h3>
 
             <ul class="film-details__comments-list">
               ${filmComments}
