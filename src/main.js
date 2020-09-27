@@ -17,8 +17,8 @@ const AUTHORIZATION = `Basic hS2sd3dfSwcl1sa2j`;
 const END_POINT = `https://12.ecmascript.pages.academy/cinemaddict`;
 
 const STORE_PREFIX = `cinemaddict-localstorage`;
-const STORE_VER = `v12`;
-const STORE_NAME = `${STORE_PREFIX}-${STORE_VER}`;
+const STORE_VERSION = `v12`;
+const STORE_NAME = `${STORE_PREFIX}-${STORE_VERSION}`;
 
 const api = new Api(END_POINT, AUTHORIZATION);
 const store = new Store(STORE_NAME, window.localStorage);
@@ -45,11 +45,9 @@ apiWithProvider.getFilms().then((films) => {
 window.addEventListener(`load`, () => {
   navigator.serviceWorker.register(`/sw.js`)
     .then(() => {
-      // Действие, в случае успешной регистрации ServiceWorker
-      console.log(`ServiceWorker available`); // eslint-disable-line
+      // console.log(`ServiceWorker available`); // eslint-disable-line
     }).catch(() => {
-      // Действие, в случае ошибки при регистрации ServiceWorker
-      console.error(`ServiceWorker isn't available`); // eslint-disable-line
+      // console.error(`ServiceWorker isn't available`); // eslint-disable-line
     });
 });
 

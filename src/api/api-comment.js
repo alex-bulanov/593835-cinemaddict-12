@@ -16,7 +16,7 @@ export default class ApiComment {
     this._endPoint = endPoint;
     this._authorization = authorization;
     this._movieId = movieId;
-    this._isDel = false;
+    this._isDeleted = false;
   }
 
   getComments() {
@@ -37,7 +37,7 @@ export default class ApiComment {
   }
 
   addComment(comment) {
-    this._isDel = false;
+    this._isDeleted = false;
 
     return this._load({
       url: `comments`,
@@ -52,7 +52,7 @@ export default class ApiComment {
   }
 
   deleteComment(comment) {
-    this._isDel = true;
+    this._isDeleted = true;
     this._commentId = comment.id;
 
     return this._load({

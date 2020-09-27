@@ -37,9 +37,9 @@ const compareMonth = (film) => {
 
 const compareYear = (film) => {
   const currentDate = new Date();
-  let isFlag = false;
+  let flag = false;
   if (new Date(film.watchingDate).getFullYear() >= currentDate.getFullYear()) {
-    isFlag = true;
+    flag = true;
   }
-  return isFlag;
+  return flag;
 };

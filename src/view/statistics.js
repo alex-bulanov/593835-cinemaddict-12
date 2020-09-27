@@ -84,9 +84,7 @@ const createStatisticsTemplate = (filtersItems, currentFilter) => {
   const filtersItemsTemplate = filtersItems.map((filter) => createFilterItemTemplate(filter, currentFilter)).join(``);
   const currentFilterItem = filtersItems.find((item) => item.type === currentFilter);
   const allFilterItem = filtersItems.find((item) => item.type === `all-time`);
-
   const watchedAmount = currentFilterItem.movie.length;
-
   const rankTemplate = userRank(allFilterItem.movie);
   const topGenreTemplate = topGenre(currentFilterItem.movie);
   const durationTemplate = renderDurationTemplate(currentFilterItem.movie);

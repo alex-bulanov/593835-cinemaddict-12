@@ -30,8 +30,6 @@ export default class Film {
     this._handleFavoriteClick = this._handleFavoriteClick.bind(this);
     this._handleWatchedClick = this._handleWatchedClick.bind(this);
     this._handleCardClick = this._handleCardClick.bind(this);
-    this._isFirstInit = true;
-
   }
 
   init(film) {

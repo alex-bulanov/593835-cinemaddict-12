@@ -81,11 +81,11 @@ export default class FilmDetails {
   }
 
   _findNewComment(array) {
-    let newCommnet = null;
-    let currentCommentsId = [];
+    let newComment = null;
+    const currentCommentsId = [];
     const currentComments = this._commentsModel.getComments();
     if (currentComments.length === 0) {
-      newCommnet = array[0];
+      newComment = array[0];
     } else {
       this._commentsModel.getComments().forEach((element) => {
         currentCommentsId.push(element.id);
@@ -93,11 +93,11 @@ export default class FilmDetails {
 
       array.forEach((element) => {
         if (!currentCommentsId.includes(element.id)) {
-          newCommnet = element;
+          newComment = element;
         }
       });
     }
-    return newCommnet;
+    return newComment;
   }
 
   _handleCommentSubmit(comment) {

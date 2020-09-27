@@ -19,7 +19,7 @@ export const sortedGenres = (data) => {
     }
   });
 
-  let amountWatchedGenres = {};
+  const amountWatchedGenres = {};
   allGenres.forEach((genre) => {
     amountWatchedGenres[genre] = amountWatchedGenres[genre] + 1 || 1;
   });
@@ -28,7 +28,6 @@ export const sortedGenres = (data) => {
 };
 
 export const topGenre = (data) => {
-
   if (data.length === 0) {
     return ``;
   }
@@ -39,7 +38,7 @@ export const topGenre = (data) => {
     return Object.keys(object).find((key) => object[key] === value);
   }
 
-  return getKeyByValue(amountWatchedGenres, Math.max.apply(null, Object.values(amountWatchedGenres)));
+  return getKeyByValue(amountWatchedGenres, Math.max.apply(null, Object.values(amountWatchedGenres))) || ``;
 };
 
 export const userRank = (data) => {
@@ -61,22 +60,22 @@ export const userRank = (data) => {
 };
 
 export const totalDuration = (data) => {
-  let totalH = 0;
-  let totalM = 0;
+  let totalHours = 0;
+  let totalMinutes = 0;
 
   if (data.length === 0) {
-    totalH = 0;
-    totalM = 0;
+    totalHours = 0;
+    totalMinutes = 0;
   } else {
 
     data.forEach((item) => {
-      totalH += +moment(item.runtime).format(`HH`);
-      totalM += +moment(item.runtime).format(`MM`);
+      totalHours += +moment(item.runtime).format(`HH`);
+      totalMinutes += +moment(item.runtime).format(`MM`);
     });
 
-    totalH += Math.floor(totalM / 60);
-    totalM = totalM % 60;
+    totalHours += Math.floor(totalMinutes / 60);
+    totalMinutes = totalMinutes % 60;
   }
 
-  return [totalH, totalM];
+  return [totalHours, totalMinutes];
 };

@@ -56,13 +56,13 @@ const createFilmDetailsTemplate = (data = {}, comments) => {
     filmComments = comments.slice(0, comments.length).map(createCommentTemplate).join(``);
   }
 
-  const commnetAmount = comments.length;
+  const commentAmount = comments.length;
   const filmRunTime = formatRunTime(runtime);
   const fimDateOfRelease = formatDateOfRelease(dateOfRelease);
 
   const commentDescription = ``;
-  let currentEmoji = emoji ? emoji : EmojiType.SMILE;
-  let currentCommentEmoji = emoji ? emoji : ``;
+  const currentEmoji = emoji ? emoji : EmojiType.SMILE;
+  const currentCommentEmoji = emoji ? emoji : ``;
 
 
   const createEmojiTemplate = () => {
@@ -178,7 +178,7 @@ const createFilmDetailsTemplate = (data = {}, comments) => {
 
         <div class="form-details__bottom-container">
           <section class="film-details__comments-wrap">
-            <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">${commnetAmount}</span></h3>
+            <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">${commentAmount}</span></h3>
 
             <ul class="film-details__comments-list">
               ${filmComments}
@@ -288,7 +288,7 @@ export default class FilmCardDetails extends SmartView {
     this._pressed.add(event.code);
     const codes = [Keys.CONTROL, Keys.ENTER];
 
-    for (let code of codes) {
+    for (const code of codes) {
       if (!this._pressed.has(code)) {
         return;
       }
@@ -315,8 +315,8 @@ export default class FilmCardDetails extends SmartView {
   }
 
   _commentSend() {
-    let message = document.querySelector(`.film-details__comment-input`).value.trim();
-    let commentEmoji = document.querySelector(`.film-details__add-emoji-label`).dataset.emoji;
+    const message = document.querySelector(`.film-details__comment-input`).value.trim();
+    const commentEmoji = document.querySelector(`.film-details__add-emoji-label`).dataset.emoji;
 
     if (message !== `` && commentEmoji !== ``) {
       const comment = {
@@ -340,7 +340,7 @@ export default class FilmCardDetails extends SmartView {
 
     const emojiItems = this.getElement().querySelectorAll(`.film-details__emoji-item`);
 
-    for (let emojiItem of emojiItems) {
+    for (const emojiItem of emojiItems) {
       emojiItem.addEventListener(`click`, this._emojiInputHandler);
     }
 
@@ -389,7 +389,7 @@ export default class FilmCardDetails extends SmartView {
     const deleteButtons = this.getElement().querySelectorAll(`.film-details__comment-delete`);
 
     if (deleteButtons) {
-      for (let deleteButton of deleteButtons) {
+      for (const deleteButton of deleteButtons) {
         deleteButton.addEventListener(`click`, this._deleteClickHandler);
       }
     }

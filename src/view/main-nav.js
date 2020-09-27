@@ -40,7 +40,7 @@ export default class MainNavigation extends AbstractView {
     evt.preventDefault();
     const navItems = document.querySelectorAll(`A`);
 
-    for (let navItem of navItems) {
+    for (const navItem of navItems) {
       if (navItem.classList.contains(`main-navigation__item--active`)) {
         navItem.classList.remove(`main-navigation__item--active`);
       }
