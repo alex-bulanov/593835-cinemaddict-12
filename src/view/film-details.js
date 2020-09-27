@@ -61,8 +61,8 @@ const createFilmDetailsTemplate = (data = {}, comments) => {
   const fimDateOfRelease = formatDateOfRelease(dateOfRelease);
 
   const commentDescription = ``;
-  let currentEmoji = emoji ? emoji : EmojiType.SMILE;
-  let currentCommentEmoji = emoji ? emoji : ``;
+  const currentEmoji = emoji ? emoji : EmojiType.SMILE;
+  const currentCommentEmoji = emoji ? emoji : ``;
 
 
   const createEmojiTemplate = () => {
@@ -288,7 +288,7 @@ export default class FilmCardDetails extends SmartView {
     this._pressed.add(event.code);
     const codes = [Keys.CONTROL, Keys.ENTER];
 
-    for (let code of codes) {
+    for (const code of codes) {
       if (!this._pressed.has(code)) {
         return;
       }
@@ -315,8 +315,8 @@ export default class FilmCardDetails extends SmartView {
   }
 
   _commentSend() {
-    let message = document.querySelector(`.film-details__comment-input`).value.trim();
-    let commentEmoji = document.querySelector(`.film-details__add-emoji-label`).dataset.emoji;
+    const message = document.querySelector(`.film-details__comment-input`).value.trim();
+    const commentEmoji = document.querySelector(`.film-details__add-emoji-label`).dataset.emoji;
 
     if (message !== `` && commentEmoji !== ``) {
       const comment = {
@@ -340,7 +340,7 @@ export default class FilmCardDetails extends SmartView {
 
     const emojiItems = this.getElement().querySelectorAll(`.film-details__emoji-item`);
 
-    for (let emojiItem of emojiItems) {
+    for (const emojiItem of emojiItems) {
       emojiItem.addEventListener(`click`, this._emojiInputHandler);
     }
 
@@ -389,7 +389,7 @@ export default class FilmCardDetails extends SmartView {
     const deleteButtons = this.getElement().querySelectorAll(`.film-details__comment-delete`);
 
     if (deleteButtons) {
-      for (let deleteButton of deleteButtons) {
+      for (const deleteButton of deleteButtons) {
         deleteButton.addEventListener(`click`, this._deleteClickHandler);
       }
     }

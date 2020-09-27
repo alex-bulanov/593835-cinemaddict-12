@@ -19,7 +19,7 @@ export const sortedGenres = (data) => {
     }
   });
 
-  let amountWatchedGenres = {};
+  const amountWatchedGenres = {};
   allGenres.forEach((genre) => {
     amountWatchedGenres[genre] = amountWatchedGenres[genre] + 1 || 1;
   });
@@ -28,7 +28,6 @@ export const sortedGenres = (data) => {
 };
 
 export const topGenre = (data) => {
-
   if (data.length === 0) {
     return ``;
   }
@@ -39,7 +38,7 @@ export const topGenre = (data) => {
     return Object.keys(object).find((key) => object[key] === value);
   }
 
-  return getKeyByValue(amountWatchedGenres, Math.max.apply(null, Object.values(amountWatchedGenres)));
+  return getKeyByValue(amountWatchedGenres, Math.max.apply(null, Object.values(amountWatchedGenres))) || ``;
 };
 
 export const userRank = (data) => {

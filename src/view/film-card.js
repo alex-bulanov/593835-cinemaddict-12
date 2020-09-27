@@ -24,7 +24,7 @@ const createFilmCardTemplate = (film = {}) => {
   const favoriteClassName = isFavorite ? `film-card__controls-item--favorite film-card__controls-item--active` : `film-card__controls-item--favorite`;
   const filmCardDescription = description.length < 140 ? description : description.slice(0, 139) + `...`;
 
-  let commentsCurrentValue = commentsCount > COMMENTS_COUNT ? COMMENTS_COUNT : commentsCount;
+  const commentsCurrentValue = commentsCount > COMMENTS_COUNT ? COMMENTS_COUNT : commentsCount;
 
   const filmRunTime = formatRunTime(runtime);
 

@@ -82,7 +82,7 @@ export default class FilmDetails {
 
   _findNewComment(array) {
     let newComment = null;
-    let currentCommentsId = [];
+    const currentCommentsId = [];
     const currentComments = this._commentsModel.getComments();
     if (currentComments.length === 0) {
       newComment = array[0];
