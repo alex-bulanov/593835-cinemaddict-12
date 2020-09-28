@@ -93,6 +93,7 @@ export default class Film {
   }
 
   _handleCardClick() {
+    this._changeMode();
     this._mode = Mode.SHOW;
     this._showCardDetails();
   }

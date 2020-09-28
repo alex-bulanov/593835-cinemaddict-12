@@ -14,22 +14,6 @@ export default class Comments extends Observer {
     return this._comments;
   }
 
-  update(updateType, update) {
-    const index = this._comments.findIndex((comment) => comment.id === update.id);
-
-    if (index === -1) {
-      throw new Error(`Can't update unexisting film`);
-    }
-
-    this._comments = [
-      ...this._comments.slice(0, index),
-      update,
-      ...this._comments.slice(index + 1)
-    ];
-
-    this._notify(updateType, update);
-  }
-
   add(updateType, update) {
 
     this._comments = [

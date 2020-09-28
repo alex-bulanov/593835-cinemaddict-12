@@ -25,17 +25,6 @@ export default class ApiComment {
       .then((comments) => comments.map(CommentsModel.adaptToClient));
   }
 
-  updateComments(comment) {
-    return this._load({
-      url: `comments`,
-      method: Method.PUT,
-      body: JSON.stringify(CommentsModel.adaptToServer(comment)),
-      headers: new Headers({"Content-Type": `application/json`})
-    })
-      .then(ApiComment.toJSON)
-      .then(CommentsModel.adaptToClient);
-  }
-
   addComment(comment) {
     this._isDeleted = false;
 

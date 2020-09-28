@@ -20,6 +20,7 @@ export default class FilmDetails {
     this._escKeyDownHandler = this._escKeyDownHandler.bind(this);
     this._handleDeleteClick = this._handleDeleteClick.bind(this);
     this._handleCrossClick = this._handleCrossClick.bind(this);
+
   }
 
   init(film, model) {
@@ -27,7 +28,12 @@ export default class FilmDetails {
     this._commentsModel = model;
 
     const prevDetailsComponent = this._filmDetailsComponent;
-    this._filmDetailsComponent = new FilmCardDetailsView(this._film, this._commentsModel.get());
+
+    if (window.navigator.onLine) {
+      this._filmDetailsComponent = new FilmCardDetailsView(this._film, this._commentsModel.get());
+    } else {
+      this._filmDetailsComponent = new FilmCardDetailsView(this._film, 0);
+    }
 
     this._filmDetailsComponent.setWatchlistCardClickHandler(this._handleWatchlistClick);
     this._filmDetailsComponent.setFavoriteCardClickHandler(this._handleFavoriteClick);
@@ -82,17 +88,17 @@ export default class FilmDetails {
 
   _findNewComment(comments) {
     let newComment = null;
-    const currentsCommentsId = [];
+    const currentCommentsIds = [];
     const currentComments = this._commentsModel.get();
     if (currentComments.length === 0) {
       newComment = comments[0];
     } else {
       this._commentsModel.get().forEach((element) => {
-        currentsCommentsId.push(element.id);
+        currentCommentsIds.push(element.id);
       });
 
       comments.forEach((element) => {
-        if (!currentsCommentsId.includes(element.id)) {
+        if (!currentCommentsIds.includes(element.id)) {
           newComment = element;
         }
       });

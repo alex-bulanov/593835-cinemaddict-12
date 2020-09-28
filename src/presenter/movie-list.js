@@ -45,8 +45,8 @@ export default class MovieList {
     this._noFilmsComponent = new NoFilmsSectionView();
     this._loadingComponent = new LoadingView();
 
-    this._commentsExtraId = [];
-    this._ratingExtraId = [];
+    this._commentsExtraIds = [];
+    this._ratingExtraIds = [];
 
     this._extraSectionTopRatingComponent = new FilmsListExtraSectionView(`Top rated`);
     this._extraSectionMostCommentedComponent = new FilmsListExtraSectionView(`Most commented`);
@@ -123,10 +123,10 @@ export default class MovieList {
 
     switch (updateType) {
       case UpdateType.PATCH:
-        if (this._commentsExtraId.includes(item.id)) {
+        if (this._commentsExtraIds.includes(item.id)) {
           this._filmExtraCommentPresenter[item.id].init(item);
         }
-        if (this._ratingExtraId.includes(item.id)) {
+        if (this._ratingExtraIds.includes(item.id)) {
           this._filmExtraRatingPresenter[item.id].init(item);
         }
         if (this._filmPresenter[item.id]) {
@@ -151,26 +151,34 @@ export default class MovieList {
         this._renderStatistics();
         break;
       case UpdateType.DELETE_COMMENT:
-        if (this._commentsExtraId.includes(item.id)) {
+        if (this._commentsExtraIds.includes(item.id)) {
           this._filmExtraCommentPresenter[item.id].init(item);
         }
-        if (this._ratingExtraId.includes(item.id)) {
+        if (this._ratingExtraIds.includes(item.id)) {
           this._filmExtraRatingPresenter[item.id].init(item);
         }
         if (this._filmPresenter[item.id]) {
           this._filmPresenter[item.id].init(item);
         }
+
+        this._clearMainContent({resetRenderedCardCount: true, resetSortType: true});
+        this._renderMainContent();
+
         break;
       case UpdateType.ADD_COMMENT:
-        if (this._commentsExtraId.includes(item.id)) {
+        if (this._commentsExtraIds.includes(item.id)) {
           this._filmExtraCommentPresenter[item.id].init(item);
         }
-        if (this._ratingExtraId.includes(item.id)) {
+        if (this._ratingExtraIds.includes(item.id)) {
           this._filmExtraRatingPresenter[item.id].init(item);
         }
         if (this._filmPresenter[item.id]) {
           this._filmPresenter[item.id].init(item);
         }
+
+        this._clearMainContent({resetRenderedCardCount: true, resetSortType: true});
+        this._renderMainContent();
+
         break;
       case UpdateType.INIT:
         this._isLoading = false;
@@ -225,16 +233,16 @@ export default class MovieList {
   }
 
   _renderExtraRating() {
-    let filmsRating = this._filmsModel.get().slice();
-    filmsRating = filmsRating.sort(compareRating).slice(0, CARDS_EXTRA_AMOUNT);
+    let filmsSortedByRating = this._filmsModel.get().slice();
+    filmsSortedByRating = filmsSortedByRating.sort(compareRating).slice(0, CARDS_EXTRA_AMOUNT);
 
-    if (filmsRating[0].rating > 0) {
+    if (filmsSortedByRating[0].rating > 0) {
       render(this._filmsSectionComponent, this._extraSectionTopRatingComponent, RenderPosition.BEFOREEND);
       this._filmsListTopRatingContainerComponent = new FilmsListContainerView();
       render(this._extraSectionTopRatingComponent, this._filmsListTopRatingContainerComponent, RenderPosition.BEFOREEND);
 
-      filmsRating.forEach((film) => {
-        this._ratingExtraId.push(film.id);
+      filmsSortedByRating.forEach((film) => {
+        this._ratingExtraIds.push(film.id);
 
         const filmPresenter = new FilmPresenter(this._siteFooterComponent, this._filmsListTopRatingContainerComponent, this._handleViewAction, this._handleModeChange);
         filmPresenter.init(film);
@@ -244,16 +252,16 @@ export default class MovieList {
   }
 
   _renderExtraCommented() {
-    let filmsCommented = this._filmsModel.get().slice();
-    filmsCommented = filmsCommented.sort(compareComments).slice(0, CARDS_EXTRA_AMOUNT);
+    let filmsSortedByComments = this._filmsModel.get().slice();
+    filmsSortedByComments = filmsSortedByComments.sort(compareComments).slice(0, CARDS_EXTRA_AMOUNT);
 
-    if (filmsCommented[0].comments.length > 0) {
+    if (filmsSortedByComments[0].comments.length > 0) {
       render(this._filmsSectionComponent, this._extraSectionMostCommentedComponent, RenderPosition.BEFOREEND);
       this._filmsListMostCommentedContainerComponent = new FilmsListContainerView();
       render(this._extraSectionMostCommentedComponent, this._filmsListMostCommentedContainerComponent, RenderPosition.BEFOREEND);
 
-      filmsCommented.forEach((film) => {
-        this._commentsExtraId.push(film.id);
+      filmsSortedByComments.forEach((film) => {
+        this._commentsExtraIds.push(film.id);
 
         const filmPresenter = new FilmPresenter(this._siteFooterComponent, this._filmsListMostCommentedContainerComponent, this._handleViewAction, this._handleModeChange);
         filmPresenter.init(film);

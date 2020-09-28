@@ -10,15 +10,15 @@ import Api from "./api/api.js";
 import Store from "./api/store.js";
 import Provider from "./api/provider.js";
 
-const navModel = new NavModel();
-const filmsModel = new FilmsModel();
-
 const AUTHORIZATION = `Basic hS2sd3dfSwcl1sa2j`;
 const END_POINT = `https://12.ecmascript.pages.academy/cinemaddict`;
 
 const STORE_PREFIX = `cinemaddict-localstorage`;
 const STORE_VERSION = `v12`;
 const STORE_NAME = `${STORE_PREFIX}-${STORE_VERSION}`;
+
+const navModel = new NavModel();
+const filmsModel = new FilmsModel();
 
 const api = new Api(END_POINT, AUTHORIZATION);
 const store = new Store(STORE_NAME, window.localStorage);

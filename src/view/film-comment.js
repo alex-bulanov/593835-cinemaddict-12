@@ -1,4 +1,5 @@
 import {formatCommentDate} from "../utils/comment.js";
+import he from "he";
 
 export const createCommentTemplate = (comment = {}) => {
   const {
@@ -18,7 +19,7 @@ export const createCommentTemplate = (comment = {}) => {
         <img src="./images/emoji/${emoji}.png" width="55" height="55" alt="emoji-${emoji}">
       </span>
       <div>
-        <p class="film-details__comment-text">${text}</p>
+        <p class="film-details__comment-text">${he.encode(text)}</p>
         <p class="film-details__comment-info">
           <span class="film-details__comment-author">${author}</span>
           <span class="film-details__comment-day">${commentDate}</span>

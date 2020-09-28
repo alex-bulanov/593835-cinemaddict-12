@@ -3,7 +3,6 @@ import {createCommentTemplate} from "./film-comment";
 import {EmojiType} from "../const.js";
 import {Key} from "../const.js";
 import SmartView from "./smart";
-import he from "he";
 
 const createGenresTemplate = (genres) => {
   return genres.map((genre) => `<span class="film-details__genre">${genre}</span>`).join(``);
@@ -56,7 +55,7 @@ const createFilmDetailsTemplate = (data = {}, comments) => {
     filmComments = comments.slice(0, comments.length).map(createCommentTemplate).join(``);
   }
 
-  const commentAmount = comments.length;
+  const commentAmount = comments.length || 0;
   const filmRunTime = formatRunTime(runtime);
   const fimDateOfRelease = formatDateOfRelease(dateOfRelease);
 
@@ -187,7 +186,7 @@ const createFilmDetailsTemplate = (data = {}, comments) => {
             <div class="film-details__new-comment">
               ${createCommentEmojiTemplate()}
               <label class="film-details__comment-label">
-                <textarea class="film-details__comment-input" placeholder="Select reaction below and write comment here" name="comment" ${isOffline === true ? `disabled` : ``}>${he.encode(commentDescription)}</textarea>
+                <textarea class="film-details__comment-input" placeholder="Select reaction below and write comment here" name="comment" ${isOffline === true ? `disabled` : ``}>${commentDescription}</textarea>
               </label>
               ${createEmojiTemplate()}
             </div>
