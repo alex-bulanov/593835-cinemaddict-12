@@ -1,5 +1,5 @@
 import {render, RenderPosition, remove, replace} from "../utils/render.js";
-import FilmCardDetailsView from "../view/film-details.js";
+import FilmCardDetailsView from "../view/film-card-details.js";
 import {UserAction, UpdateType} from "../const.js";
 
 export default class FilmDetails {
@@ -27,7 +27,7 @@ export default class FilmDetails {
     this._commentsModel = model;
 
     const prevDetailsComponent = this._filmDetailsComponent;
-    this._filmDetailsComponent = new FilmCardDetailsView(this._film, this._commentsModel.getComments());
+    this._filmDetailsComponent = new FilmCardDetailsView(this._film, this._commentsModel.get());
 
     this._filmDetailsComponent.setWatchlistCardClickHandler(this._handleWatchlistClick);
     this._filmDetailsComponent.setFavoriteCardClickHandler(this._handleFavoriteClick);
@@ -72,7 +72,7 @@ export default class FilmDetails {
   _handleDeleteClick(comment) {
     this._api.deleteComment(comment)
       .then(() => {
-        this._commentsModel.deleteComment(UpdateType.DELETE_COMMENT, comment);
+        this._commentsModel.delete(UpdateType.DELETE_COMMENT, comment);
       })
 
       .catch(() => {
@@ -80,19 +80,19 @@ export default class FilmDetails {
       });
   }
 
-  _findNewComment(array) {
+  _findNewComment(comments) {
     let newComment = null;
-    const currentCommentsId = [];
-    const currentComments = this._commentsModel.getComments();
+    const currentsCommentsId = [];
+    const currentComments = this._commentsModel.get();
     if (currentComments.length === 0) {
-      newComment = array[0];
+      newComment = comments[0];
     } else {
-      this._commentsModel.getComments().forEach((element) => {
-        currentCommentsId.push(element.id);
+      this._commentsModel.get().forEach((element) => {
+        currentsCommentsId.push(element.id);
       });
 
-      array.forEach((element) => {
-        if (!currentCommentsId.includes(element.id)) {
+      comments.forEach((element) => {
+        if (!currentsCommentsId.includes(element.id)) {
           newComment = element;
         }
       });
@@ -105,7 +105,7 @@ export default class FilmDetails {
     this._api.addComment(comment)
       .then((response) => {
         const newCommnet = this._findNewComment(response);
-        this._commentsModel.addComment(UpdateType.ADD_COMMENT, newCommnet);
+        this._commentsModel.add(UpdateType.ADD_COMMENT, newCommnet);
       })
       .catch(() => {
         this._filmDetailsComponent.shake(() => {

@@ -13,7 +13,7 @@ export default class FooterStatistics {
 
   init() {
     const prevFooterComponent = this._footerComponent;
-    this._footerComponent = new FooterStatisticsView(this._filmsModel.getFilms());
+    this._footerComponent = new FooterStatisticsView(this._filmsModel.get());
 
     if (prevFooterComponent === null) {
       render(this._footerContainerComponent, this._footerComponent, RenderPosition.BEFOREEND);

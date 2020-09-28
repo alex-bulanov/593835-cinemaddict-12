@@ -1,8 +1,3 @@
-export const GENRES = [`Film-Noir`, `Drama`, `Musical`, `Sci-Fi`, `Animation`, `Fantasy`, `Comedy`, `TV Series`];
-export const EMOJI = [`smile`, `sleeping`, `angry`, `puke`];
-export const COMMENTS_COUNT = 5;
-export const GENRES_COUNT = 1;
-
 export const NavType = {
   ALL: `all`,
   WATCHLIST: `watchlist`,
@@ -55,7 +50,7 @@ export const UserType = {
   BUFF: `Movie Buff`,
 };
 
-export const Keys = {
+export const Key = {
   ENTER: `Enter`,
-  CONTROL: `ControlLeft`
+  CONTROL: `Control`,
 };

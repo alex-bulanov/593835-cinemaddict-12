@@ -1,7 +1,7 @@
 import {formatRunTime, formatDateOfRelease} from "../utils/film.js";
 import {createCommentTemplate} from "./film-comment";
 import {EmojiType} from "../const.js";
-import {Keys} from "../const.js";
+import {Key} from "../const.js";
 import SmartView from "./smart";
 import he from "he";
 
@@ -203,10 +203,9 @@ export default class FilmCardDetails extends SmartView {
     super();
     this._data = data;
     this._comments = comments;
-    this._message = null;
     this._pressed = null;
 
-    this._resetСommentSubmitHandler = this._resetСommentSubmitHandler.bind(this);
+    this._resetCommentSubmitHandler = this._resetCommentSubmitHandler.bind(this);
     this._descriptionInputHandler = this._descriptionInputHandler.bind(this);
     this._watchlistClickHandler = this._watchlistClickHandler.bind(this);
     this._favoriteClickHandler = this._favoriteClickHandler.bind(this);
@@ -219,23 +218,23 @@ export default class FilmCardDetails extends SmartView {
     this._clickHandler = this._clickHandler.bind(this);
     this._commentSend = this._commentSend.bind(this);
 
-    this._offlineSet = this._offlineSet.bind(this);
-    this._onlineSet = this._onlineSet.bind(this);
+    this._offlineHandler = this._offlineHandler.bind(this);
+    this._onlineHandler = this._onlineHandler.bind(this);
 
     this._setInnerHandlers();
   }
 
-  _offlineSet() {
+  _offlineHandler() {
     this.updateData({isOffline: true}, false);
   }
 
-  _onlineSet() {
+  _onlineHandler() {
     this.updateData({isOffline: false}, false);
   }
 
   removeListener() {
-    window.removeEventListener(`offline`, this._offlineSet);
-    window.removeEventListener(`online`, this._onlineSet);
+    window.removeEventListener(`offline`, this._offlineHandler);
+    window.removeEventListener(`online`, this._onlineHandler);
   }
 
   getTemplate() {
@@ -257,13 +256,7 @@ export default class FilmCardDetails extends SmartView {
   }
 
   _watchedClickHandler() {
-    if (this._data.watchingDate) {
-      this._data.watchingDate = null;
-    } else {
-      this._data.watchingDate = new Date();
-    }
-
-    this.updateData({isWatched: !this._data.isWatched, watchingDate: this._data.watchingDate}, false);
+    this.updateData({isWatched: !this._data.isWatched, watchingDate: this._data.watchingDate ? null : new Date()}, false);
     this._callback.watchedClick(this._data);
   }
 
@@ -285,11 +278,11 @@ export default class FilmCardDetails extends SmartView {
   }
 
   _keyDownHandler(event) {
-    this._pressed.add(event.code);
-    const codes = [Keys.CONTROL, Keys.ENTER];
+    this._pressed.add(event.key);
+    const keys = [Key.CONTROL, Key.ENTER];
 
-    for (const code of codes) {
-      if (!this._pressed.has(code)) {
+    for (const key of keys) {
+      if (!this._pressed.has(key)) {
         return;
       }
     }
@@ -299,7 +292,7 @@ export default class FilmCardDetails extends SmartView {
   }
 
   _keyUpHandler(event) {
-    this._pressed.delete(event.code);
+    this._pressed.delete(event.key);
   }
 
   _commentSubmitHandler() {
@@ -309,7 +302,7 @@ export default class FilmCardDetails extends SmartView {
     document.addEventListener(`keyup`, this._keyUpHandler);
   }
 
-  _resetСommentSubmitHandler() {
+  _resetCommentSubmitHandler() {
     document.removeEventListener(`keydown`, this._keyDownHandler);
     document.removeEventListener(`keyup`, this._keyUpHandler);
   }
@@ -327,10 +320,7 @@ export default class FilmCardDetails extends SmartView {
         date: new Date().toISOString(),
       };
 
-      document.querySelector(`.film-details__comment-input`).value = null;
-      document.querySelector(`.film-details__add-emoji-label`).dataset.emoji = ``;
-      document.querySelector(`.film-details__add-emoji-label`).innerHTML = ``;
-
+      document.querySelector(`.film-details__comment-input`).setAttribute(`disabled`, `disabled`);
       this._callback.commentSubmit(comment);
     }
   }
@@ -344,8 +334,8 @@ export default class FilmCardDetails extends SmartView {
       emojiItem.addEventListener(`click`, this._emojiInputHandler);
     }
 
-    window.addEventListener(`offline`, this._offlineSet);
-    window.addEventListener(`online`, this._onlineSet);
+    window.addEventListener(`offline`, this._offlineHandler);
+    window.addEventListener(`online`, this._onlineHandler);
   }
 
   _emojiInputHandler(evt) {
@@ -361,7 +351,7 @@ export default class FilmCardDetails extends SmartView {
   setHandleCommentSubmit(callback) {
     this._callback.commentSubmit = callback;
     this.getElement().querySelector(`.film-details__comment-input`).addEventListener(`focus`, this._commentSubmitHandler);
-    this.getElement().querySelector(`.film-details__comment-input`).addEventListener(`blur`, this._resetСommentSubmitHandler);
+    this.getElement().querySelector(`.film-details__comment-input`).addEventListener(`blur`, this._resetCommentSubmitHandler);
   }
 
   setCrossClickHandler(callback) {

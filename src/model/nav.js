@@ -7,12 +7,12 @@ export default class Nav extends Observer {
     this._activeNav = NavType.ALL;
   }
 
-  setNav(updateType, nav) {
+  set(updateType, nav) {
     this._activeNav = nav;
     this._notify(updateType, nav);
   }
 
-  getNav() {
+  get() {
     return this._activeNav;
   }
 }

@@ -10,36 +10,24 @@ export const filter = {
 
 const compareToday = (film) => {
   const currentDate = new Date();
-  let isFlag = false;
-  if (new Date(film.watchingDate).getDate() === currentDate.getDate()) {
-    isFlag = true;
-  }
-  return isFlag;
+
+  return new Date(film.watchingDate).getDate() === currentDate.getDate() && new Date(film.watchingDate).getMonth() === currentDate.getMonth() && new Date(film.watchingDate).getFullYear() === currentDate.getFullYear();
 };
 
 const compareWeek = (film) => {
   const currentDate = new Date();
-  let isFlag = false;
-  if (new Date(film.watchingDate) >= new Date(currentDate.setDate(currentDate.getDate() - 7))) {
-    isFlag = true;
-  }
-  return isFlag;
+
+  return new Date(film.watchingDate) >= new Date(currentDate.setDate(currentDate.getDate() - 7));
 };
 
 const compareMonth = (film) => {
   const currentDate = new Date();
-  let isFlag = false;
-  if (new Date(film.watchingDate) >= new Date(currentDate.setMonth(currentDate.getMonth() - 1))) {
-    isFlag = true;
-  }
-  return isFlag;
+
+  return new Date(film.watchingDate) >= new Date(currentDate.setMonth(currentDate.getMonth() - 1));
 };
 
 const compareYear = (film) => {
   const currentDate = new Date();
-  let flag = false;
-  if (new Date(film.watchingDate).getFullYear() >= currentDate.getFullYear()) {
-    flag = true;
-  }
-  return flag;
+
+  return new Date(film.watchingDate).getFullYear() >= currentDate.getFullYear();
 };

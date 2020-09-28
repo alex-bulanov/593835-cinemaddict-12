@@ -1,5 +1,4 @@
 import {formatRunTime, formatDateOfProduction} from "../utils/film.js";
-import {COMMENTS_COUNT} from "../const.js";
 import SmartView from "./smart.js";
 
 const createFilmCardTemplate = (film = {}) => {
@@ -24,8 +23,7 @@ const createFilmCardTemplate = (film = {}) => {
   const favoriteClassName = isFavorite ? `film-card__controls-item--favorite film-card__controls-item--active` : `film-card__controls-item--favorite`;
   const filmCardDescription = description.length < 140 ? description : description.slice(0, 139) + `...`;
 
-  const commentsCurrentValue = commentsCount > COMMENTS_COUNT ? COMMENTS_COUNT : commentsCount;
-
+  const commentsCurrentValue = commentsCount;
   const filmRunTime = formatRunTime(runtime);
 
   return (
@@ -80,14 +78,8 @@ export default class FilmCard extends SmartView {
     evt.preventDefault();
     evt.target.classList.toggle(`film-card__controls-item--active`);
 
-    if (this._data.watchingDate) {
-      this._data.watchingDate = null;
-    } else {
-      this._data.watchingDate = new Date();
-    }
-
     this._callback.watchedClick();
-    this.updateData({isWatched: !this._data.isWatched, watchingDate: this._data.watchingDate}, true);
+    this.updateData({isWatched: !this._data.isWatched, watchingDate: this._data.watchingDate ? null : new Date()}, true);
   }
 
   _watchlistClickHandler(evt) {

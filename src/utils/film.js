@@ -1,7 +1,7 @@
 import moment from "moment";
 
 export const compareYear = (filmA, filmB) => {
-  return filmB.dateOfProduction - filmA.dateOfProduction;
+  return new Date(filmB.dateOfProduction) - new Date(filmA.dateOfProduction);
 };
 
 export const compareRating = (filmA, filmB) => {
@@ -16,14 +16,14 @@ export const formatRunTime = (date) => {
   const hours = Math.floor(date / 60);
   const minutes = date % 60;
 
-  return `${hours}:${minutes}`;
+  return `${hours}h ${minutes}m`;
 };
 
 export const formatDateOfRelease = (date) => {
   if (!(date instanceof Date)) {
     date = new Date(date);
   }
-  return moment(date).format(`D MMMM YYYY`);
+  return moment(date).format(`DD MMMM YYYY`);
 };
 
 export const formatDateOfProduction = (date) => {
