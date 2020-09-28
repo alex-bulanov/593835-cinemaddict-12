@@ -11,12 +11,14 @@ const Mode = {
 };
 
 export default class Film {
-  constructor(siteFooterComponent, listContainerComponent, changeData, changeMode) {
+  constructor(siteFooterComponent, listContainerComponent, changeData, changeMode, openPopup) {
+
     this._listContainerComponent = listContainerComponent;
     this._siteFooterComponent = siteFooterComponent;
 
     this._changeData = changeData;
     this._changeMode = changeMode;
+    this._onPopupOpen = openPopup;
 
     this._filmDetailsComponent = null;
 
@@ -67,7 +69,9 @@ export default class Film {
 
     remove(prevCardComponent);
   }
-
+  getId() {
+    return this._movieId;
+  }
   resetView() {
     if (this._mode !== Mode.DEFAULT) {
 
@@ -107,5 +111,6 @@ export default class Film {
     this._detailsPresenter = new DetailsPresenter(this._siteFooterComponent, this._changeData, this._changeMode, this._api);
     this._detailsPresenter.init(this._film, this._commentsModel);
     this._filmDetailsComponent = this._detailsPresenter;
+    this._onPopupOpen(this);
   }
 }

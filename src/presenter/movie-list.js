@@ -26,6 +26,7 @@ export default class MovieList {
     this._filmPresenter = {};
     this._filmExtraCommentPresenter = {};
     this._filmExtraRatingPresenter = {};
+    this._popupPresenter = null;
 
     this._isLoading = true;
 
@@ -56,6 +57,7 @@ export default class MovieList {
     this._handleViewAction = this._handleViewAction.bind(this);
     this._handleModelEvent = this._handleModelEvent.bind(this);
     this._handleModeChange = this._handleModeChange.bind(this);
+    this._handlePopupOpen = this._handlePopupOpen.bind(this);
   }
 
   init() {
@@ -95,17 +97,10 @@ export default class MovieList {
   }
 
   _handleModeChange() {
-    Object
-      .values(this._filmExtraCommentPresenter)
-      .forEach((presenter) => presenter.resetView());
-
-    Object
-      .values(this._filmExtraRatingPresenter)
-      .forEach((presenter) => presenter.resetView());
-
-    Object
-      .values(this._filmPresenter)
-      .forEach((presenter) => presenter.resetView());
+    if (this._popupPresenter) {
+      this._popupPresenter.resetView();
+      this._popupPresenter = null;
+    }
   }
 
   _handleViewAction(actionType, updateType, update) {
@@ -123,6 +118,7 @@ export default class MovieList {
 
     switch (updateType) {
       case UpdateType.PATCH:
+
         if (this._commentsExtraIds.includes(item.id)) {
           this._filmExtraCommentPresenter[item.id].init(item);
         }
@@ -131,6 +127,10 @@ export default class MovieList {
         }
         if (this._filmPresenter[item.id]) {
           this._filmPresenter[item.id].init(item);
+        }
+
+        if (this._popupPresenter && this._popupPresenter.getId() === item.id) {
+          this._popupPresenter.init(item);
         }
 
         this._clearMainContent({resetRenderedCardCount: true, resetSortType: true});
@@ -151,6 +151,7 @@ export default class MovieList {
         this._renderStatistics();
         break;
       case UpdateType.DELETE_COMMENT:
+
         if (this._commentsExtraIds.includes(item.id)) {
           this._filmExtraCommentPresenter[item.id].init(item);
         }
@@ -159,6 +160,9 @@ export default class MovieList {
         }
         if (this._filmPresenter[item.id]) {
           this._filmPresenter[item.id].init(item);
+        }
+        if (this._popupPresenter.getId() === item.id) {
+          this._popupPresenter.init(item);
         }
 
         this._clearMainContent({resetRenderedCardCount: true, resetSortType: true});
@@ -175,7 +179,9 @@ export default class MovieList {
         if (this._filmPresenter[item.id]) {
           this._filmPresenter[item.id].init(item);
         }
-
+        if (this._popupPresenter.getId() === item.id) {
+          this._popupPresenter.init(item);
+        }
         this._clearMainContent({resetRenderedCardCount: true, resetSortType: true});
         this._renderMainContent();
 
@@ -212,6 +218,14 @@ export default class MovieList {
     }
   }
 
+  _handlePopupOpen(presenter) {
+    if (this._popupPresenter) {
+      this._popupPresenter.resetView();
+    }
+    this._popupPresenter = presenter;
+
+  }
+
   _renderShowMoreButton() {
     if (this._showMoreButtonComponent !== null) {
       this._showMoreButtonComponent = null;
@@ -223,7 +237,7 @@ export default class MovieList {
   }
 
   _renderCard(film, place) {
-    const filmPresenter = new FilmPresenter(this._siteFooterComponent, place, this._handleViewAction, this._handleModeChange);
+    const filmPresenter = new FilmPresenter(this._siteFooterComponent, place, this._handleViewAction, this._handleModeChange, this._handlePopupOpen);
     filmPresenter.init(film);
     this._filmPresenter[film.id] = filmPresenter;
   }
@@ -244,7 +258,7 @@ export default class MovieList {
       filmsSortedByRating.forEach((film) => {
         this._ratingExtraIds.push(film.id);
 
-        const filmPresenter = new FilmPresenter(this._siteFooterComponent, this._filmsListTopRatingContainerComponent, this._handleViewAction, this._handleModeChange);
+        const filmPresenter = new FilmPresenter(this._siteFooterComponent, this._filmsListTopRatingContainerComponent, this._handleViewAction, this._handleModeChange, this._handlePopupOpen);
         filmPresenter.init(film);
         this._filmExtraRatingPresenter[film.id] = filmPresenter;
       });
@@ -252,7 +266,20 @@ export default class MovieList {
   }
 
   _renderExtraCommented() {
+
+    function shuffle(films) {
+      for (let i = films.length - 1; i > 0; i--) {
+        let j = Math.floor(Math.random() * (i + 1));
+
+        [films[i], films[j]] = [films[j], films[i]];
+      }
+    }
+
+
     let filmsSortedByComments = this._filmsModel.get().slice();
+
+    shuffle(filmsSortedByComments);
+
     filmsSortedByComments = filmsSortedByComments.sort(compareComments).slice(0, CARDS_EXTRA_AMOUNT);
 
     if (filmsSortedByComments[0].comments.length > 0) {
@@ -263,7 +290,7 @@ export default class MovieList {
       filmsSortedByComments.forEach((film) => {
         this._commentsExtraIds.push(film.id);
 
-        const filmPresenter = new FilmPresenter(this._siteFooterComponent, this._filmsListMostCommentedContainerComponent, this._handleViewAction, this._handleModeChange);
+        const filmPresenter = new FilmPresenter(this._siteFooterComponent, this._filmsListMostCommentedContainerComponent, this._handleViewAction, this._handleModeChange, this._handlePopupOpen);
         filmPresenter.init(film);
         this._filmExtraCommentPresenter[film.id] = filmPresenter;
       });

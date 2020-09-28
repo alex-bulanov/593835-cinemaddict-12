@@ -88,21 +88,19 @@ export default class FilmDetails {
 
   _findNewComment(comments) {
     let newComment = null;
-    const currentCommentsIds = [];
-    const currentComments = this._commentsModel.get();
-    if (currentComments.length === 0) {
-      newComment = comments[0];
-    } else {
-      this._commentsModel.get().forEach((element) => {
-        currentCommentsIds.push(element.id);
-      });
 
-      comments.forEach((element) => {
-        if (!currentCommentsIds.includes(element.id)) {
-          newComment = element;
+    if (this._commentsModel.get().length === 0) {
+      return comments[0];
+    } else {
+      const currentCommentsIds = this._commentsModel.get().map((comment) => comment.id);
+
+      comments.forEach((comment) => {
+        if (!currentCommentsIds.includes(comment.id)) {
+          newComment = comment;
         }
       });
     }
+
     return newComment;
   }
 
@@ -111,6 +109,7 @@ export default class FilmDetails {
     this._api.addComment(comment)
       .then((response) => {
         const newCommnet = this._findNewComment(response);
+
         this._commentsModel.add(UpdateType.ADD_COMMENT, newCommnet);
       })
       .catch(() => {
