@@ -1,17 +1,17 @@
 import ChartDataLabels from 'chartjs-plugin-datalabels';
-import {sortedGenres, topGenre, userRank, totalDuration} from '../utils/statistics.js';
+import {sortedByGenres, topGenre, getUserRank, getTotalDuration} from '../utils/statistics.js';
 import SmartView from './smart.js';
 import Chart from 'chart.js';
 
 const BAR_HEIGHT = 50;
 
 const renderDurationTemplate = (movies) => {
-  const time = totalDuration(movies);
+  const time = getTotalDuration(movies);
   return (`<p class="statistic__item-text">${time[0]} <span class="statistic__item-description">h</span> ${time[1]} <span class="statistic__item-description">m</span></p>`);
 };
 
 const renderChart = (statisticCtx, movie) => {
-  const amountWatchedGenres = sortedGenres(movie);
+  const amountWatchedGenres = sortedByGenres(movie);
 
   return new Chart(statisticCtx, {
     plugins: [ChartDataLabels],
@@ -85,7 +85,7 @@ const createStatisticsTemplate = (filtersItems, currentFilter) => {
   const currentFilterItem = filtersItems.find((item) => item.type === currentFilter);
   const allFilterItem = filtersItems.find((item) => item.type === `all-time`);
   const watchedAmount = currentFilterItem.movie.length;
-  const rankTemplate = userRank(allFilterItem.movie);
+  const rankTemplate = getUserRank(allFilterItem.movie);
   const topGenreTemplate = topGenre(currentFilterItem.movie);
   const durationTemplate = renderDurationTemplate(currentFilterItem.movie);
 

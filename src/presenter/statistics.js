@@ -17,7 +17,7 @@ export default class Statistics {
   }
 
   init() {
-    this._currentFilter = this._filterModel.getFilter();
+    this._currentFilter = this._filterModel.get();
     const filters = this._getFilters();
 
     this._staticticsComponent = new StatisticsView(filters, this._currentFilter);
@@ -45,11 +45,11 @@ export default class Statistics {
       return;
     }
 
-    this._filterModel.setFilter(UpdateType.MAJOR, filterType);
+    this._filterModel.set(UpdateType.MAJOR, filterType);
   }
 
   _getFilters() {
-    const films = this._filmsModel.getFilms().filter((item) => item.isWatched);
+    const films = this._filmsModel.get().filter((item) => item.isWatched);
     return [
       {
         type: FilterType.ALL,

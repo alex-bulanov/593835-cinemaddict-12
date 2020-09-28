@@ -69,7 +69,7 @@ export default class ApiComment {
   }) {
     headers.append(`Authorization`, this._authorization);
 
-    return fetch(`${this._endPoint}/${url}/${this._isDel ? this._commentId : this._movieId}`, {method, body, headers})
+    return fetch(`${this._endPoint}/${url}/${this._isDeleted ? this._commentId : this._movieId}`, {method, body, headers})
       .then(ApiComment.checkStatus)
       .catch(ApiComment.catchError);
   }

@@ -1,4 +1,4 @@
-import {nanoid} from "nanoid";
+// import {nanoid} from "nanoid";
 import FilmsModel from "../model/films.js";
 
 const getSyncedFilms = (films) => {
@@ -50,33 +50,33 @@ export default class Provider {
     return Promise.resolve(film);
   }
 
-  addFilm(film) {
-    if (Provider.isOnline()) {
-      return this._api.addFilm(film)
-        .then((newFilm) => {
-          this._store.setItem(newFilm.id, FilmsModel.adaptToServer(newFilm));
-          return newFilm;
-        });
-    }
+  // addFilm(film) {
+  //   if (Provider.isOnline()) {
+  //     return this._api.addFilm(film)
+  //       .then((newFilm) => {
+  //         this._store.setItem(newFilm.id, FilmsModel.adaptToServer(newFilm));
+  //         return newFilm;
+  //       });
+  //   }
 
-    const localNewFilmId = nanoid();
-    const localNewFilm = Object.assign({}, film, {id: localNewFilmId});
+  //   const localNewFilmId = nanoid();
+  //   const localNewFilm = Object.assign({}, film, {id: localNewFilmId});
 
-    this._store.setItem(localNewFilm.id, FilmsModel.adaptToServer(localNewFilm));
+  //   this._store.setItem(localNewFilm.id, FilmsModel.adaptToServer(localNewFilm));
 
-    return Promise.resolve(localNewFilm);
-  }
+  //   return Promise.resolve(localNewFilm);
+  // }
 
-  deleteFilm(film) {
-    if (Provider.isOnline()) {
-      return this._api.deleteFilm(film)
-        .then(() => this._store.removeItem(film.id));
-    }
+  // deleteFilm(film) {
+  //   if (Provider.isOnline()) {
+  //     return this._api.deleteFilm(film)
+  //       .then(() => this._store.removeItem(film.id));
+  //   }
 
-    this._store.removeItem(film.id);
+  //   this._store.removeItem(film.id);
 
-    return Promise.resolve();
-  }
+  //   return Promise.resolve();
+  // }
 
   sync() {
     if (Provider.isOnline()) {

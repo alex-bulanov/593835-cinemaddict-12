@@ -45,9 +45,10 @@ export default class User {
   }
 
   _getUser() {
-    const films = this._filmsModel.getFilms();
+    const films = this._filmsModel.get();
     const watchedFilms = films.filter((item) => item.isWatched).length;
     let userType = null;
+
     if (watchedFilms <= FilmsAmount.NOVICE) {
       userType = UserType.NOVICE;
     }
@@ -58,6 +59,10 @@ export default class User {
 
     if (watchedFilms >= FilmsAmount.BUFF) {
       userType = UserType.BUFF;
+    }
+
+    if (watchedFilms === 0) {
+      userType = ``;
     }
 
     return userType;

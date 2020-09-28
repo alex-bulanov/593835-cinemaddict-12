@@ -1,4 +1,4 @@
-import MainNavigationView from "../view/main-nav.js";
+import MainNavigationView from "../view/main-navigation.js";
 import {render, RenderPosition, remove, replace} from "../utils/render.js";
 import {NavType, UpdateType} from "../const.js";
 import {nav} from "../utils/nav.js";
@@ -17,7 +17,7 @@ export default class Nav {
   }
 
   init() {
-    this._currentNav = this._navModel.getNav();
+    this._currentNav = this._navModel.get();
     const navs = this._getNavs();
     const prevMainNavComponent = this._mainNavComponent;
 
@@ -43,15 +43,15 @@ export default class Nav {
     }
 
     if (navType === `stats`) {
-      this._navModel.setNav(UpdateType.STATS, navType);
+      this._navModel.set(UpdateType.STATS, navType);
       return;
     }
 
-    this._navModel.setNav(UpdateType.MAJOR, navType);
+    this._navModel.set(UpdateType.MAJOR, navType);
   }
 
   _getNavs() {
-    const films = this._filmsModel.getFilms();
+    const films = this._filmsModel.get();
 
     return [
       {

@@ -42,7 +42,7 @@ export default class Film {
     this._api = new ApiComment(END_POINT, AUTHORIZATION, this._movieId);
 
     this._api.getComments().then((comments) => {
-      this._commentsModel.setComments(comments);
+      this._commentsModel.set(comments);
     });
 
     this._commentsModel.addObserver(this._handleCommentsEvent);
@@ -98,7 +98,7 @@ export default class Film {
   }
 
   _handleCommentsEvent(updateType) {
-    this._changeData(UserAction.UPDATE_FILM, updateType, Object.assign({}, this._film, {commentsCount: this._commentsModel.getComments().length}));
+    this._changeData(UserAction.UPDATE_FILM, updateType, Object.assign({}, this._film, {commentsCount: this._commentsModel.get().length}));
     this._detailsPresenter.init(this._film, this._commentsModel);
   }
 

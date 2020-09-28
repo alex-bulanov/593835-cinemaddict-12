@@ -7,15 +7,16 @@ const FilmsAmount = {
   BUFF: 21
 };
 
-export const sortedGenres = (data) => {
-  if (data.length === 0) {
-    return data.length;
+export const sortedByGenres = (films) => {
+
+  if (films.length === 0) {
+    return films.length;
   }
   const allGenres = [];
 
-  data.forEach((film) => {
-    if (film.genre) {
-      allGenres.push(film.genre);
+  films.forEach((film) => {
+    if (film.genres) {
+      allGenres.push(...film.genres);
     }
   });
 
@@ -27,12 +28,12 @@ export const sortedGenres = (data) => {
   return amountWatchedGenres;
 };
 
-export const topGenre = (data) => {
-  if (data.length === 0) {
+export const topGenre = (films) => {
+  if (films.length === 0) {
     return ``;
   }
 
-  const amountWatchedGenres = sortedGenres(data);
+  const amountWatchedGenres = sortedByGenres(films);
 
   function getKeyByValue(object, value) {
     return Object.keys(object).find((key) => object[key] === value);
@@ -41,7 +42,7 @@ export const topGenre = (data) => {
   return getKeyByValue(amountWatchedGenres, Math.max.apply(null, Object.values(amountWatchedGenres))) || ``;
 };
 
-export const userRank = (data) => {
+export const getUserRank = (data) => {
   let userType = null;
 
   if (data.length <= FilmsAmount.NOVICE) {
@@ -59,7 +60,7 @@ export const userRank = (data) => {
   return userType;
 };
 
-export const totalDuration = (data) => {
+export const getTotalDuration = (data) => {
   let totalHours = 0;
   let totalMinutes = 0;
 
