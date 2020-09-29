@@ -1,5 +1,5 @@
 import ChartDataLabels from 'chartjs-plugin-datalabels';
-import {sortedByGenres, topGenre, getUserRank, getTotalDuration} from '../utils/statistics.js';
+import {sortedByGenres, getTopGenre, getUserRank, getTotalDuration} from '../utils/statistics.js';
 import SmartView from './smart.js';
 import Chart from 'chart.js';
 
@@ -86,7 +86,7 @@ const createStatisticsTemplate = (filtersItems, currentFilter) => {
   const allFilterItem = filtersItems.find((item) => item.type === `all-time`);
   const watchedAmount = currentFilterItem.movie.length;
   const rankTemplate = getUserRank(allFilterItem.movie);
-  const topGenreTemplate = topGenre(currentFilterItem.movie);
+  const topGenreTemplate = getTopGenre(currentFilterItem.movie);
   const durationTemplate = renderDurationTemplate(currentFilterItem.movie);
 
   return (

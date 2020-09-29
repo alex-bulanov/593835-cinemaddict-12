@@ -87,21 +87,16 @@ export default class FilmDetails {
   }
 
   _findNewComment(comments) {
-    let newComment = null;
+    let newComments = null;
 
     if (this._commentsModel.get().length === 0) {
       return comments[0];
-    } else {
-      const currentCommentsIds = this._commentsModel.get().map((comment) => comment.id);
-
-      comments.forEach((comment) => {
-        if (!currentCommentsIds.includes(comment.id)) {
-          newComment = comment;
-        }
-      });
     }
 
-    return newComment;
+    const currentCommentsIds = this._commentsModel.get().map((comment) => comment.id);
+    newComments = comments.filter((comment) => !currentCommentsIds.includes(comment.id));
+
+    return newComments[0];
   }
 
   _handleCommentSubmit(comment) {

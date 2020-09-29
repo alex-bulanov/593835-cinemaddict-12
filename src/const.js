@@ -22,7 +22,6 @@ export const SortType = {
 
 export const UpdateType = {
   PATCH: `PATCH`,
-  MINOR: `MINOR`,
   MAJOR: `MAJOR`,
   STATS: `STATS`,
   COMMENT: `COMMENT`,

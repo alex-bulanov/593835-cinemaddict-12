@@ -255,7 +255,8 @@ export default class FilmCardDetails extends SmartView {
   }
 
   _watchedClickHandler() {
-    this.updateData({isWatched: !this._data.isWatched, watchingDate: this._data.watchingDate ? null : new Date()}, false);
+    this._data.watchingDate = this._data.watchingDate ? null : this._data.watchingDate = new Date();
+    this.updateData({isWatched: !this._data.isWatched, watchingDate: this._data.watchingDate}, true);
     this._callback.watchedClick(this._data);
   }
 
@@ -278,6 +279,7 @@ export default class FilmCardDetails extends SmartView {
 
   _keyDownHandler(event) {
     this._pressed.add(event.key);
+
     const keys = [Key.CONTROL, Key.ENTER];
 
     for (const key of keys) {

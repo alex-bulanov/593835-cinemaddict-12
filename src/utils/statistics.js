@@ -28,7 +28,7 @@ export const sortedByGenres = (films) => {
   return amountWatchedGenres;
 };
 
-export const topGenre = (films) => {
+export const getTopGenre = (films) => {
   if (films.length === 0) {
     return ``;
   }

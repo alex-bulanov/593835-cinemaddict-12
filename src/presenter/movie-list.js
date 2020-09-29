@@ -115,10 +115,8 @@ export default class MovieList {
   }
 
   _handleModelEvent(updateType, item) {
-
     switch (updateType) {
       case UpdateType.PATCH:
-
         if (this._commentsExtraIds.includes(item.id)) {
           this._filmExtraCommentPresenter[item.id].init(item);
         }
@@ -135,12 +133,6 @@ export default class MovieList {
 
         this._clearMainContent({resetRenderedCardCount: true, resetSortType: true});
         this._renderMainContent();
-
-        break;
-
-      case UpdateType.MINOR:
-        this._clearMainContent();
-        this._renderMainContent();
         break;
       case UpdateType.MAJOR:
         this._clearMainContent({resetRenderedCardCount: true, resetSortType: true});
@@ -151,7 +143,6 @@ export default class MovieList {
         this._renderStatistics();
         break;
       case UpdateType.DELETE_COMMENT:
-
         if (this._commentsExtraIds.includes(item.id)) {
           this._filmExtraCommentPresenter[item.id].init(item);
         }
@@ -164,10 +155,8 @@ export default class MovieList {
         if (this._popupPresenter.getId() === item.id) {
           this._popupPresenter.init(item);
         }
-
         this._clearMainContent({resetRenderedCardCount: true, resetSortType: true});
         this._renderMainContent();
-
         break;
       case UpdateType.ADD_COMMENT:
         if (this._commentsExtraIds.includes(item.id)) {
@@ -184,7 +173,6 @@ export default class MovieList {
         }
         this._clearMainContent({resetRenderedCardCount: true, resetSortType: true});
         this._renderMainContent();
-
         break;
       case UpdateType.INIT:
         this._isLoading = false;

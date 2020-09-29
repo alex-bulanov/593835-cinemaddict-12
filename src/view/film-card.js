@@ -77,9 +77,9 @@ export default class FilmCard extends SmartView {
   _watchedClickHandler(evt) {
     evt.preventDefault();
     evt.target.classList.toggle(`film-card__controls-item--active`);
-
+    this._data.watchingDate = this._data.watchingDate ? null : this._data.watchingDate = new Date();
     this._callback.watchedClick();
-    this.updateData({isWatched: !this._data.isWatched, watchingDate: this._data.watchingDate ? null : new Date()}, true);
+    this.updateData({isWatched: !this._data.isWatched, watchingDate: this._data.watchingDate}, true);
   }
 
   _watchlistClickHandler(evt) {
