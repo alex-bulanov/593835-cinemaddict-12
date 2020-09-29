@@ -10,7 +10,6 @@ export const filter = {
 
 const compareToday = (film) => {
   const currentDate = new Date();
-
   return new Date(film.watchingDate).getDate() === currentDate.getDate() && new Date(film.watchingDate).getMonth() === currentDate.getMonth() && new Date(film.watchingDate).getFullYear() === currentDate.getFullYear();
 };
 
@@ -22,7 +21,6 @@ const compareWeek = (film) => {
 
 const compareMonth = (film) => {
   const currentDate = new Date();
-
   return new Date(film.watchingDate) >= new Date(currentDate.setMonth(currentDate.getMonth() - 1));
 };
 

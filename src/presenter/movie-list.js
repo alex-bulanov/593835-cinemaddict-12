@@ -82,6 +82,22 @@ export default class MovieList {
     render(this._filmsSectionComponent, this._noFilmsComponent, RenderPosition.BEFOREEND);
   }
 
+  _initializePresenter(item) {
+    if (this._commentsExtraIds.includes(item.id)) {
+      this._filmExtraCommentPresenter[item.id].init(item);
+    }
+    if (this._ratingExtraIds.includes(item.id)) {
+      this._filmExtraRatingPresenter[item.id].init(item);
+    }
+    if (this._filmPresenter[item.id]) {
+      this._filmPresenter[item.id].init(item);
+    }
+
+    if (this._popupPresenter && this._popupPresenter.getId() === item.id) {
+      this._popupPresenter.init(item);
+    }
+  }
+
   _getFilms() {
     const navType = this._navModel.get();
     const films = this._filmsModel.get();
@@ -117,20 +133,7 @@ export default class MovieList {
   _handleModelEvent(updateType, item) {
     switch (updateType) {
       case UpdateType.PATCH:
-        if (this._commentsExtraIds.includes(item.id)) {
-          this._filmExtraCommentPresenter[item.id].init(item);
-        }
-        if (this._ratingExtraIds.includes(item.id)) {
-          this._filmExtraRatingPresenter[item.id].init(item);
-        }
-        if (this._filmPresenter[item.id]) {
-          this._filmPresenter[item.id].init(item);
-        }
-
-        if (this._popupPresenter && this._popupPresenter.getId() === item.id) {
-          this._popupPresenter.init(item);
-        }
-
+        this._initializePresenter(item);
         this._clearMainContent({resetRenderedCardCount: true, resetSortType: true});
         this._renderMainContent();
         break;
@@ -143,34 +146,12 @@ export default class MovieList {
         this._renderStatistics();
         break;
       case UpdateType.DELETE_COMMENT:
-        if (this._commentsExtraIds.includes(item.id)) {
-          this._filmExtraCommentPresenter[item.id].init(item);
-        }
-        if (this._ratingExtraIds.includes(item.id)) {
-          this._filmExtraRatingPresenter[item.id].init(item);
-        }
-        if (this._filmPresenter[item.id]) {
-          this._filmPresenter[item.id].init(item);
-        }
-        if (this._popupPresenter.getId() === item.id) {
-          this._popupPresenter.init(item);
-        }
+        this._initializePresenter(item);
         this._clearMainContent({resetRenderedCardCount: true, resetSortType: true});
         this._renderMainContent();
         break;
       case UpdateType.ADD_COMMENT:
-        if (this._commentsExtraIds.includes(item.id)) {
-          this._filmExtraCommentPresenter[item.id].init(item);
-        }
-        if (this._ratingExtraIds.includes(item.id)) {
-          this._filmExtraRatingPresenter[item.id].init(item);
-        }
-        if (this._filmPresenter[item.id]) {
-          this._filmPresenter[item.id].init(item);
-        }
-        if (this._popupPresenter.getId() === item.id) {
-          this._popupPresenter.init(item);
-        }
+        this._initializePresenter(item);
         this._clearMainContent({resetRenderedCardCount: true, resetSortType: true});
         this._renderMainContent();
         break;

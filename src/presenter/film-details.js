@@ -63,16 +63,16 @@ export default class FilmDetails {
     remove(this._filmDetailsComponent);
   }
 
-  _handleFavoriteClick(data) {
-    this._changeData(UserAction.UPDATE_FILM, UpdateType.PATCH, Object.assign({}, this._film, data));
+  _handleFavoriteClick(film) {
+    this._changeData(UserAction.UPDATE_FILM, UpdateType.PATCH, Object.assign({}, this._film, film));
   }
 
-  _handleWatchedClick(data) {
-    this._changeData(UserAction.UPDATE_FILM, UpdateType.PATCH, Object.assign({}, this._film, data));
+  _handleWatchedClick(film) {
+    this._changeData(UserAction.UPDATE_FILM, UpdateType.PATCH, Object.assign({}, this._film, film));
   }
 
-  _handleWatchlistClick(data) {
-    this._changeData(UserAction.UPDATE_FILM, UpdateType.PATCH, Object.assign({}, this._film, data));
+  _handleWatchlistClick(film) {
+    this._changeData(UserAction.UPDATE_FILM, UpdateType.PATCH, Object.assign({}, this._film, film));
   }
 
   _handleDeleteClick(comment) {

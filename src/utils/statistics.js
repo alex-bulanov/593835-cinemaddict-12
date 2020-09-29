@@ -42,18 +42,19 @@ export const getTopGenre = (films) => {
   return getKeyByValue(amountWatchedGenres, Math.max.apply(null, Object.values(amountWatchedGenres))) || ``;
 };
 
-export const getUserRank = (data) => {
+export const getUserRank = (films) => {
+
   let userType = null;
 
-  if (data.length <= FilmsAmount.NOVICE) {
+  if (films.length <= FilmsAmount.NOVICE) {
     userType = UserType.NOVICE;
   }
 
-  if (data.length > FilmsAmount.NOVICE && data.length <= FilmsAmount.FAN) {
+  if (films.length > FilmsAmount.NOVICE && films.length <= FilmsAmount.FAN) {
     userType = UserType.FAN;
   }
 
-  if (data.length >= FilmsAmount.BUFF) {
+  if (films.length >= FilmsAmount.BUFF) {
     userType = UserType.BUFF;
   }
 

@@ -198,9 +198,9 @@ const createFilmDetailsTemplate = (data = {}, comments) => {
 };
 
 export default class FilmCardDetails extends SmartView {
-  constructor(data, comments) {
+  constructor(film, comments) {
     super();
-    this._data = data;
+    this._film = film;
     this._comments = comments;
     this._pressed = null;
 
@@ -237,7 +237,7 @@ export default class FilmCardDetails extends SmartView {
   }
 
   getTemplate() {
-    return createFilmDetailsTemplate(this._data, this._comments);
+    return createFilmDetailsTemplate(this._film, this._comments);
   }
 
   setBlockState() {
@@ -250,19 +250,19 @@ export default class FilmCardDetails extends SmartView {
   }
 
   _favoriteClickHandler() {
-    this.updateData({isFavorite: !this._data.isFavorite}, false);
-    this._callback.favoriteClick(this._data);
+    this.updateData({isFavorite: !this._film.isFavorite}, false);
+    this._callback.favoriteClick(this._film);
   }
 
   _watchedClickHandler() {
-    this._data.watchingDate = this._data.watchingDate ? null : this._data.watchingDate = new Date();
-    this.updateData({isWatched: !this._data.isWatched, watchingDate: this._data.watchingDate}, true);
-    this._callback.watchedClick(this._data);
+    this._film.watchingDate = this._film.watchingDate ? null : this._film.watchingDate = new Date();
+    this.updateData({isWatched: !this._film.isWatched, watchingDate: this._film.watchingDate}, true);
+    this._callback.watchedClick(this._film);
   }
 
   _watchlistClickHandler() {
-    this.updateData({isWatchlist: !this._data.isWatchlist}, false);
-    this._callback.watchlistClick(this._data);
+    this.updateData({isWatchlist: !this._film.isWatchlist}, false);
+    this._callback.watchlistClick(this._film);
   }
 
   _deleteClickHandler(evt) {
