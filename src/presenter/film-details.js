@@ -20,7 +20,6 @@ export default class FilmDetails {
     this._escKeyDownHandler = this._escKeyDownHandler.bind(this);
     this._handleDeleteClick = this._handleDeleteClick.bind(this);
     this._handleCrossClick = this._handleCrossClick.bind(this);
-
   }
 
   init(film, model) {
@@ -63,16 +62,16 @@ export default class FilmDetails {
     remove(this._filmDetailsComponent);
   }
 
-  _handleFavoriteClick(film) {
-    this._changeData(UserAction.UPDATE_FILM, UpdateType.PATCH, Object.assign({}, this._film, film));
+  _handleFavoriteClick(filmData) {
+    this._changeData(UserAction.UPDATE_FILM, UpdateType.PATCH, Object.assign({}, this._film, filmData));
   }
 
-  _handleWatchedClick(film) {
-    this._changeData(UserAction.UPDATE_FILM, UpdateType.PATCH, Object.assign({}, this._film, film));
+  _handleWatchedClick(filmData) {
+    this._changeData(UserAction.UPDATE_FILM, UpdateType.PATCH, Object.assign({}, this._film, filmData));
   }
 
-  _handleWatchlistClick(film) {
-    this._changeData(UserAction.UPDATE_FILM, UpdateType.PATCH, Object.assign({}, this._film, film));
+  _handleWatchlistClick(filmData) {
+    this._changeData(UserAction.UPDATE_FILM, UpdateType.PATCH, Object.assign({}, this._film, filmData));
   }
 
   _handleDeleteClick(comment) {

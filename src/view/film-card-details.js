@@ -20,7 +20,7 @@ const createWritersList = (writers) => {
   return writers.map((writer) => `${writer}`).join(`, `);
 };
 
-const createFilmDetailsTemplate = (data = {}, comments) => {
+const createFilmDetailsTemplate = (film = {}, comments) => {
   const {
     posterFull = ``,
     title = ``,
@@ -42,7 +42,7 @@ const createFilmDetailsTemplate = (data = {}, comments) => {
     emoji = ``,
 
     isOffline = false,
-  } = data;
+  } = film;
 
   const genresTemplate = createGenresTemplate(genres);
   const genreTerm = createGenreTerm(genres);
@@ -200,7 +200,8 @@ const createFilmDetailsTemplate = (data = {}, comments) => {
 export default class FilmCardDetails extends SmartView {
   constructor(film, comments) {
     super();
-    this._film = film;
+    this._data = film;
+
     this._comments = comments;
     this._pressed = null;
 
@@ -237,7 +238,7 @@ export default class FilmCardDetails extends SmartView {
   }
 
   getTemplate() {
-    return createFilmDetailsTemplate(this._film, this._comments);
+    return createFilmDetailsTemplate(this._data, this._comments);
   }
 
   setBlockState() {
@@ -250,19 +251,19 @@ export default class FilmCardDetails extends SmartView {
   }
 
   _favoriteClickHandler() {
-    this.updateData({isFavorite: !this._film.isFavorite}, false);
-    this._callback.favoriteClick(this._film);
+    this.updateData({isFavorite: !this._data.isFavorite}, false);
+    this._callback.favoriteClick(this._data);
   }
 
   _watchedClickHandler() {
-    this._film.watchingDate = this._film.watchingDate ? null : this._film.watchingDate = new Date();
-    this.updateData({isWatched: !this._film.isWatched, watchingDate: this._film.watchingDate}, true);
-    this._callback.watchedClick(this._film);
+    this._data.watchingDate = this._data.watchingDate ? null : this._data.watchingDate = new Date();
+    this.updateData({isWatched: !this._data.isWatched, watchingDate: this._data.watchingDate}, true);
+    this._callback.watchedClick(this._data);
   }
 
   _watchlistClickHandler() {
-    this.updateData({isWatchlist: !this._film.isWatchlist}, false);
-    this._callback.watchlistClick(this._film);
+    this.updateData({isWatchlist: !this._data.isWatchlist}, false);
+    this._callback.watchlistClick(this._data);
   }
 
   _deleteClickHandler(evt) {

@@ -238,7 +238,7 @@ export default class MovieList {
 
     function shuffle(films) {
       for (let i = films.length - 1; i > 0; i--) {
-        let j = Math.floor(Math.random() * (i + 1));
+        const j = Math.floor(Math.random() * (i + 1));
 
         [films[i], films[j]] = [films[j], films[i]];
       }
