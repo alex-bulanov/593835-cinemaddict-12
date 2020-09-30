@@ -1,5 +1,5 @@
 import ChartDataLabels from 'chartjs-plugin-datalabels';
-import {sortedByGenres, getTopGenre, getUserRank, getTotalDuration} from '../utils/statistics.js';
+import {getSortedByGenres, getTopGenre, getUserRank, getTotalDuration} from '../utils/statistics.js';
 import SmartView from './smart.js';
 import Chart from 'chart.js';
 
@@ -11,7 +11,7 @@ const renderDurationTemplate = (movies) => {
 };
 
 const renderChart = (statisticCtx, movie) => {
-  const amountWatchedGenres = sortedByGenres(movie);
+  const amountWatchedGenres = getSortedByGenres(movie);
 
   return new Chart(statisticCtx, {
     plugins: [ChartDataLabels],

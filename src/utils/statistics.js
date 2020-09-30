@@ -7,7 +7,7 @@ const FilmsAmount = {
   BUFF: 21
 };
 
-export const sortedByGenres = (films) => {
+export const getSortedByGenres = (films) => {
 
   if (films.length === 0) {
     return films.length;
@@ -33,7 +33,7 @@ export const getTopGenre = (films) => {
     return ``;
   }
 
-  const amountWatchedGenres = sortedByGenres(films);
+  const amountWatchedGenres = getSortedByGenres(films);
 
   function getKeyByValue(object, value) {
     return Object.keys(object).find((key) => object[key] === value);
@@ -61,16 +61,16 @@ export const getUserRank = (films) => {
   return userType;
 };
 
-export const getTotalDuration = (data) => {
+export const getTotalDuration = (films) => {
   let totalHours = 0;
   let totalMinutes = 0;
 
-  if (data.length === 0) {
+  if (films.length === 0) {
     totalHours = 0;
     totalMinutes = 0;
   } else {
 
-    data.forEach((item) => {
+    films.forEach((item) => {
       totalHours += +moment(item.runtime).format(`HH`);
       totalMinutes += +moment(item.runtime).format(`MM`);
     });
